@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.baeumquest.app",
+      "sha256_cert_fingerprints": [
+        "14:C1:70:7F:20:F0:E1:0B:49:63:2F:5A:7E:C5:9D:E7:35:C9:32:50:6C:4E:B5:81:59:2E:C3:DD:C5:D3:91:27"
+      ]
+    }
+  }
+]
