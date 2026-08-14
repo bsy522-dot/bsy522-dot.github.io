@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>개인정보처리방침 — 헬스장파인더</title>
+<meta name="theme-color" content="#0f172a">
+<meta name="color-scheme" content="dark light">
+<style>
+  :root{--bg:#0b1220;--surface:#111a2b;--line:#243352;--fg:#e8eefc;--fg-dim:#9fb0d0;--accent:#34d399}
+  @media (prefers-color-scheme: light){
+    :root{--bg:#f4f7fb;--surface:#fff;--line:#d8e2f0;--fg:#101a2c;--fg-dim:#4a5b76;--accent:#0f9d63}
+  }
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","맑은 고딕","Noto Sans KR",system-ui,sans-serif;
+    line-height:1.7;font-size:15px}
+  .wrap{max-width:720px;margin:0 auto;padding:28px 18px 64px}
+  h1{font-size:23px;letter-spacing:-.02em;margin:0 0 4px}
+  .sub{color:var(--fg-dim);font-size:13px;margin-bottom:26px}
+  h2{font-size:17px;margin:30px 0 8px;padding-top:18px;border-top:1px solid var(--line)}
+  p,li{color:var(--fg-dim)}
+  strong{color:var(--fg)}
+  a{color:var(--accent)}
+  .box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:14px 0}
+  ul{padding-left:20px}
+  .back{display:inline-block;margin-top:34px;color:var(--fg-dim);text-decoration:none;
+    border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>개인정보처리방침</h1>
+  <div class="sub">헬스장파인더 · 최종 개정일 2026년 8월 14일</div>
+
+  <div class="box">
+    <strong>요약: 헬스장파인더는 이용자의 개인정보를 일절 수집하지 않습니다.</strong>
+    회원가입이 없고, 서버로 전송되는 이용자 정보가 없으며, 광고·분석 추적 도구를 넣지 않았습니다.
+  </div>
+
+  <h2>1. 수집하는 개인정보</h2>
+  <p>없습니다. 이 앱은 별도의 서버 없이 정적 웹페이지로만 동작합니다.
+  이름·연락처·이메일·계정 정보를 요구하지 않으며, 이용 기록을 서버에 저장하지 않습니다.</p>
+
+  <h2>2. 위치정보</h2>
+  <p>‘내 주변’ 기능을 누른 경우에만 브라우저에 위치 권한을 요청합니다. 이때 확인된 좌표는
+  <strong>이용자의 기기 안에서만</strong> 가까운 시설을 정렬하는 데 쓰이고,
+  외부로 전송되거나 저장되지 않습니다. 권한을 거부해도 검색·지도·목록 등 나머지 기능은 모두 사용할 수 있습니다.</p>
+
+  <h2>3. 기기에 저장되는 정보</h2>
+  <p>편의를 위해 다음 값만 브라우저 저장소(localStorage)에 남습니다. 개인 식별 정보가 아니며 언제든
+  브라우저 설정에서 삭제할 수 있습니다.</p>
+  <ul>
+    <li>화면 밝기 설정(밝게/어둡게)</li>
+    <li>마지막으로 선택한 시도</li>
+  </ul>
+  <p>또한 오프라인 사용을 위해 서비스워커가 앱 화면과 시설 데이터 파일을 기기 캐시에 저장합니다.</p>
+
+  <h2>4. 제3자 제공 및 외부 서비스</h2>
+  <ul>
+    <li><strong>지도 타일</strong>: 지도를 열면 OpenStreetMap 타일 서버에 이미지 요청이 발생하며,
+      이 과정에서 해당 서버에 접속 IP 등 일반적인 웹 요청 정보가 남을 수 있습니다.
+      (<a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">OSM 개인정보처리방침</a>)</li>
+    <li><strong>지도앱 링크</strong>: 상세 화면의 카카오맵·네이버지도·구글맵 버튼은 해당 서비스로
+      이동하는 단순 링크이며, 이동 이후에는 각 서비스의 방침이 적용됩니다.</li>
+    <li><strong>호스팅</strong>: GitHub Pages에서 제공되며 접속 로그는 GitHub의 정책에 따릅니다.</li>
+  </ul>
+  <p>이 외에 이용자 정보를 제3자에게 제공하거나 판매하지 않습니다. 광고 식별자·행태정보 수집 도구는 사용하지 않습니다.</p>
+
+  <h2>5. 표시되는 시설 정보의 출처</h2>
+  <p>앱에 나오는 시설 정보는 행정안전부가 공공데이터포털(data.go.kr)을 통해 개방한
+  지방행정 인허가 데이터(체력단련장업·수영장업·종합체육시설업)입니다. 사업장 정보이며 개인정보가 아닙니다.
+  이용허락범위에 제한이 없는 공공데이터를 그대로 정규화해 사용하고, 이용료·평점·후기 등
+  원본에 없는 정보는 만들어내지 않습니다.</p>
+
+  <h2>6. 아동 관련</h2>
+  <p>연령을 확인하지 않으며, 어떤 이용자로부터도 개인정보를 수집하지 않으므로 아동의 개인정보 또한 수집하지 않습니다.</p>
+
+  <h2>7. 방침 변경</h2>
+  <p>내용이 바뀌면 이 페이지의 개정일을 수정해 공지합니다.</p>
+
+  <h2>8. 문의</h2>
+  <p>문의: <a href="mailto:bsy522@gmail.com">bsy522@gmail.com</a></p>
+
+  <a class="back" href="./">← 헬스장파인더로 돌아가기</a>
+</div>
+</body>
+</html>
