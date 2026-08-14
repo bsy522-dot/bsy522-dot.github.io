@@ -29,5 +29,15 @@
         "A5:A1:95:F1:A5:F5:84:AE:52:00:04:DF:72:21:F4:4F:42:91:8F:CC:38:24:1B:01:08:9F:2D:E2:D9:7E:57:46"
       ]
     }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.bsy522_dot.koreanheroes",
+      "sha256_cert_fingerprints": [
+        "10:10:DF:DF:5E:0E:85:81:08:52:D4:57:3D:E1:0E:63:F1:C2:71:BF:64:75:96:8F:CE:14:9B:86:03:42:C4:3F"
+      ]
+    }
   }
 ]
