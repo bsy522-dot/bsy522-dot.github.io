@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>개인정보처리방침 — 스윙랩(SwingLab)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard','Malgun Gothic',-apple-system,sans-serif;color:#1f2937;line-height:1.75;background:#f8fafc}
+.wrap{max-width:780px;margin:0 auto;padding:28px 18px 70px}
+header{border-bottom:3px solid #0d9488;padding-bottom:14px;margin-bottom:8px}
+h1{font-size:23px;color:#115e59}
+.meta{font-size:13px;color:#6b7280;margin-top:6px}
+h2{font-size:17px;color:#0f766e;margin:26px 0 8px;padding-top:8px}
+p,li{font-size:14.5px;color:#374151}
+ul{margin:6px 0 6px 20px}li{margin:3px 0}
+.box{background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:12px 16px;font-size:13.5px;color:#115e59;margin:12px 0}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}
+th,td{border:1px solid #d1d5db;padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#f0fdfa}
+footer{margin-top:30px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:12.5px;color:#9ca3af}
+a{color:#0ea5e9}
+b.hl{color:#115e59}
+</style></head><body><div class="wrap">
+<header>
+<h1>개인정보처리방침</h1>
+<div class="meta">스윙랩(SwingLab, 이하 "본 앱") · 시행일 2026년 8월 14일</div>
+</header>
+
+<div class="box"><b>요약:</b> 본 앱은 회원가입·서버·계정이 <b class="hl">없습니다</b>. 운영자가 수집·보관하는 개인정보는 <b class="hl">단 한 건도 없습니다</b>. 스윙 분석에 쓰는 사진·영상은 <b class="hl">기기 안에서만 처리</b>되며 어디로도 전송되지 않습니다. 광고·분석도구·쿠키를 쓰지 않습니다.</div>
+
+<h2>1. 수집하는 개인정보 항목</h2>
+<p>본 앱은 운영자 서버를 두지 않으며, 회원가입·로그인 절차가 없습니다. 따라서 <b>운영자가 수집하거나 보관하는 개인정보는 없습니다.</b> 앱 기능을 위해 아래 정보가 <b>이용자 기기 안에서만</b> 사용됩니다.</p>
+<table>
+<tr><th>구분</th><th>항목</th><th>저장 위치 / 처리</th></tr>
+<tr><td>스윙 분석 입력</td><td>이용자가 선택한 스윙 사진·영상</td><td>기기 내 웹뷰에서만 분석(WebAssembly). <b>업로드·전송·저장 없음.</b> 앱을 닫으면 사라짐</td></tr>
+<tr><td>앱 설정·기록</td><td>클럽 선택, 리듬(템포), 프리셋, 신체 설정, 카메라 각도 등 화면 설정값</td><td>기기 내 로컬 저장(localStorage). <b>외부 전송 없음</b></td></tr>
+<tr><td>자동 생성</td><td>없음 (쿠키·광고식별자·분석도구·크래시 리포트 모두 미사용)</td><td>—</td></tr>
+</table>
+
+<h2>2. 개인정보의 이용 목적</h2>
+<ul>
+<li>3D 스윙 시뮬레이션 표시 및 각도·지표 계산</li>
+<li>이용자 스윙 영상과 이상적인 스윙(고스트)의 겹쳐보기 비교</li>
+<li>이용자가 마지막에 고른 설정을 다음 실행 때 그대로 보여주기</li>
+</ul>
+<p>본 앱은 마케팅·광고·프로파일링 목적의 개인정보 처리를 하지 않습니다.</p>
+
+<h2>3. 외부로 나가는 통신 — 딱 한 가지</h2>
+<p>본 앱은 기본적으로 <b>완전 오프라인</b>으로 동작합니다. 인터넷 연결이 필요한 경우는 아래 한 가지뿐입니다.</p>
+<table>
+<tr><th>시점</th><th>연결 대상</th><th>보내는 것 / 받는 것</th></tr>
+<tr><td>이용자가 <b>사진·영상 분석 기능을 처음 실행</b>할 때</td><td>Google(<code>storage.googleapis.com</code>, <code>cdn.jsdelivr.net</code>)</td><td><b>보내는 것:</b> 자세 인식 모델 파일 <b>다운로드 요청</b>뿐. 이 과정에서 통신 특성상 이용자의 <b>IP 주소</b>가 해당 서버에 전달됩니다.<br><b>받는 것:</b> 자세 인식 모델(MediaPipe Pose Landmarker) 파일<br><b class="hl">이용자의 사진·영상은 이 통신에 포함되지 않습니다.</b></td></tr>
+</table>
+<p>즉, 인터넷으로 나가는 것은 <b>"모델 파일 좀 주세요"라는 요청</b>이지 이용자의 스윙 사진·영상이 아닙니다. 내려받은 모델로 <b>기기 안에서</b> 분석이 이루어집니다. 해당 통신에 대해서는 Google의 개인정보처리방침(<a href="https://policies.google.com/privacy">policies.google.com/privacy</a>)이 적용됩니다.</p>
+<p>스윙 시뮬레이션·물리 계산·각도 지표 등 <b>영상 분석을 제외한 모든 기능은 인터넷 없이 동작</b>합니다.</p>
+
+<h2>4. 제3자 제공 및 처리위탁</h2>
+<p>운영자가 보유한 개인정보가 없으므로 제3자에게 제공하거나 처리를 위탁하는 개인정보도 <b>없습니다</b>. 국외 이전 역시 없습니다(3항의 모델 다운로드는 개인정보 이전이 아니라 파일 내려받기입니다).</p>
+
+<h2>5. 보유 및 파기</h2>
+<p>기기에 저장된 설정값은 이용자가 앱을 삭제하거나 앱 저장소를 비우면 함께 제거됩니다. 사진·영상은 애초에 저장하지 않으므로 앱을 닫는 즉시 사라집니다. 운영자가 별도로 보관하는 정보가 없으므로 운영자 차원의 파기 대상은 없습니다.</p>
+
+<h2>6. 이용자의 권리</h2>
+<p>모든 데이터가 이용자 기기에 있으므로, 이용자는 언제든 기기 설정 → 앱 → 스윙랩 → 저장공간 삭제, 또는 앱 삭제로 자신의 정보를 완전히 지울 수 있습니다. 운영자에게 열람·정정·삭제를 요청할 대상 정보 자체가 존재하지 않습니다.</p>
+
+<h2>7. 아동의 개인정보</h2>
+<p>본 앱은 일반 이용자를 대상으로 하며, 만 14세 미만 아동의 개인정보를 의도적으로 수집하지 않습니다. 애초에 수집하는 개인정보가 없으므로 연령과 무관하게 운영자에게 전송되는 개인정보는 없습니다.</p>
+
+<h2>8. 안전성 확보 조치</h2>
+<ul>
+<li>서버·계정을 운영하지 않아 외부 유출 경로를 원천 차단</li>
+<li>사진·영상을 기기 밖으로 내보내지 않는 온디바이스 처리 구조</li>
+<li>앱 내부에 콘텐츠 보안 정책(CSP)을 적용해, 허용된 목적지(자세 인식 모델 배포처) 외의 외부 통신을 차단</li>
+<li>모든 외부 통신은 HTTPS 적용</li>
+</ul>
+
+<h2>9. 개인정보 보호책임자 및 문의</h2>
+<p>문의: <a href="mailto:bsy522@gmail.com">bsy522@gmail.com</a></p>
+
+<h2>10. 고지의 의무</h2>
+<p>본 방침의 내용 추가·삭제·수정이 있을 경우 시행일 전 본 페이지를 통해 고지합니다.</p>
+
+<footer>
+시행일: 2026-08-14 · 본 문서는 본 앱의 실제 데이터 처리(서버 미운영·온디바이스 처리)를 반영합니다.<br>
+※ 정식 출시 후 광고·결제·계정 기능을 추가하는 경우 본 방침을 반드시 개정해야 합니다.
+</footer>
+</div></body></html>

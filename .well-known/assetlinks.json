@@ -9,5 +9,25 @@
         "14:C1:70:7F:20:F0:E1:0B:49:63:2F:5A:7E:C5:9D:E7:35:C9:32:50:6C:4E:B5:81:59:2E:C3:DD:C5:D3:91:27"
       ]
     }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.bsy522_dot.twa",
+      "sha256_cert_fingerprints": [
+        "FE:64:B2:17:DE:10:26:A0:D5:32:81:E0:C9:01:25:6E:E9:F5:19:A9:8D:D3:10:FB:87:AD:09:2A:FC:DD:57:54"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.bsy522_dot.smartgolf",
+      "sha256_cert_fingerprints": [
+        "A5:A1:95:F1:A5:F5:84:AE:52:00:04:DF:72:21:F4:4F:42:91:8F:CC:38:24:1B:01:08:9F:2D:E2:D9:7E:57:46"
+      ]
+    }
   }
 ]
