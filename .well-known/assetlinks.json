@@ -59,5 +59,17 @@
         "A1:AE:B7:C0:1B:55:DE:E5:65:E7:52:32:63:54:29:D4:02:D6:D1:2D:2C:EB:22:1A:C5:44:94:4A:80:90:D2:F6"
       ]
     }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.bsy522_dot.gymfinder",
+      "sha256_cert_fingerprints": [
+        "41:FC:27:89:DC:11:00:B4:CC:9E:61:32:CB:88:53:86:39:30:0B:24:7F:77:38:41:7C:FB:54:C4:34:84:E9:2E"
+      ]
+    }
   }
 ]
