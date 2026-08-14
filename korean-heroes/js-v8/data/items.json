@@ -1,0 +1,127 @@
+{
+  "heal_potion": {
+    "id": "heal_potion",
+    "name": "회복약",
+    "type": "consumable",
+    "category": "cons",
+    "heal": 60,
+    "desc": "HP 60을 회복하는 약초 달임물",
+    "price": 30,
+    "icon": "potion_red",
+    "stackable": true
+  },
+  "antidote": {
+    "id": "antidote",
+    "name": "해독초",
+    "type": "consumable",
+    "category": "cons",
+    "cure": true,
+    "desc": "독·기절 등 상태이상 해제",
+    "price": 25,
+    "icon": "herb_green",
+    "stackable": true
+  },
+  "ssuk": {
+    "id": "ssuk",
+    "name": "쑥",
+    "type": "consumable",
+    "category": "cons",
+    "heal": 30,
+    "desc": "곰이 먹던 약초. HP 30 회복",
+    "price": 15,
+    "icon": "herb_green",
+    "stackable": true
+  },
+  "cheonbuin": {
+    "id": "cheonbuin",
+    "name": "천부인",
+    "type": "quest",
+    "category": "accessory",
+    "atk": 12, "def": 3, "spd": 3,
+    "desc": "환인이 환웅에게 내린 세 가지 신물 — 거울·방울·검",
+    "price": 0,
+    "icon": "divine_seal",
+    "stackable": false,
+    "questItem": true
+  },
+  "cb_mirror": {
+    "id": "cb_mirror",
+    "name": "천부인 거울",
+    "type": "accessory",
+    "category": "accessory",
+    "def": 8, "hp": 30, "mp": 15,
+    "desc": "마법 방어의 신물",
+    "price": 0,
+    "icon": "mirror_bronze"
+  },
+  "cb_sword": {
+    "id": "cb_sword",
+    "name": "천부인 검",
+    "type": "weapon",
+    "category": "weapon",
+    "atk": 18, "spd": 2, "def": 2,
+    "desc": "최강의 신물 무기",
+    "price": 0,
+    "icon": "sword_divine"
+  },
+  "cb_bell": {
+    "id": "cb_bell",
+    "name": "천부인 방울",
+    "type": "accessory",
+    "category": "accessory",
+    "hp": 40, "mp": 25,
+    "desc": "치유의 신물",
+    "price": 0,
+    "icon": "bell_bronze"
+  },
+  "bronze_sword": {
+    "id": "bronze_sword",
+    "name": "비파형동검",
+    "type": "weapon",
+    "category": "weapon",
+    "atk": 5,
+    "desc": "고조선 대표 청동 무기",
+    "price": 80,
+    "icon": "sword_bronze"
+  },
+  "horn_bow": {
+    "id": "horn_bow",
+    "name": "각궁",
+    "type": "weapon",
+    "category": "weapon",
+    "atk": 6, "spd": 2,
+    "desc": "짐승 뿔로 만든 활",
+    "price": 120,
+    "icon": "bow_horn"
+  },
+  "leather_armor": {
+    "id": "leather_armor",
+    "name": "가죽갑",
+    "type": "armor",
+    "category": "armor",
+    "def": 4,
+    "desc": "가죽 갑옷",
+    "price": 60,
+    "icon": "armor_leather"
+  },
+  "scale_armor": {
+    "id": "scale_armor",
+    "name": "찰갑",
+    "type": "armor",
+    "category": "armor",
+    "def": 8, "spd": -3,
+    "desc": "청동 비늘 갑옷",
+    "price": 200,
+    "icon": "armor_scale"
+  },
+  "asadal_armor": {
+    "id": "asadal_armor",
+    "name": "아사달 왕갑",
+    "type": "armor",
+    "category": "armor",
+    "def": 12, "hp": 20,
+    "desc": "고조선 왕의 갑옷",
+    "price": 0,
+    "icon": "armor_royal"
+  }
+}

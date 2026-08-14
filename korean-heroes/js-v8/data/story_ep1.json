@@ -1,0 +1,174 @@
+{
+  "id": "ep1",
+  "title": "환웅의 시험",
+  "subtitle": "홍익인간 — 다섯 시련",
+  "era": "신화시대, BC 2333 이전",
+  "next": "ep2",
+  "bgm_map": "title",
+  "bgm_battle": "battle",
+  "scenes": [
+    {
+      "id": "opening_1",
+      "type": "dialogue",
+      "camera": "tactical",
+      "background": "heaven_clouds",
+      "lines": [
+        { "speakerId": "hwanin", "speaker": "환인", "text": "아들아, 하늘의 자리를 두고 어찌 저 거친 인간 세상을 원하느냐." },
+        { "speakerId": "hwanwoong", "speaker": "환웅", "text": "홍익인간 — 널리 인간을 이롭게 하고자 합니다." },
+        { "speakerId": "hwanin", "speaker": "환인", "text": "말이 아닌 몸으로 보여라. 천장들이 네 길을 막을 것이다." },
+        { "speakerId": "hwanin", "speaker": "환인", "text": "천무장, 뇌공, 화신, 산령, 수장 — 다섯 시련이다." }
+      ]
+    },
+    {
+      "id": "opening_2",
+      "type": "dialogue",
+      "camera": "character_hwanwoong",
+      "background": "heaven_clouds",
+      "lines": [
+        { "speakerId": "hwanwoong", "speaker": "환웅", "text": "풍백·우사·운사여, 함께 가겠는가?" },
+        { "speakerId": "pungbaek", "speaker": "풍백", "text": "바람은 천왕의 뜻을 따르겠습니다." },
+        { "speakerId": "usa", "speaker": "우사", "text": "비 또한 인간 세상에 이로움이 되리니." },
+        { "speakerId": "unsa", "speaker": "운사", "text": "구름은 길을 여는 자. 천왕의 길이 되겠습니다." },
+        { "speakerId": "narrator", "speaker": "해설", "text": "환웅 일행이 하강 중 신시(神市) 마을에 도착했다." },
+        { "speakerId": "narrator", "speaker": "해설", "text": "환인께서 신단수에 내리시었다. 그 옆에서 뜻을 받들라." },
+        { "speakerId": "hwanwoong", "speaker": "환웅", "text": "우선 마을을 둘러보고 준비를 하자. 회의장에서 작전을 논의해야 한다." }
+      ]
+    },
+    {
+      "id": "town_scene",
+      "type": "exploration",
+      "mapId": "ep1_town",
+      "camera": "character",
+      "player": "hwanwoong",
+      "bgm": "peace",
+      "exitTrigger": "gate",
+      "triggers": {
+        "ep1_council": {
+          "type": "dialogue",
+          "lines": [
+            { "speakerId": "hwanwoong", "speaker": "환웅", "text": "모두 모였는가. 아버지 환인께서 시험을 내리셨다." },
+            { "speakerId": "pungbaek",  "speaker": "풍백", "text": "천장들이 태백산 길목을 막고 있습니다. 다섯이나 됩니다." },
+            { "speakerId": "usa",       "speaker": "우사", "text": "제가 후방에서 치유와 지원을 맡겠습니다." },
+            { "speakerId": "unsa",      "speaker": "운사", "text": "저는 궁수대를 이끌고 원거리 견제를 하겠습니다." },
+            { "speakerId": "hwanwoong", "speaker": "환웅", "text": "좋다. 홍익인간의 뜻을 이루기 위해 — 준비를 마치고 출진하자!" }
+          ],
+          "setFlag": "council_done"
+        },
+        "ep1_tavern": {
+          "type": "dialogue",
+          "lines": [
+            { "speakerId": "tavern_master", "speaker": "주점주인", "text": "어서 오시게. 신선 같은 분들이 이 주점에 오시다니." },
+            { "speakerId": "tavern_master", "speaker": "주점주인", "text": "천무장은 정면 돌파를 좋아하는 무사라 하오. 힘이 세지만 속도가 느리다 하더이다." },
+            { "speakerId": "traveler",      "speaker": "나그네",   "text": "뇌공과 수장은 원거리 공격을 하니 조심하시오. 먼저 처리하는 게 상책이라오." },
+            { "speakerId": "tavern_master", "speaker": "주점주인", "text": "화신은 기마대라 속도가 빠르니, 궁수로 견제하시오!" }
+          ]
+        },
+        "ep1_shop": {
+          "type": "dialogue",
+          "lines": [
+            { "speakerId": "merchant", "speaker": "상인", "text": "천왕님이 오셨군요! 환웅님께 바치는 물건이오." },
+            { "speakerId": "merchant", "speaker": "상인", "text": "회복약 2개, 가져가시오. 전장에서 요긴하게 쓰일 거요." }
+          ],
+          "grant": [
+            { "id": "heal_potion", "amount": 2 }
+          ],
+          "setFlag": "shop_visited",
+          "oncePerFlag": "shop_visited"
+        },
+        "ep1_depart": {
+          "type": "condition",
+          "requireFlag": "council_done",
+          "ifMet": {
+            "type": "dialogue",
+            "lines": [
+              { "speakerId": "hwanwoong", "speaker": "환웅", "text": "출진한다! 태백산으로 향하자!" }
+            ],
+            "exitScene": true
+          },
+          "ifNotMet": {
+            "type": "dialogue",
+            "lines": [
+              { "speakerId": "gatekeeper", "speaker": "문지기", "text": "먼저 회의장에서 풍백과 작전을 논의하시오." }
+            ]
+          }
+        },
+        "ep1_hwanwoong_guide": {
+          "type": "dialogue",
+          "lines": [
+            { "speakerId": "hwanwoong", "speaker": "환웅", "text": "아버지의 뜻이 여기 계신다. 신단수 앞에서 고개를 숙이고 가거라." },
+            { "speakerId": "hwanwoong", "speaker": "환웅", "text": "풍백이 회의장에서 기다리고 있다. 작전을 먼저 논의하라." }
+          ]
+        },
+        "ep1_sindansu": {
+          "type": "dialogue",
+          "lines": [
+            { "speakerId": "narrator", "speaker": "해설", "text": "거대한 신단수가 하늘을 떠받치고, 금빛 리본이 바람에 나부낀다." },
+            { "speakerId": "hwanin", "speaker": "환인", "text": "... 홍익인간. 네 뜻이 이 나무처럼 흔들림이 없기를." }
+          ]
+        },
+        "ep1_campfire": {
+          "type": "dialogue",
+          "lines": [
+            { "speakerId": "narrator", "speaker": "해설", "text": "모닥불이 타닥타닥 튀며 신시의 밤을 밝힌다." }
+          ]
+        }
+      }
+    },
+    {
+      "id": "battle",
+      "type": "battle",
+      "mapId": "ep1_trial",
+      "camera": "tactical_locked",
+      "allies": ["hwanwoong", "pungbaek", "usa", "unsa"],
+      "enemies": ["cheonmujang", "noigong", "hwashin", "sanryeong", "sujang"],
+      "allySource": "ep1_allies",
+      "enemySource": "ep1_enemies",
+      "victoryCondition": "defeat_all",
+      "defeatCondition": "allies_wiped",
+      "weather": "clear",
+      "bgm": "battle",
+      "turnLimit": 0,
+      "preLines": [
+        { "speakerId": "cheonmujang", "speaker": "천무장", "text": "환인의 아들이여, 이 시련을 넘지 못하면 인간 세상은 네 것이 될 수 없다!" },
+        { "speakerId": "hwanwoong", "speaker": "환웅", "text": "시련이 무거울수록 — 뜻은 더 높이 선다." },
+        { "speakerId": "pungbaek", "speaker": "풍백", "text": "천왕이시여, 아군을 골라 파란 칸으로 이동시키고, 붉은 칸의 적을 치십시오." },
+        { "speakerId": "usa", "speaker": "우사", "text": "환웅님의 '천부인·뇌격'은 밀집한 적에게, 저의 '치유의 비'는 다친 아군에게 쓰십시오." },
+        { "speakerId": "unsa", "speaker": "운사", "text": "신단수 곁의 아군은 매 턴 기운을 회복합니다. 지형을 이용하십시오." }
+      ]
+    },
+    {
+      "id": "victory",
+      "type": "dialogue",
+      "camera": "character_hwanwoong",
+      "background": "heaven_sunset",
+      "lines": [
+        { "speakerId": "hwanin", "speaker": "환인", "text": "훌륭하다. 천부인을 가져가거라 — 거울, 방울, 검." },
+        { "speakerId": "hwanin", "speaker": "환인", "text": "풍백·우사·운사 삼천 무리와 태백산 신단수로 내려가라." },
+        { "speakerId": "hwanwoong", "speaker": "환웅", "text": "홍익인간의 뜻, 반드시 이루겠습니다." },
+        { "speakerId": "pungbaek", "speaker": "풍백", "text": "바람은 길을 열겠습니다." },
+        { "speakerId": "usa", "speaker": "우사", "text": "비는 대지를 적시겠습니다." },
+        { "speakerId": "unsa", "speaker": "운사", "text": "구름은 하늘을 드리우겠습니다." }
+      ],
+      "rewards": {
+        "items": [
+          { "id": "cb_mirror", "qty": 1 },
+          { "id": "cb_sword", "qty": 1 },
+          { "id": "cb_bell", "qty": 1 }
+        ],
+        "gold": 80,
+        "exp": 50,
+        "unlock_companions": ["pungbaek", "usa", "unsa"]
+      }
+    },
+    {
+      "id": "ending",
+      "type": "cinematic",
+      "camera": "squad",
+      "background": "taebaek_descent",
+      "bgm": "victory",
+      "narration": "환웅 일행은 태백산 신단수 아래 신시를 열었다. 인간 세상에 새벽이 밝았으니 — 고조선의 서막이었다.",
+      "subNarration": "풍백은 바람을, 우사는 비를, 운사는 구름을 다스리니 — 인간 세상이 비로소 살 만해졌다.",
+      "next": "ep2"
+    }
+  ]
+}

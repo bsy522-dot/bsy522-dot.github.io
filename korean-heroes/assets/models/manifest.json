@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "_comment": "한국사RPG v8 자산 매니페스트. Phase E 환웅 1체 후 Phase F에서 일괄 채워짐. 등록되었으나 파일 없으면 자동 박스 폴백.",
+  "_pipeline": "ComfyUI Z-Image → Hunyuan3D-2.1 → Blender bpy 후처리(폴리곤 5K, Draco/KTX2) → assets/models/",
+  "models": {
+    "hwanoong": {
+      "file": "unit_hwanoong.glb",
+      "scale": 1.0,
+      "offset": [0, 0, 0],
+      "_status": "Phase E in_progress",
+      "_prompt": "ancient Korean warrior Hwanoong, Bronze Age tribal leader, traditional bronze armor, divine descent"
+    },
+    "dangun": {
+      "file": "unit_dangun.glb",
+      "scale": 1.0,
+      "_status": "Phase F pending"
+    },
+    "wiman": {
+      "file": "unit_wiman.glb",
+      "scale": 1.0,
+      "_status": "Phase F pending"
+    },
+    "bear_woman": {
+      "file": "unit_bear_woman.glb",
+      "scale": 1.0,
+      "_status": "Phase F pending"
+    },
+    "tiger_chief": {
+      "file": "unit_tiger_chief.glb",
+      "scale": 1.0,
+      "_status": "Phase F pending"
+    },
+    "dolmen": {
+      "file": "building_dolmen.glb",
+      "scale": 1.5,
+      "_status": "Phase F pending"
+    },
+    "hut": {
+      "file": "building_hut.glb",
+      "scale": 1.0,
+      "_status": "Phase F pending"
+    },
+    "godtree": {
+      "file": "building_godtree.glb",
+      "scale": 2.0,
+      "_status": "Phase F pending"
+    }
+  }
+}

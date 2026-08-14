@@ -1,0 +1,502 @@
+/* js-v8/ui/styles.css
+   한국사 영웅전 v8 · 공용 UI 스타일
+   폰트: Noto Serif KR (강제)
+   팔레트: 배경 #0a0a14 / 금색 #FFD700 / 황토 #C4956A / 갈색 #8B6B3D / HP녹 #4a2 / HP적 #a22
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;900&display=swap');
+
+:root {
+  --v8-bg: #0a0a14;
+  --v8-bg2: #141428;
+  --v8-bg3: #1a1428;
+  --v8-gold: #FFD700;
+  --v8-gold-dim: #C4956A;
+  --v8-brown: #8B6B3D;
+  --v8-brown-dk: #5a4320;
+  --v8-text: #f0e6d0;
+  --v8-text-dim: #b8a888;
+  --v8-hp-green: #4a2;
+  --v8-hp-red: #a22;
+  --v8-mp-blue: #46a;
+  --v8-xp-yellow: #e8c14a;
+  --v8-border: #8B6B3D;
+  --v8-overlay: rgba(10, 10, 20, 0.85);
+  --v8-attack: #c44;
+  --v8-skill: #5a9;
+  --v8-item: #6b5;
+  --v8-wait: #888;
+}
+
+/* v8- prefix 요소 전체에 Noto Serif KR 강제 */
+[id^="v8-"], [id^="v8-"] * {
+  font-family: 'Noto Serif KR', serif !important;
+  box-sizing: border-box;
+}
+
+/* ─────────── HUD ─────────── */
+
+#v8-hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+#v8-hud-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  background: linear-gradient(to bottom, rgba(10,10,20,0.85), rgba(10,10,20,0.2));
+  color: var(--v8-gold);
+  font-size: 14px;
+  pointer-events: auto;
+  border-bottom: 1px solid var(--v8-gold-dim);
+}
+
+#v8-hud-top .v8-slot {
+  display: flex; align-items: center; gap: 10px;
+}
+
+#v8-hud-top .v8-turn {
+  font-weight: 600;
+}
+
+#v8-hud-top .v8-weather {
+  font-size: 18px;
+}
+
+#v8-btn-settings, #v8-cam-toggle {
+  background: var(--v8-brown-dk);
+  color: var(--v8-gold);
+  border: 1px solid var(--v8-gold-dim);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+#v8-btn-settings:hover, #v8-cam-toggle:hover {
+  background: var(--v8-brown);
+}
+
+#v8-cam-dropdown {
+  position: absolute;
+  top: 42px;
+  right: 14px;
+  background: var(--v8-bg2);
+  border: 1px solid var(--v8-gold-dim);
+  border-radius: 4px;
+  padding: 4px 0;
+  display: none;
+  min-width: 140px;
+  pointer-events: auto;
+}
+#v8-cam-dropdown.v8-open { display: block; }
+#v8-cam-dropdown .v8-cam-item {
+  padding: 8px 14px;
+  color: var(--v8-text);
+  cursor: pointer;
+  font-size: 13px;
+}
+#v8-cam-dropdown .v8-cam-item:hover {
+  background: var(--v8-brown-dk);
+  color: var(--v8-gold);
+}
+#v8-cam-dropdown .v8-cam-item.v8-active {
+  color: var(--v8-gold);
+  font-weight: 600;
+}
+
+/* 미니맵 */
+#v8-minimap {
+  position: absolute;
+  top: 116px;
+  right: 14px;
+  width: 80px; height: 80px;
+  background: rgba(10,10,20,0.75);
+  border: 1px solid var(--v8-gold-dim);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* 유닛 패널 (하단) */
+#v8-unit-panel {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 12px 16px;
+  background: linear-gradient(to top, rgba(10,10,20,0.95), rgba(10,10,20,0.3));
+  border-top: 1px solid var(--v8-gold-dim);
+  color: var(--v8-text);
+  display: none;
+  pointer-events: auto;
+  animation: v8-slideUp 0.3s ease-out;
+}
+#v8-unit-panel.v8-visible { display: block; }
+
+.v8-unit-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 6px;
+}
+.v8-unit-portrait {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--v8-brown-dk);
+  border: 1px solid var(--v8-gold-dim);
+  border-radius: 50%;
+  font-size: 22px;
+}
+.v8-unit-name {
+  font-size: 16px; font-weight: 600; color: var(--v8-gold);
+}
+.v8-unit-lv {
+  font-size: 13px; color: var(--v8-gold-dim);
+}
+
+.v8-bars { display: flex; flex-direction: column; gap: 3px; max-width: 520px; }
+.v8-bar {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px;
+}
+.v8-bar-label { width: 32px; color: var(--v8-text-dim); }
+.v8-bar-track {
+  flex: 1;
+  height: 10px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid var(--v8-brown-dk);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.v8-bar-fill { height: 100%; transition: width 0.3s; }
+.v8-bar-fill.hp-full { background: var(--v8-hp-green); }
+.v8-bar-fill.hp-low { background: var(--v8-hp-red); }
+.v8-bar-fill.mp { background: var(--v8-mp-blue); }
+.v8-bar-fill.xp { background: var(--v8-xp-yellow); }
+.v8-bar-val { width: 60px; text-align: right; color: var(--v8-text-dim); }
+
+.v8-actions {
+  display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;
+}
+.v8-action-btn {
+  flex: 1; min-width: 72px;
+  padding: 10px 12px;
+  color: #fff;
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.15s;
+  font-family: inherit;
+}
+.v8-action-btn:hover { filter: brightness(1.15); }
+.v8-action-btn:active { transform: translateY(1px); }
+.v8-action-btn:disabled { opacity: 0.4; cursor: default; }
+.v8-action-btn.v8-atk { background: var(--v8-attack); }
+.v8-action-btn.v8-skl { background: var(--v8-skill); }
+.v8-action-btn.v8-itm { background: var(--v8-item); }
+.v8-action-btn.v8-wait { background: var(--v8-wait); }
+
+/* ─────────── Dialogue ─────────── */
+
+#v8-dialogue {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 22%;
+  min-height: 140px;
+  max-height: 220px;
+  background: rgba(10, 10, 20, 0.92);
+  border-top: 2px solid var(--v8-gold);
+  box-shadow: 0 -4px 14px rgba(255,215,0,0.12);
+  display: none;
+  z-index: 200;
+  color: var(--v8-text);
+  cursor: pointer;
+  padding: 14px 20px 20px;
+  animation: v8-fadeIn 0.3s ease-out;
+}
+#v8-dialogue.v8-visible { display: block; }
+
+.v8-dlg-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 8px;
+}
+.v8-dlg-portrait {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--v8-gold);
+}
+.v8-dlg-speaker {
+  color: var(--v8-gold);
+  font-size: 17px;
+  font-weight: 600;
+  text-shadow: 0 0 4px rgba(255,215,0,0.5);
+}
+.v8-dlg-text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--v8-text);
+  min-height: 3em;
+}
+.v8-dlg-next {
+  position: absolute;
+  right: 24px; bottom: 8px;
+  color: var(--v8-gold);
+  font-size: 13px;
+  opacity: 0;
+}
+.v8-dlg-next.v8-ready {
+  animation: v8-pulse 1.2s infinite;
+}
+
+/* ─────────── 공통 Overlay ─────────── */
+
+.v8-overlay {
+  position: fixed; inset: 0;
+  background: var(--v8-overlay);
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  animation: v8-fadeIn 0.25s ease-out;
+}
+
+.v8-modal {
+  background: var(--v8-bg2);
+  color: var(--v8-text);
+  border: 2px solid var(--v8-gold-dim);
+  border-radius: 6px;
+  padding: 24px 28px;
+  min-width: 320px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,215,0,0.2);
+}
+.v8-modal h2 {
+  margin: 0 0 16px; color: var(--v8-gold);
+  font-size: 22px; font-weight: 600;
+  border-bottom: 1px solid var(--v8-brown-dk);
+  padding-bottom: 10px;
+}
+.v8-modal h3 {
+  margin: 14px 0 8px; color: var(--v8-gold-dim);
+  font-size: 15px; font-weight: 600;
+}
+
+.v8-btn {
+  padding: 8px 20px;
+  background: var(--v8-brown-dk);
+  color: var(--v8-gold);
+  border: 1px solid var(--v8-gold-dim);
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.v8-btn:hover { background: var(--v8-brown); }
+.v8-btn:active { transform: translateY(1px); }
+.v8-btn.v8-primary {
+  background: var(--v8-gold-dim); color: #1a1428;
+  font-weight: 600;
+}
+.v8-btn.v8-primary:hover { background: var(--v8-gold); }
+
+.v8-row-buttons {
+  display: flex; gap: 10px; justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* ─────────── Settings ─────────── */
+
+#v8-settings .v8-settings-row {
+  margin: 10px 0; display: flex; align-items: center; gap: 8px;
+}
+#v8-settings label { color: var(--v8-text); font-size: 14px; cursor: pointer; }
+#v8-settings input[type="radio"], #v8-settings input[type="checkbox"] {
+  accent-color: var(--v8-gold);
+  width: 16px; height: 16px;
+}
+#v8-settings input[type="range"] {
+  flex: 1; accent-color: var(--v8-gold);
+}
+#v8-settings .v8-vol-val {
+  width: 44px; text-align: right; color: var(--v8-gold-dim); font-size: 13px;
+}
+#v8-settings select {
+  background: var(--v8-bg3); color: var(--v8-text);
+  border: 1px solid var(--v8-brown-dk);
+  padding: 4px 8px; border-radius: 3px;
+  font-family: inherit;
+}
+
+/* ─────────── Inventory ─────────── */
+
+.v8-item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.v8-item-card {
+  background: var(--v8-bg3);
+  border: 1px solid var(--v8-brown-dk);
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.v8-item-card:hover {
+  border-color: var(--v8-gold);
+  transform: translateY(-2px);
+}
+.v8-item-icon { font-size: 28px; text-align: center; }
+.v8-item-name { font-size: 13px; color: var(--v8-gold); text-align: center; margin-top: 4px; }
+.v8-item-qty { font-size: 11px; color: var(--v8-text-dim); text-align: center; }
+.v8-item-desc { font-size: 11px; color: var(--v8-text-dim); margin-top: 4px; }
+
+/* ─────────── Victory/Defeat ─────────── */
+
+.v8-result {
+  text-align: center;
+  padding: 20px;
+}
+.v8-result-title {
+  font-size: 36px; color: var(--v8-gold);
+  margin-bottom: 14px;
+  text-shadow: 0 0 14px rgba(255,215,0,0.5);
+  animation: v8-levelup 0.9s ease-out;
+}
+.v8-result-title.defeat {
+  color: var(--v8-hp-red);
+  text-shadow: 0 0 14px rgba(200,50,50,0.5);
+}
+.v8-xp-gain {
+  margin: 16px 0;
+  font-size: 14px;
+}
+.v8-xp-row {
+  display: flex; justify-content: space-between;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--v8-brown-dk);
+}
+.v8-xp-row .v8-levelup {
+  color: var(--v8-gold); font-weight: 600;
+  animation: v8-pulse 1s infinite;
+}
+
+/* ─────────── Episode Select ─────────── */
+
+.v8-episode-list {
+  display: flex; flex-direction: column; gap: 10px;
+  margin: 14px 0;
+}
+.v8-episode-card {
+  background: var(--v8-bg3);
+  border: 1px solid var(--v8-brown-dk);
+  padding: 14px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.v8-episode-card:hover {
+  border-color: var(--v8-gold);
+  transform: translateX(4px);
+}
+.v8-episode-card.v8-locked {
+  opacity: 0.45; cursor: not-allowed;
+}
+.v8-episode-card.v8-locked:hover { transform: none; border-color: var(--v8-brown-dk); }
+.v8-episode-title { color: var(--v8-gold); font-size: 16px; font-weight: 600; }
+.v8-episode-subtitle { color: var(--v8-text-dim); font-size: 12px; margin-top: 3px; }
+
+/* ─────────── Animations ─────────── */
+
+@keyframes v8-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes v8-slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes v8-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes v8-levelup {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ─────────── 반응형 (모바일 ≤ 480px) ─────────── */
+
+@media (max-width: 480px) {
+  #v8-hud-top { height: 38px; font-size: 12px; padding: 0 8px; }
+  #v8-hud-top .v8-slot { gap: 6px; }
+  #v8-btn-settings, #v8-cam-toggle { padding: 3px 8px; font-size: 11px; }
+  #v8-minimap { width: 60px; height: 60px; top: 100px; right: 8px; }
+
+  #v8-unit-panel { padding: 8px 10px; }
+  .v8-unit-portrait { width: 30px; height: 30px; font-size: 18px; }
+  .v8-unit-name { font-size: 14px; }
+  .v8-action-btn { font-size: 13px; padding: 8px 6px; min-width: 0; }
+
+  #v8-dialogue {
+    height: 26%;
+    padding: 10px 14px 14px;
+  }
+  .v8-dlg-portrait { width: 32px; height: 32px; font-size: 18px; }
+  .v8-dlg-speaker { font-size: 15px; }
+  .v8-dlg-text { font-size: 13px; line-height: 1.55; }
+
+  .v8-modal { min-width: 0; width: 92vw; padding: 16px 18px; }
+  .v8-modal h2 { font-size: 18px; }
+  .v8-result-title { font-size: 26px; }
+  .v8-item-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; }
+}
+
+/* 모바일 중형 (≤ 768px) */
+@media (max-width: 768px) and (min-width: 481px) {
+  #v8-unit-panel { padding: 10px 12px; }
+  .v8-action-btn { padding: 9px 10px; font-size: 13px; }
+}
+
+/* 접근성: 포커스 아웃라인 */
+.v8-action-btn:focus, .v8-btn:focus, #v8-btn-settings:focus, #v8-cam-toggle:focus {
+  outline: 2px solid var(--v8-gold);
+  outline-offset: 2px;
+}
+
+/* ═══════════ 2026-07-17 전면 개편: 씬 모드별 HUD ═══════════ */
+/* 병력 카운터 스타일 */
+#v8-ally-count .v8-cnt-ally  { color: #7ec8ff; font-style: normal; }
+#v8-ally-count .v8-cnt-enemy { color: #ff8a7a; font-style: normal; }
+#v8-ally-count i { color: #8a7a5a; font-style: normal; font-size: 11px; }
+#v8-turn-side.v8-side-enemy { color: #ff8a7a; }
+#v8-objective { color: #e8c14a; }
+#v8-location { color: #ffd700; font-weight: 700; letter-spacing: 1px; }
+
+/* 씬별 표시 제어 */
+#v8-hud.v8-scene-dialogue #v8-hud-top,
+#v8-hud.v8-scene-dialogue #v8-minimap,
+#v8-hud.v8-scene-title #v8-hud-top,
+#v8-hud.v8-scene-title #v8-minimap { display: none !important; }
+
+#v8-hud.v8-scene-exploration #v8-turn-badge,
+#v8-hud.v8-scene-exploration #v8-ally-count,
+#v8-hud.v8-scene-exploration #v8-objective { display: none !important; }
+
+#v8-hud.v8-scene-battle #v8-location { display: none !important; }
+
+/* 마을(비전투)에서는 L/R 유닛 사이클 버튼 숨김 */
+body:not(.v8-mode-battle) #v8-dpad-shoulder { display: none !important; }

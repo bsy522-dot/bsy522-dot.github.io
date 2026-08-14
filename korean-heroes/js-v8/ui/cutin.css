@@ -1,0 +1,200 @@
+/* js-v8/ui/cutin.css — 전투 컷인 HTML 오버레이 스타일
+ * 원본 korean-rpg-3d.html 컷인 UX (300/600/1500ms 타이밍) 이식.
+ * z-index: 500 — HUD(보통 100~200) 위에서 렌더.
+ */
+
+#v8-cutin {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif KR', serif;
+  opacity: 1;
+  transition: opacity .3s ease;
+}
+#v8-cutin.v8-cutin-hidden { display: none; }
+#v8-cutin.v8-cutin-fadeout { opacity: 0; }
+
+#v8-cutin .v8-cutin-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(2px);
+}
+
+#v8-cutin .v8-cutin-left,
+#v8-cutin .v8-cutin-right {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, rgba(30,20,10,0.88), rgba(10,8,20,0.92));
+  border: 2px solid rgba(196, 149, 106, 0.6);
+  border-radius: 10px;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+  opacity: 0;
+}
+
+#v8-cutin .v8-cutin-left  { margin-right: 6vw; transform: translateX(-120%); }
+#v8-cutin .v8-cutin-right { margin-left:  6vw; transform: translateX(120%); }
+
+#v8-cutin .v8-cutin-portrait {
+  font-size: 80px;
+  line-height: 1;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
+}
+/* SVG 컨테이너 모드 — 영걸전 톤 일러스트 */
+#v8-cutin .v8-cutin-portrait.v8-cutin-portrait-svg {
+  width: 140px;
+  height: 196px;
+  font-size: 0;
+  padding: 0;
+  border: 2px solid rgba(196,149,106,0.8);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.7), inset 0 0 14px rgba(255,215,0,0.15);
+  overflow: hidden;
+  background: #0a0814;
+}
+#v8-cutin .v8-cutin-portrait.v8-cutin-portrait-svg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#v8-cutin .v8-cutin-name {
+  font-size: 24px;
+  font-weight: 900;
+  color: #FFD700;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  letter-spacing: 2px;
+}
+#v8-cutin .v8-cutin-info {
+  font-size: 12px;
+  color: #c4c0b4;
+  margin-top: 4px;
+  text-align: center;
+}
+
+#v8-cutin .v8-cutin-center {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  text-align: center;
+}
+#v8-cutin .v8-cutin-skill {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--v8-elem-color, #ffffff);
+  text-shadow: 0 0 12px var(--v8-elem-color, #ffffff), 0 2px 8px #000;
+  letter-spacing: 3px;
+  animation: v8-skill-pulse 0.8s ease-in-out infinite alternate;
+}
+#v8-cutin .v8-cutin-vs {
+  font-size: 36px;
+  color: #c4956a;
+  margin-top: 6px;
+  text-shadow: 0 0 16px #000;
+}
+
+#v8-cutin .v8-cutin-damage {
+  position: absolute;
+  bottom: 22%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.5);
+  opacity: 0;
+  z-index: 4;
+  text-align: center;
+  pointer-events: none;
+}
+#v8-cutin .v8-dmg-value {
+  display: inline-block;
+  font-size: 48px;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 0 18px var(--v8-elem-color, #ffffff), 0 4px 10px #000;
+  letter-spacing: 2px;
+}
+#v8-cutin .v8-dmg-crit {
+  display: none;
+  margin-left: 14px;
+  font-size: 22px;
+  font-weight: 900;
+  color: #ff3333;
+  text-shadow: 0 0 12px #ff3333, 0 2px 6px #000;
+  letter-spacing: 3px;
+  vertical-align: middle;
+}
+#v8-cutin .v8-dmg-crit.v8-dmg-crit-on { display: inline-block; }
+
+/* ── 애니메이션 ─────────────────────────────────── */
+
+@keyframes v8-slide-in-left {
+  0%   { opacity: 0; transform: translateX(-120%); }
+  60%  { opacity: 1; transform: translateX(10%);  }
+  100% { opacity: 1; transform: translateX(0);    }
+}
+@keyframes v8-slide-in-right {
+  0%   { opacity: 0; transform: translateX(120%); }
+  60%  { opacity: 1; transform: translateX(-10%); }
+  100% { opacity: 1; transform: translateX(0);    }
+}
+#v8-cutin .v8-slide-in-left {
+  animation: v8-slide-in-left 300ms cubic-bezier(.2,.9,.25,1.05) forwards;
+}
+#v8-cutin .v8-slide-in-right {
+  animation: v8-slide-in-right 300ms cubic-bezier(.2,.9,.25,1.05) forwards;
+}
+
+@keyframes v8-shake {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-8px); }
+  40%  { transform: translateX(8px); }
+  60%  { transform: translateX(-6px); }
+  80%  { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+#v8-cutin .v8-shake {
+  animation: v8-shake 120ms linear 0s 5;  /* 120ms x 5 = 600ms */
+}
+
+@keyframes v8-skill-pulse {
+  0%   { transform: scale(1);    text-shadow: 0 0 8px var(--v8-elem-color, #ffffff), 0 2px 6px #000; }
+  100% { transform: scale(1.08); text-shadow: 0 0 22px var(--v8-elem-color, #ffffff), 0 2px 6px #000; }
+}
+
+@keyframes v8-damage-pop {
+  0%   { transform: translateX(-50%) scale(0.3); opacity: 0; }
+  40%  { transform: translateX(-50%) scale(1.3); opacity: 1; }
+  70%  { transform: translateX(-50%) scale(1.0); opacity: 1; }
+  100% { transform: translateX(-50%) scale(1.0); opacity: 1; }
+}
+#v8-cutin .v8-cutin-damage.v8-dmg-pop {
+  animation: v8-damage-pop 600ms cubic-bezier(.2,1.2,.4,1) forwards;
+}
+
+/* ── 모바일 반응형 ───────────────────────────────── */
+@media (max-width: 640px) {
+  #v8-cutin .v8-cutin-left,
+  #v8-cutin .v8-cutin-right {
+    min-width: 110px;
+    padding: 10px 12px;
+  }
+  #v8-cutin .v8-cutin-portrait { font-size: 56px; }
+  #v8-cutin .v8-cutin-portrait.v8-cutin-portrait-svg {
+    width: 96px;
+    height: 134px;
+  }
+  #v8-cutin .v8-cutin-name     { font-size: 18px; }
+  #v8-cutin .v8-cutin-skill    { font-size: 20px; }
+  #v8-cutin .v8-dmg-value      { font-size: 36px; }
+  #v8-cutin .v8-cutin-left     { margin-right: 3vw; }
+  #v8-cutin .v8-cutin-right    { margin-left:  3vw; }
+}

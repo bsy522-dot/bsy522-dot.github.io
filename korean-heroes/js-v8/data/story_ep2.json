@@ -1,0 +1,129 @@
+{
+  "id": "ep2",
+  "title": "단군의 건국",
+  "subtitle": "고조선 — BC 2333",
+  "era": "BC 2370 ~ BC 2333",
+  "prev": "ep1",
+  "next": "ep3",
+  "bgm_map": "peace",
+  "bgm_battle": "battle",
+  "scenes": [
+    {
+      "id": "opening",
+      "type": "cinematic",
+      "camera": "squad",
+      "background": "sinsi_dawn",
+      "bgm": "peace",
+      "narration": "세월이 흘러, 환웅과 웅녀 사이에 아들이 태어났다. 이름하여 단군왕검.",
+      "lines": [
+        { "speakerId": "hwanwoong", "speaker": "환웅", "text": "이 아이가 새 나라를 세울 것이다." },
+        { "speakerId": "ungnyeo", "speaker": "웅녀", "text": "홍익인간... 널리 인간 세상을 이롭게 하라." },
+        { "speakerId": "narrator", "speaker": "내레이션", "text": "BC 2370년, 단군왕검은 태백산에서 자라 이윽고 성인이 되었다." },
+        { "speakerId": "hwanwoong", "speaker": "환웅", "text": "왕검아, 천부인 3종을 너에게 물려주겠다." },
+        { "speakerId": "dangun", "speaker": "단군", "text": "아버지의 뜻을 받들어, 이 땅에 나라를 세우겠습니다." }
+      ]
+    },
+    {
+      "id": "town_scene",
+      "type": "exploration",
+      "camera": "character",
+      "mapId": "ep2_town",
+      "player": "dangun",
+      "bgm": "peace",
+      "triggers": {
+        "ep2_elder_dialogue": [
+          { "speakerId": "elder", "speaker": "마을 어른", "text": "단군님! 신시는 이제 너무 좁습니다. 백성이 늘어났습니다." },
+          { "speakerId": "dangun", "speaker": "단군", "text": "아사달로 도읍을 옮기려 합니다. 길을 닦아야 하겠습니다." }
+        ],
+        "ep2_hunter_dialogue": [
+          { "speakerId": "hunter", "speaker": "사냥꾼", "text": "산 아래 호족 놈들이 우리 마을을 노립니다. 백성을 지켜주십시오!" }
+        ],
+        "ep2_ungnyeo_meet": [
+          { "speakerId": "ungnyeo", "speaker": "웅녀", "text": "왕검아, 네가 왕이 되려거든 — 백성의 눈물을 먼저 닦아주거라." },
+          { "speakerId": "dangun", "speaker": "단군", "text": "어머니의 가르침, 잊지 않겠습니다." }
+        ],
+        "ep2_shop": [
+          { "speakerId": "shopkeeper", "speaker": "상인", "text": "환영합니다. 회복약·무기 준비되어 있습니다." }
+        ],
+        "ep2_sindansu": [
+          { "speakerId": "narrator", "speaker": "내레이션", "text": "신단수가 바람에 흔들린다. 환웅의 기운이 느껴진다." }
+        ],
+        "ep2_dolmen": [
+          { "speakerId": "narrator", "speaker": "내레이션", "text": "고인돌 아래 옛 신장들의 뼈가 묻혀 있다." }
+        ],
+        "ep2_tavern": [
+          { "speakerId": "tavern_master", "speaker": "주막 주인", "text": "한 잔 하시고 가십시오 — 세상 이야기가 있습니다." }
+        ],
+        "ep2_council": [
+          { "speakerId": "sinha_general", "speaker": "신하장군", "text": "단군님, 북방 호족이 집결했다는 전갈입니다." },
+          { "speakerId": "dangun", "speaker": "단군", "text": "회의를 소집하라." }
+        ]
+      },
+      "exitTrigger": "council",
+      "nextSceneOnExit": "council"
+    },
+    {
+      "id": "council",
+      "type": "dialogue",
+      "camera": "character_dangun",
+      "background": "council_hall",
+      "lines": [
+        { "speakerId": "sinha_general", "speaker": "신하장군", "text": "단군님, 호족 부족장이 병사 천을 이끌고 북쪽 언덕을 넘었습니다." },
+        { "speakerId": "ungnyeo", "speaker": "웅녀", "text": "내가 앞장서겠다. 곰의 핏줄이 범족을 두려워하랴." },
+        { "speakerId": "dangun", "speaker": "단군", "text": "출진한다. 홍익인간의 뜻 — 칼 뒤에 숨기지 말라." },
+        { "speakerId": "sinha_general", "speaker": "신하장군", "text": "명 받듭니다!" }
+      ]
+    },
+    {
+      "id": "battle_1",
+      "type": "battle",
+      "mapId": "ep2_battle_1",
+      "camera": "tactical",
+      "allies": ["dangun", "ungnyeo", "sinha_general"],
+      "enemies": ["hojok_chief", "hojok_warrior", "hojok_archer", "hojok_rider", "hojok_shaman", "hojok_warrior"],
+      "allySource": "ep2_allies",
+      "enemySource": "ep2_enemies",
+      "victoryCondition": "defeat_boss",
+      "bossId": "hojok_chief",
+      "defeatCondition": "allies_wiped",
+      "weather": "clear",
+      "bgm": "battle",
+      "turnLimit": 0,
+      "preLines": [
+        { "speakerId": "hojok_chief", "speaker": "호족 부족장", "text": "단군이라? 범족의 땅에 곰의 자식이 왔구나." },
+        { "speakerId": "dangun", "speaker": "단군", "text": "이 땅엔 곰도 범도 없다. 인간만 있을 뿐." }
+      ],
+      "postLines": [
+        { "speakerId": "hojok_chief", "speaker": "호족 부족장", "text": "으윽... 단군... 네가 이겼구나..." },
+        { "speakerId": "dangun", "speaker": "단군", "text": "항복하라. 백성이 되면 우리 땅이다." }
+      ]
+    },
+    {
+      "id": "victory",
+      "type": "dialogue",
+      "camera": "squad",
+      "background": "sinsi_sunset",
+      "bgm": "victory",
+      "lines": [
+        { "speakerId": "sinha_general", "speaker": "신하장군", "text": "승리했습니다! 북쪽 길이 열렸습니다." },
+        { "speakerId": "dangun", "speaker": "단군", "text": "아사달로 간다. 그곳에 도읍을 세우겠다." },
+        { "speakerId": "ungnyeo", "speaker": "웅녀", "text": "BC 2333년 — 고조선의 시작이다." }
+      ],
+      "rewards": {
+        "items": [ { "id": "asadal_armor", "qty": 1 }, { "id": "heal_potion", "qty": 5 } ],
+        "gold": 200,
+        "exp": 120,
+        "unlock_companions": ["ungnyeo", "sinha_general"]
+      }
+    },
+    {
+      "id": "ending",
+      "type": "cinematic",
+      "camera": "squad",
+      "background": "asadal_founding",
+      "narration": "단군왕검은 아사달에 도읍을 정하니 — 이름하여 조선. 우리 역사의 첫 장이 열렸다.",
+      "subNarration": "다음 길은 — 위만의 진출. (EP.3에 계속)",
+      "next": "ep3"
+    }
+  ]
+}
