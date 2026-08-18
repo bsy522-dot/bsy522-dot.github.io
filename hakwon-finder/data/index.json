@@ -1,0 +1,1955 @@
+{
+ "app": "학원파인더 전국판",
+ "built_at": "2026-08-18",
+ "basis_date": "20260731",
+ "source": {
+  "name": "나이스(NEIS) 교육정보 개방 포털 — 학원교습소정보",
+  "provider": "교육부 · 17개 시도교육청 (한국교육학술정보원 제공)",
+  "url": "https://open.neis.go.kr/portal/data/service/selectServicePage.do?infId=OPEN19220231012134453534385&infSeq=3",
+  "license": "출처 표시 조건 자유이용 (open.neis.go.kr 서비스이용약관)",
+  "raw_bytes": 35930190,
+  "raw_rows": 138455,
+  "last_modified_in_data": "20260802"
+ },
+ "total": 138441,
+ "regions": [
+  {
+   "name": "서울특별시",
+   "slug": "seoul",
+   "count": 25497,
+   "search_bytes": 1812603,
+   "sigungu": [
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 1,
+     "bytes": 257
+    },
+    {
+     "name": "강남구",
+     "slug": "sgg01",
+     "count": 3417,
+     "bytes": 1044821
+    },
+    {
+     "name": "강동구",
+     "slug": "sgg02",
+     "count": 1422,
+     "bytes": 519725
+    },
+    {
+     "name": "강북구",
+     "slug": "sgg03",
+     "count": 380,
+     "bytes": 129417
+    },
+    {
+     "name": "강서구",
+     "slug": "sgg04",
+     "count": 1391,
+     "bytes": 470916
+    },
+    {
+     "name": "관악구",
+     "slug": "sgg05",
+     "count": 733,
+     "bytes": 242356
+    },
+    {
+     "name": "광진구",
+     "slug": "sgg06",
+     "count": 729,
+     "bytes": 241107
+    },
+    {
+     "name": "구로구",
+     "slug": "sgg07",
+     "count": 790,
+     "bytes": 344960
+    },
+    {
+     "name": "금천구",
+     "slug": "sgg08",
+     "count": 366,
+     "bytes": 137506
+    },
+    {
+     "name": "노원구",
+     "slug": "sgg09",
+     "count": 1430,
+     "bytes": 506051
+    },
+    {
+     "name": "도봉구",
+     "slug": "sgg10",
+     "count": 597,
+     "bytes": 213173
+    },
+    {
+     "name": "동대문구",
+     "slug": "sgg11",
+     "count": 735,
+     "bytes": 256265
+    },
+    {
+     "name": "동작구",
+     "slug": "sgg12",
+     "count": 927,
+     "bytes": 316701
+    },
+    {
+     "name": "마포구",
+     "slug": "sgg13",
+     "count": 1164,
+     "bytes": 365939
+    },
+    {
+     "name": "서대문구",
+     "slug": "sgg14",
+     "count": 747,
+     "bytes": 251416
+    },
+    {
+     "name": "서초구",
+     "slug": "sgg15",
+     "count": 1827,
+     "bytes": 572253
+    },
+    {
+     "name": "성동구",
+     "slug": "sgg16",
+     "count": 578,
+     "bytes": 192028
+    },
+    {
+     "name": "성북구",
+     "slug": "sgg17",
+     "count": 989,
+     "bytes": 337948
+    },
+    {
+     "name": "송파구",
+     "slug": "sgg18",
+     "count": 1966,
+     "bytes": 698303
+    },
+    {
+     "name": "양천구",
+     "slug": "sgg19",
+     "count": 2105,
+     "bytes": 731615
+    },
+    {
+     "name": "영등포구",
+     "slug": "sgg20",
+     "count": 871,
+     "bytes": 353726
+    },
+    {
+     "name": "용산구",
+     "slug": "sgg21",
+     "count": 242,
+     "bytes": 81313
+    },
+    {
+     "name": "은평구",
+     "slug": "sgg22",
+     "count": 1080,
+     "bytes": 350103
+    },
+    {
+     "name": "종로구",
+     "slug": "sgg23",
+     "count": 292,
+     "bytes": 90482
+    },
+    {
+     "name": "중구",
+     "slug": "sgg24",
+     "count": 161,
+     "bytes": 50648
+    },
+    {
+     "name": "중랑구",
+     "slug": "sgg25",
+     "count": 557,
+     "bytes": 193204
+    }
+   ]
+  },
+  {
+   "name": "부산광역시",
+   "slug": "busan",
+   "count": 9103,
+   "search_bytes": 630019,
+   "sigungu": [
+    {
+     "name": "강서구",
+     "slug": "sgg00",
+     "count": 652,
+     "bytes": 218586
+    },
+    {
+     "name": "금정구",
+     "slug": "sgg01",
+     "count": 603,
+     "bytes": 193783
+    },
+    {
+     "name": "기장군",
+     "slug": "sgg02",
+     "count": 589,
+     "bytes": 187038
+    },
+    {
+     "name": "남구",
+     "slug": "sgg03",
+     "count": 648,
+     "bytes": 198548
+    },
+    {
+     "name": "동구",
+     "slug": "sgg04",
+     "count": 113,
+     "bytes": 32934
+    },
+    {
+     "name": "동래구",
+     "slug": "sgg05",
+     "count": 1148,
+     "bytes": 372486
+    },
+    {
+     "name": "부산진구",
+     "slug": "sgg06",
+     "count": 905,
+     "bytes": 280012
+    },
+    {
+     "name": "북구",
+     "slug": "sgg07",
+     "count": 637,
+     "bytes": 204652
+    },
+    {
+     "name": "사상구",
+     "slug": "sgg08",
+     "count": 269,
+     "bytes": 87595
+    },
+    {
+     "name": "사하구",
+     "slug": "sgg09",
+     "count": 673,
+     "bytes": 220872
+    },
+    {
+     "name": "서구",
+     "slug": "sgg10",
+     "count": 223,
+     "bytes": 73265
+    },
+    {
+     "name": "수영구",
+     "slug": "sgg11",
+     "count": 511,
+     "bytes": 156631
+    },
+    {
+     "name": "연제구",
+     "slug": "sgg12",
+     "count": 564,
+     "bytes": 181453
+    },
+    {
+     "name": "영도구",
+     "slug": "sgg13",
+     "count": 128,
+     "bytes": 42732
+    },
+    {
+     "name": "중구",
+     "slug": "sgg14",
+     "count": 48,
+     "bytes": 14027
+    },
+    {
+     "name": "해운대구",
+     "slug": "sgg15",
+     "count": 1392,
+     "bytes": 470179
+    }
+   ]
+  },
+  {
+   "name": "대구광역시",
+   "slug": "daegu",
+   "count": 8029,
+   "search_bytes": 558645,
+   "sigungu": [
+    {
+     "name": "군위군",
+     "slug": "sgg00",
+     "count": 15,
+     "bytes": 5606
+    },
+    {
+     "name": "남구",
+     "slug": "sgg01",
+     "count": 263,
+     "bytes": 90588
+    },
+    {
+     "name": "달서구",
+     "slug": "sgg02",
+     "count": 1743,
+     "bytes": 580917
+    },
+    {
+     "name": "달성군",
+     "slug": "sgg03",
+     "count": 764,
+     "bytes": 246733
+    },
+    {
+     "name": "동구",
+     "slug": "sgg04",
+     "count": 874,
+     "bytes": 285401
+    },
+    {
+     "name": "북구",
+     "slug": "sgg05",
+     "count": 1169,
+     "bytes": 385908
+    },
+    {
+     "name": "서구",
+     "slug": "sgg06",
+     "count": 249,
+     "bytes": 81645
+    },
+    {
+     "name": "수성구",
+     "slug": "sgg07",
+     "count": 2501,
+     "bytes": 829434
+    },
+    {
+     "name": "중구",
+     "slug": "sgg08",
+     "count": 451,
+     "bytes": 147069
+    }
+   ]
+  },
+  {
+   "name": "인천광역시",
+   "slug": "incheon",
+   "count": 6914,
+   "search_bytes": 481026,
+   "sigungu": [
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 14,
+     "bytes": 2747
+    },
+    {
+     "name": "강화군",
+     "slug": "sgg01",
+     "count": 72,
+     "bytes": 23307
+    },
+    {
+     "name": "검단구",
+     "slug": "sgg02",
+     "count": 22,
+     "bytes": 6978
+    },
+    {
+     "name": "계양구",
+     "slug": "sgg03",
+     "count": 485,
+     "bytes": 153658
+    },
+    {
+     "name": "남구",
+     "slug": "sgg04",
+     "count": 1,
+     "bytes": 487
+    },
+    {
+     "name": "남동구",
+     "slug": "sgg05",
+     "count": 1110,
+     "bytes": 349492
+    },
+    {
+     "name": "동구",
+     "slug": "sgg06",
+     "count": 62,
+     "bytes": 19513
+    },
+    {
+     "name": "미추홀구",
+     "slug": "sgg07",
+     "count": 635,
+     "bytes": 205585
+    },
+    {
+     "name": "부평구",
+     "slug": "sgg08",
+     "count": 942,
+     "bytes": 307843
+    },
+    {
+     "name": "서구",
+     "slug": "sgg09",
+     "count": 1761,
+     "bytes": 563321
+    },
+    {
+     "name": "서해구",
+     "slug": "sgg10",
+     "count": 20,
+     "bytes": 6305
+    },
+    {
+     "name": "연수구",
+     "slug": "sgg11",
+     "count": 1423,
+     "bytes": 473560
+    },
+    {
+     "name": "영종구",
+     "slug": "sgg12",
+     "count": 9,
+     "bytes": 3343
+    },
+    {
+     "name": "옹진군",
+     "slug": "sgg13",
+     "count": 5,
+     "bytes": 1318
+    },
+    {
+     "name": "제물포구",
+     "slug": "sgg14",
+     "count": 2,
+     "bytes": 598
+    },
+    {
+     "name": "중구",
+     "slug": "sgg15",
+     "count": 351,
+     "bytes": 111847
+    }
+   ]
+  },
+  {
+   "name": "대전광역시",
+   "slug": "daejeon",
+   "count": 3822,
+   "search_bytes": 261814,
+   "sigungu": [
+    {
+     "name": "대덕구",
+     "slug": "sgg00",
+     "count": 305,
+     "bytes": 101413
+    },
+    {
+     "name": "동구",
+     "slug": "sgg01",
+     "count": 358,
+     "bytes": 115841
+    },
+    {
+     "name": "서구",
+     "slug": "sgg02",
+     "count": 1494,
+     "bytes": 451320
+    },
+    {
+     "name": "유성구",
+     "slug": "sgg03",
+     "count": 1179,
+     "bytes": 369755
+    },
+    {
+     "name": "중구",
+     "slug": "sgg04",
+     "count": 486,
+     "bytes": 154061
+    }
+   ]
+  },
+  {
+   "name": "울산광역시",
+   "slug": "ulsan",
+   "count": 3703,
+   "search_bytes": 253764,
+   "sigungu": [
+    {
+     "name": "남구",
+     "slug": "sgg00",
+     "count": 1379,
+     "bytes": 419454
+    },
+    {
+     "name": "동구",
+     "slug": "sgg01",
+     "count": 389,
+     "bytes": 121941
+    },
+    {
+     "name": "북구",
+     "slug": "sgg02",
+     "count": 744,
+     "bytes": 239160
+    },
+    {
+     "name": "울주군",
+     "slug": "sgg03",
+     "count": 599,
+     "bytes": 190043
+    },
+    {
+     "name": "중구",
+     "slug": "sgg04",
+     "count": 592,
+     "bytes": 181138
+    }
+   ]
+  },
+  {
+   "name": "세종특별자치시",
+   "slug": "sejong",
+   "count": 1751,
+   "search_bytes": 120796,
+   "sigungu": [
+    {
+     "name": "세종특별자치시",
+     "slug": "sgg00",
+     "count": 1751,
+     "bytes": 598152
+    }
+   ]
+  },
+  {
+   "name": "경기도",
+   "slug": "gyeonggi",
+   "count": 39171,
+   "search_bytes": 2755650,
+   "sigungu": [
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 6,
+     "bytes": 1239
+    },
+    {
+     "name": "가평군",
+     "slug": "sgg01",
+     "count": 85,
+     "bytes": 25098
+    },
+    {
+     "name": "고양시 덕양구",
+     "slug": "sgg02",
+     "count": 1389,
+     "bytes": 450973
+    },
+    {
+     "name": "고양시 일산동구",
+     "slug": "sgg03",
+     "count": 998,
+     "bytes": 335775
+    },
+    {
+     "name": "고양시 일산서구",
+     "slug": "sgg04",
+     "count": 1034,
+     "bytes": 353490
+    },
+    {
+     "name": "과천시",
+     "slug": "sgg05",
+     "count": 301,
+     "bytes": 90832
+    },
+    {
+     "name": "광명시",
+     "slug": "sgg06",
+     "count": 882,
+     "bytes": 286210
+    },
+    {
+     "name": "광주시",
+     "slug": "sgg07",
+     "count": 806,
+     "bytes": 244895
+    },
+    {
+     "name": "구리시",
+     "slug": "sgg08",
+     "count": 580,
+     "bytes": 181437
+    },
+    {
+     "name": "군포시",
+     "slug": "sgg09",
+     "count": 674,
+     "bytes": 228335
+    },
+    {
+     "name": "김포시",
+     "slug": "sgg10",
+     "count": 1782,
+     "bytes": 549230
+    },
+    {
+     "name": "남양주시",
+     "slug": "sgg11",
+     "count": 2044,
+     "bytes": 649799
+    },
+    {
+     "name": "동두천시",
+     "slug": "sgg12",
+     "count": 117,
+     "bytes": 35772
+    },
+    {
+     "name": "부천시",
+     "slug": "sgg13",
+     "count": 1593,
+     "bytes": 511279
+    },
+    {
+     "name": "부천시 소사구",
+     "slug": "sgg14",
+     "count": 157,
+     "bytes": 50147
+    },
+    {
+     "name": "부천시 오정구",
+     "slug": "sgg15",
+     "count": 32,
+     "bytes": 9957
+    },
+    {
+     "name": "부천시 원미구",
+     "slug": "sgg16",
+     "count": 286,
+     "bytes": 92560
+    },
+    {
+     "name": "성남시 분당구",
+     "slug": "sgg17",
+     "count": 2270,
+     "bytes": 786451
+    },
+    {
+     "name": "성남시 수정구",
+     "slug": "sgg18",
+     "count": 655,
+     "bytes": 221492
+    },
+    {
+     "name": "성남시 중원구",
+     "slug": "sgg19",
+     "count": 377,
+     "bytes": 128389
+    },
+    {
+     "name": "수원시 권선구",
+     "slug": "sgg20",
+     "count": 874,
+     "bytes": 298958
+    },
+    {
+     "name": "수원시 영통구",
+     "slug": "sgg21",
+     "count": 1526,
+     "bytes": 505280
+    },
+    {
+     "name": "수원시 장안구",
+     "slug": "sgg22",
+     "count": 767,
+     "bytes": 260377
+    },
+    {
+     "name": "수원시 팔달구",
+     "slug": "sgg23",
+     "count": 528,
+     "bytes": 169852
+    },
+    {
+     "name": "시흥시",
+     "slug": "sgg24",
+     "count": 1461,
+     "bytes": 452072
+    },
+    {
+     "name": "안산시 단원구",
+     "slug": "sgg25",
+     "count": 712,
+     "bytes": 223031
+    },
+    {
+     "name": "안산시 상록구",
+     "slug": "sgg26",
+     "count": 513,
+     "bytes": 159608
+    },
+    {
+     "name": "안성시",
+     "slug": "sgg27",
+     "count": 349,
+     "bytes": 109108
+    },
+    {
+     "name": "안양시 동안구",
+     "slug": "sgg28",
+     "count": 1349,
+     "bytes": 471714
+    },
+    {
+     "name": "안양시 만안구",
+     "slug": "sgg29",
+     "count": 474,
+     "bytes": 157953
+    },
+    {
+     "name": "양주시",
+     "slug": "sgg30",
+     "count": 604,
+     "bytes": 182041
+    },
+    {
+     "name": "양평군",
+     "slug": "sgg31",
+     "count": 232,
+     "bytes": 68673
+    },
+    {
+     "name": "여주시",
+     "slug": "sgg32",
+     "count": 164,
+     "bytes": 47828
+    },
+    {
+     "name": "연천군",
+     "slug": "sgg33",
+     "count": 36,
+     "bytes": 10666
+    },
+    {
+     "name": "오산시",
+     "slug": "sgg34",
+     "count": 564,
+     "bytes": 172340
+    },
+    {
+     "name": "용인시 기흥구",
+     "slug": "sgg35",
+     "count": 1402,
+     "bytes": 471614
+    },
+    {
+     "name": "용인시 수지구",
+     "slug": "sgg36",
+     "count": 1439,
+     "bytes": 475125
+    },
+    {
+     "name": "용인시 처인구",
+     "slug": "sgg37",
+     "count": 571,
+     "bytes": 181295
+    },
+    {
+     "name": "의왕시",
+     "slug": "sgg38",
+     "count": 350,
+     "bytes": 125511
+    },
+    {
+     "name": "의정부시",
+     "slug": "sgg39",
+     "count": 1163,
+     "bytes": 357242
+    },
+    {
+     "name": "이천시",
+     "slug": "sgg40",
+     "count": 586,
+     "bytes": 170915
+    },
+    {
+     "name": "파주시",
+     "slug": "sgg41",
+     "count": 1348,
+     "bytes": 401502
+    },
+    {
+     "name": "평택시",
+     "slug": "sgg42",
+     "count": 1368,
+     "bytes": 408987
+    },
+    {
+     "name": "포천시",
+     "slug": "sgg43",
+     "count": 150,
+     "bytes": 43121
+    },
+    {
+     "name": "하남시",
+     "slug": "sgg44",
+     "count": 1061,
+     "bytes": 343130
+    },
+    {
+     "name": "화성시",
+     "slug": "sgg45",
+     "count": 3189,
+     "bytes": 1027940
+    },
+    {
+     "name": "화성시 동탄구",
+     "slug": "sgg46",
+     "count": 210,
+     "bytes": 72065
+    },
+    {
+     "name": "화성시 만세구",
+     "slug": "sgg47",
+     "count": 38,
+     "bytes": 11290
+    },
+    {
+     "name": "화성시 병점구",
+     "slug": "sgg48",
+     "count": 42,
+     "bytes": 14334
+    },
+    {
+     "name": "화성시 효행구",
+     "slug": "sgg49",
+     "count": 33,
+     "bytes": 10773
+    }
+   ]
+  },
+  {
+   "name": "강원특별자치도",
+   "slug": "gangwon",
+   "count": 3208,
+   "search_bytes": 217241,
+   "sigungu": [
+    {
+     "name": "강릉시",
+     "slug": "sgg00",
+     "count": 590,
+     "bytes": 185017
+    },
+    {
+     "name": "고성군",
+     "slug": "sgg01",
+     "count": 17,
+     "bytes": 5136
+    },
+    {
+     "name": "동해시",
+     "slug": "sgg02",
+     "count": 173,
+     "bytes": 51824
+    },
+    {
+     "name": "삼척시",
+     "slug": "sgg03",
+     "count": 85,
+     "bytes": 24516
+    },
+    {
+     "name": "속초시",
+     "slug": "sgg04",
+     "count": 161,
+     "bytes": 47356
+    },
+    {
+     "name": "양구군",
+     "slug": "sgg05",
+     "count": 27,
+     "bytes": 7767
+    },
+    {
+     "name": "양양군",
+     "slug": "sgg06",
+     "count": 32,
+     "bytes": 9344
+    },
+    {
+     "name": "영월군",
+     "slug": "sgg07",
+     "count": 47,
+     "bytes": 14425
+    },
+    {
+     "name": "원주시",
+     "slug": "sgg08",
+     "count": 1026,
+     "bytes": 318303
+    },
+    {
+     "name": "인제군",
+     "slug": "sgg09",
+     "count": 38,
+     "bytes": 12993
+    },
+    {
+     "name": "정선군",
+     "slug": "sgg10",
+     "count": 27,
+     "bytes": 9896
+    },
+    {
+     "name": "철원군",
+     "slug": "sgg11",
+     "count": 59,
+     "bytes": 17999
+    },
+    {
+     "name": "춘천시",
+     "slug": "sgg12",
+     "count": 703,
+     "bytes": 220463
+    },
+    {
+     "name": "태백시",
+     "slug": "sgg13",
+     "count": 42,
+     "bytes": 12044
+    },
+    {
+     "name": "평창군",
+     "slug": "sgg14",
+     "count": 32,
+     "bytes": 9310
+    },
+    {
+     "name": "홍천군",
+     "slug": "sgg15",
+     "count": 81,
+     "bytes": 24089
+    },
+    {
+     "name": "화천군",
+     "slug": "sgg16",
+     "count": 25,
+     "bytes": 7821
+    },
+    {
+     "name": "횡성군",
+     "slug": "sgg17",
+     "count": 43,
+     "bytes": 13144
+    }
+   ]
+  },
+  {
+   "name": "충청북도",
+   "slug": "chungbuk",
+   "count": 3470,
+   "search_bytes": 232679,
+   "sigungu": [
+    {
+     "name": "괴산군",
+     "slug": "sgg00",
+     "count": 18,
+     "bytes": 5431
+    },
+    {
+     "name": "단양군",
+     "slug": "sgg01",
+     "count": 20,
+     "bytes": 6424
+    },
+    {
+     "name": "보은군",
+     "slug": "sgg02",
+     "count": 24,
+     "bytes": 7144
+    },
+    {
+     "name": "영동군",
+     "slug": "sgg03",
+     "count": 52,
+     "bytes": 15545
+    },
+    {
+     "name": "옥천군",
+     "slug": "sgg04",
+     "count": 43,
+     "bytes": 13493
+    },
+    {
+     "name": "음성군",
+     "slug": "sgg05",
+     "count": 109,
+     "bytes": 33004
+    },
+    {
+     "name": "제천시",
+     "slug": "sgg06",
+     "count": 246,
+     "bytes": 74350
+    },
+    {
+     "name": "증평군",
+     "slug": "sgg07",
+     "count": 69,
+     "bytes": 21660
+    },
+    {
+     "name": "진천군",
+     "slug": "sgg08",
+     "count": 146,
+     "bytes": 44187
+    },
+    {
+     "name": "청주시 상당구",
+     "slug": "sgg09",
+     "count": 548,
+     "bytes": 186339
+    },
+    {
+     "name": "청주시 서원구",
+     "slug": "sgg10",
+     "count": 481,
+     "bytes": 159855
+    },
+    {
+     "name": "청주시 청원구",
+     "slug": "sgg11",
+     "count": 418,
+     "bytes": 140903
+    },
+    {
+     "name": "청주시 흥덕구",
+     "slug": "sgg12",
+     "count": 808,
+     "bytes": 276360
+    },
+    {
+     "name": "충주시",
+     "slug": "sgg13",
+     "count": 488,
+     "bytes": 148629
+    }
+   ]
+  },
+  {
+   "name": "충청남도",
+   "slug": "chungnam",
+   "count": 4482,
+   "search_bytes": 298543,
+   "sigungu": [
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 11,
+     "bytes": 2273
+    },
+    {
+     "name": "계룡시",
+     "slug": "sgg01",
+     "count": 113,
+     "bytes": 36613
+    },
+    {
+     "name": "공주시",
+     "slug": "sgg02",
+     "count": 133,
+     "bytes": 38737
+    },
+    {
+     "name": "금산군",
+     "slug": "sgg03",
+     "count": 45,
+     "bytes": 13429
+    },
+    {
+     "name": "논산시",
+     "slug": "sgg04",
+     "count": 165,
+     "bytes": 46952
+    },
+    {
+     "name": "당진시",
+     "slug": "sgg05",
+     "count": 321,
+     "bytes": 96632
+    },
+    {
+     "name": "보령시",
+     "slug": "sgg06",
+     "count": 173,
+     "bytes": 51387
+    },
+    {
+     "name": "부여군",
+     "slug": "sgg07",
+     "count": 49,
+     "bytes": 14370
+    },
+    {
+     "name": "서산시",
+     "slug": "sgg08",
+     "count": 352,
+     "bytes": 104935
+    },
+    {
+     "name": "서천군",
+     "slug": "sgg09",
+     "count": 56,
+     "bytes": 16892
+    },
+    {
+     "name": "아산시",
+     "slug": "sgg10",
+     "count": 734,
+     "bytes": 228530
+    },
+    {
+     "name": "연기군",
+     "slug": "sgg11",
+     "count": 109,
+     "bytes": 28310
+    },
+    {
+     "name": "예산군",
+     "slug": "sgg12",
+     "count": 106,
+     "bytes": 29749
+    },
+    {
+     "name": "천안시 동남구",
+     "slug": "sgg13",
+     "count": 539,
+     "bytes": 181134
+    },
+    {
+     "name": "천안시 서북구",
+     "slug": "sgg14",
+     "count": 1303,
+     "bytes": 439207
+    },
+    {
+     "name": "청양군",
+     "slug": "sgg15",
+     "count": 15,
+     "bytes": 3984
+    },
+    {
+     "name": "태안군",
+     "slug": "sgg16",
+     "count": 53,
+     "bytes": 16453
+    },
+    {
+     "name": "홍성군",
+     "slug": "sgg17",
+     "count": 205,
+     "bytes": 63474
+    }
+   ]
+  },
+  {
+   "name": "전북특별자치도",
+   "slug": "jeonbuk",
+   "count": 4731,
+   "search_bytes": 318358,
+   "sigungu": [
+    {
+     "name": "고창군",
+     "slug": "sgg00",
+     "count": 76,
+     "bytes": 22552
+    },
+    {
+     "name": "군산시",
+     "slug": "sgg01",
+     "count": 658,
+     "bytes": 190144
+    },
+    {
+     "name": "김제시",
+     "slug": "sgg02",
+     "count": 106,
+     "bytes": 30732
+    },
+    {
+     "name": "남원시",
+     "slug": "sgg03",
+     "count": 132,
+     "bytes": 37395
+    },
+    {
+     "name": "무주군",
+     "slug": "sgg04",
+     "count": 26,
+     "bytes": 7517
+    },
+    {
+     "name": "부안군",
+     "slug": "sgg05",
+     "count": 55,
+     "bytes": 15578
+    },
+    {
+     "name": "순창군",
+     "slug": "sgg06",
+     "count": 25,
+     "bytes": 6881
+    },
+    {
+     "name": "완주군",
+     "slug": "sgg07",
+     "count": 205,
+     "bytes": 60494
+    },
+    {
+     "name": "익산시",
+     "slug": "sgg08",
+     "count": 623,
+     "bytes": 186204
+    },
+    {
+     "name": "임실군",
+     "slug": "sgg09",
+     "count": 21,
+     "bytes": 6631
+    },
+    {
+     "name": "장수군",
+     "slug": "sgg10",
+     "count": 22,
+     "bytes": 6347
+    },
+    {
+     "name": "전주시 덕진구",
+     "slug": "sgg11",
+     "count": 1306,
+     "bytes": 420576
+    },
+    {
+     "name": "전주시 완산구",
+     "slug": "sgg12",
+     "count": 1232,
+     "bytes": 396814
+    },
+    {
+     "name": "정읍시",
+     "slug": "sgg13",
+     "count": 229,
+     "bytes": 64510
+    },
+    {
+     "name": "진안군",
+     "slug": "sgg14",
+     "count": 15,
+     "bytes": 4458
+    }
+   ]
+  },
+  {
+   "name": "전남광주통합특별시",
+   "slug": "jeonnam-gwangju",
+   "count": 8300,
+   "search_bytes": 569401,
+   "sigungu": [
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 1,
+     "bytes": 241
+    },
+    {
+     "name": "강진군",
+     "slug": "sgg01",
+     "count": 34,
+     "bytes": 9466
+    },
+    {
+     "name": "고흥군",
+     "slug": "sgg02",
+     "count": 48,
+     "bytes": 13918
+    },
+    {
+     "name": "곡성군",
+     "slug": "sgg03",
+     "count": 22,
+     "bytes": 6554
+    },
+    {
+     "name": "광산구",
+     "slug": "sgg04",
+     "count": 1281,
+     "bytes": 406062
+    },
+    {
+     "name": "광양시",
+     "slug": "sgg05",
+     "count": 322,
+     "bytes": 93245
+    },
+    {
+     "name": "구례군",
+     "slug": "sgg06",
+     "count": 25,
+     "bytes": 6947
+    },
+    {
+     "name": "나주시",
+     "slug": "sgg07",
+     "count": 288,
+     "bytes": 87524
+    },
+    {
+     "name": "남구",
+     "slug": "sgg08",
+     "count": 914,
+     "bytes": 279920
+    },
+    {
+     "name": "담양군",
+     "slug": "sgg09",
+     "count": 26,
+     "bytes": 7061
+    },
+    {
+     "name": "동구",
+     "slug": "sgg10",
+     "count": 401,
+     "bytes": 118641
+    },
+    {
+     "name": "목포시",
+     "slug": "sgg11",
+     "count": 509,
+     "bytes": 152112
+    },
+    {
+     "name": "무안군",
+     "slug": "sgg12",
+     "count": 341,
+     "bytes": 103169
+    },
+    {
+     "name": "보성군",
+     "slug": "sgg13",
+     "count": 34,
+     "bytes": 10046
+    },
+    {
+     "name": "북구",
+     "slug": "sgg14",
+     "count": 1325,
+     "bytes": 399032
+    },
+    {
+     "name": "서구",
+     "slug": "sgg15",
+     "count": 909,
+     "bytes": 276123
+    },
+    {
+     "name": "순천시",
+     "slug": "sgg16",
+     "count": 715,
+     "bytes": 215525
+    },
+    {
+     "name": "신안군",
+     "slug": "sgg17",
+     "count": 4,
+     "bytes": 1080
+    },
+    {
+     "name": "여수시",
+     "slug": "sgg18",
+     "count": 639,
+     "bytes": 191486
+    },
+    {
+     "name": "영광군",
+     "slug": "sgg19",
+     "count": 86,
+     "bytes": 23786
+    },
+    {
+     "name": "영암군",
+     "slug": "sgg20",
+     "count": 54,
+     "bytes": 16104
+    },
+    {
+     "name": "완도군",
+     "slug": "sgg21",
+     "count": 45,
+     "bytes": 13554
+    },
+    {
+     "name": "장성군",
+     "slug": "sgg22",
+     "count": 47,
+     "bytes": 14463
+    },
+    {
+     "name": "장흥군",
+     "slug": "sgg23",
+     "count": 30,
+     "bytes": 8236
+    },
+    {
+     "name": "진도군",
+     "slug": "sgg24",
+     "count": 31,
+     "bytes": 8674
+    },
+    {
+     "name": "함평군",
+     "slug": "sgg25",
+     "count": 16,
+     "bytes": 4333
+    },
+    {
+     "name": "해남군",
+     "slug": "sgg26",
+     "count": 76,
+     "bytes": 21719
+    },
+    {
+     "name": "화순군",
+     "slug": "sgg27",
+     "count": 77,
+     "bytes": 21670
+    }
+   ]
+  },
+  {
+   "name": "경상북도",
+   "slug": "gyeongbuk",
+   "count": 5737,
+   "search_bytes": 391100,
+   "sigungu": [
+    {
+     "name": "경산시",
+     "slug": "sgg00",
+     "count": 678,
+     "bytes": 218164
+    },
+    {
+     "name": "경주시",
+     "slug": "sgg01",
+     "count": 547,
+     "bytes": 172463
+    },
+    {
+     "name": "고령군",
+     "slug": "sgg02",
+     "count": 30,
+     "bytes": 9187
+    },
+    {
+     "name": "구미시",
+     "slug": "sgg03",
+     "count": 1280,
+     "bytes": 396797
+    },
+    {
+     "name": "군위군",
+     "slug": "sgg04",
+     "count": 17,
+     "bytes": 4687
+    },
+    {
+     "name": "김천시",
+     "slug": "sgg05",
+     "count": 259,
+     "bytes": 81731
+    },
+    {
+     "name": "문경시",
+     "slug": "sgg06",
+     "count": 93,
+     "bytes": 28187
+    },
+    {
+     "name": "봉화군",
+     "slug": "sgg07",
+     "count": 19,
+     "bytes": 5503
+    },
+    {
+     "name": "상주시",
+     "slug": "sgg08",
+     "count": 176,
+     "bytes": 52848
+    },
+    {
+     "name": "성주군",
+     "slug": "sgg09",
+     "count": 37,
+     "bytes": 11095
+    },
+    {
+     "name": "안동시",
+     "slug": "sgg10",
+     "count": 362,
+     "bytes": 108031
+    },
+    {
+     "name": "영덕군",
+     "slug": "sgg11",
+     "count": 28,
+     "bytes": 7608
+    },
+    {
+     "name": "영양군",
+     "slug": "sgg12",
+     "count": 13,
+     "bytes": 4047
+    },
+    {
+     "name": "영주시",
+     "slug": "sgg13",
+     "count": 229,
+     "bytes": 67710
+    },
+    {
+     "name": "영천시",
+     "slug": "sgg14",
+     "count": 143,
+     "bytes": 44541
+    },
+    {
+     "name": "예천군",
+     "slug": "sgg15",
+     "count": 114,
+     "bytes": 34495
+    },
+    {
+     "name": "울릉군",
+     "slug": "sgg16",
+     "count": 4,
+     "bytes": 1300
+    },
+    {
+     "name": "울진군",
+     "slug": "sgg17",
+     "count": 75,
+     "bytes": 23173
+    },
+    {
+     "name": "의성군",
+     "slug": "sgg18",
+     "count": 27,
+     "bytes": 8004
+    },
+    {
+     "name": "청도군",
+     "slug": "sgg19",
+     "count": 38,
+     "bytes": 11116
+    },
+    {
+     "name": "청송군",
+     "slug": "sgg20",
+     "count": 11,
+     "bytes": 2867
+    },
+    {
+     "name": "칠곡군",
+     "slug": "sgg21",
+     "count": 215,
+     "bytes": 64131
+    },
+    {
+     "name": "포항시 남구",
+     "slug": "sgg22",
+     "count": 555,
+     "bytes": 178752
+    },
+    {
+     "name": "포항시 북구",
+     "slug": "sgg23",
+     "count": 787,
+     "bytes": 268288
+    }
+   ]
+  },
+  {
+   "name": "경상남도",
+   "slug": "gyeongnam",
+   "count": 8758,
+   "search_bytes": 597527,
+   "sigungu": [
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 1,
+     "bytes": 176
+    },
+    {
+     "name": "거제시",
+     "slug": "sgg01",
+     "count": 563,
+     "bytes": 179216
+    },
+    {
+     "name": "거창군",
+     "slug": "sgg02",
+     "count": 131,
+     "bytes": 44940
+    },
+    {
+     "name": "고성군",
+     "slug": "sgg03",
+     "count": 78,
+     "bytes": 23022
+    },
+    {
+     "name": "김해시",
+     "slug": "sgg04",
+     "count": 1609,
+     "bytes": 507227
+    },
+    {
+     "name": "남해군",
+     "slug": "sgg05",
+     "count": 45,
+     "bytes": 14091
+    },
+    {
+     "name": "밀양시",
+     "slug": "sgg06",
+     "count": 203,
+     "bytes": 61531
+    },
+    {
+     "name": "사천시",
+     "slug": "sgg07",
+     "count": 256,
+     "bytes": 75347
+    },
+    {
+     "name": "산청군",
+     "slug": "sgg08",
+     "count": 28,
+     "bytes": 8951
+    },
+    {
+     "name": "양산시",
+     "slug": "sgg09",
+     "count": 1011,
+     "bytes": 330453
+    },
+    {
+     "name": "의령군",
+     "slug": "sgg10",
+     "count": 23,
+     "bytes": 6857
+    },
+    {
+     "name": "진주시",
+     "slug": "sgg11",
+     "count": 1225,
+     "bytes": 392726
+    },
+    {
+     "name": "창녕군",
+     "slug": "sgg12",
+     "count": 82,
+     "bytes": 25138
+    },
+    {
+     "name": "창원시 마산합포구",
+     "slug": "sgg13",
+     "count": 462,
+     "bytes": 164507
+    },
+    {
+     "name": "창원시 마산회원구",
+     "slug": "sgg14",
+     "count": 499,
+     "bytes": 183290
+    },
+    {
+     "name": "창원시 성산구",
+     "slug": "sgg15",
+     "count": 852,
+     "bytes": 308932
+    },
+    {
+     "name": "창원시 의창구",
+     "slug": "sgg16",
+     "count": 672,
+     "bytes": 250587
+    },
+    {
+     "name": "창원시 진해구",
+     "slug": "sgg17",
+     "count": 513,
+     "bytes": 174740
+    },
+    {
+     "name": "통영시",
+     "slug": "sgg18",
+     "count": 265,
+     "bytes": 80904
+    },
+    {
+     "name": "하동군",
+     "slug": "sgg19",
+     "count": 42,
+     "bytes": 12654
+    },
+    {
+     "name": "함안군",
+     "slug": "sgg20",
+     "count": 104,
+     "bytes": 32452
+    },
+    {
+     "name": "함양군",
+     "slug": "sgg21",
+     "count": 57,
+     "bytes": 17498
+    },
+    {
+     "name": "합천군",
+     "slug": "sgg22",
+     "count": 37,
+     "bytes": 11717
+    }
+   ]
+  },
+  {
+   "name": "제주특별자치도",
+   "slug": "jeju",
+   "count": 1765,
+   "search_bytes": 119036,
+   "sigungu": [
+    {
+     "name": "서귀포시",
+     "slug": "sgg00",
+     "count": 455,
+     "bytes": 147742
+    },
+    {
+     "name": "제주시",
+     "slug": "sgg01",
+     "count": 1310,
+     "bytes": 414102
+    }
+   ]
+  }
+ ],
+ "realms": [
+  {
+   "name": "입시.검정 및 보습",
+   "count": 77718
+  },
+  {
+   "name": "예능(대)",
+   "count": 35626
+  },
+  {
+   "name": "국제화",
+   "count": 8742
+  },
+  {
+   "name": "종합(대)",
+   "count": 4023
+  },
+  {
+   "name": "직업기술",
+   "count": 3969
+  },
+  {
+   "name": "기타(대)",
+   "count": 3302
+  },
+  {
+   "name": "기예(대)",
+   "count": 2289
+  },
+  {
+   "name": "독서실",
+   "count": 2124
+  },
+  {
+   "name": "인문사회(대)",
+   "count": 438
+  },
+  {
+   "name": "정보",
+   "count": 196
+  },
+  {
+   "name": "특수교육(대)",
+   "count": 11
+  },
+  {
+   "name": "(미분류)",
+   "count": 3
+  }
+ ],
+ "kinds": [
+  {
+   "name": "학원",
+   "count": 95298
+  },
+  {
+   "name": "교습소",
+   "count": 43143
+  }
+ ],
+ "orders": [
+  {
+   "name": "보통교과",
+   "count": 66332
+  },
+  {
+   "name": "예능(중)",
+   "count": 31940
+  },
+  {
+   "name": "외국어",
+   "count": 7451
+  },
+  {
+   "name": "기타(중)",
+   "count": 2926
+  },
+  {
+   "name": "독서",
+   "count": 1990
+  },
+  {
+   "name": "기예(중)",
+   "count": 1940
+  },
+  {
+   "name": "산업응용기술",
+   "count": 1473
+  },
+  {
+   "name": "산업기반기술",
+   "count": 629
+  },
+  {
+   "name": "컴퓨터",
+   "count": 443
+  },
+  {
+   "name": "국제",
+   "count": 438
+  },
+  {
+   "name": "간호보조기술",
+   "count": 418
+  },
+  {
+   "name": "인문사회(중)",
+   "count": 384
+  },
+  {
+   "name": "일반서비스",
+   "count": 251
+  },
+  {
+   "name": "진학지도",
+   "count": 244
+  },
+  {
+   "name": "경영·사무관리",
+   "count": 142
+  },
+  {
+   "name": "정보",
+   "count": 142
+  },
+  {
+   "name": "산업서비스",
+   "count": 130
+  },
+  {
+   "name": "문화관광",
+   "count": 36
+  },
+  {
+   "name": "특수교육(중)",
+   "count": 11
+  }
+ ],
+ "fee_open": 27062,
+ "on_break": 132,
+ "fields": {
+  "i": "유일키(시도교육청코드_학원지정번호)",
+  "n": "학원명",
+  "a": "도로명주소",
+  "u": "시군구",
+  "k": "학원/교습소 구분",
+  "f": "분야명",
+  "o": "교습계열명",
+  "c": "교습과정명",
+  "l": "교습과정목록명",
+  "t": "정원합계",
+  "m": "일시수용능력인원",
+  "e": "개설일자",
+  "r": "등록일자",
+  "z": "우편번호",
+  "p": "인당수강료(공개 동의 학원만)",
+  "h": "휴원중",
+  "b": "기숙사 운영"
+ },
+ "dropped": {
+  "교육청 시험용 레코드": 13,
+  "학원명 없음": 1
+ },
+ "dropped_examples": {
+  "교육청 시험용 레코드": [
+   "테스트",
+   "테스트학원",
+   "테스트",
+   "테스트교습소",
+   "테스트교습소",
+   "테스트교습소",
+   "테스트학원",
+   "테스트학원"
+  ]
+ },
+ "suppressed": {
+  "수강료 공개인데 값 없음": 106867,
+  "구 우편번호·형식오류": 22065,
+  "정원 이상치": 34,
+  "수강료 비공개인데 값 있음": 1191,
+  "시군구 판별 불가": 34,
+  "일시수용능력 이상치": 7
+ },
+ "notes": [
+  "원본에 좌표(위경도)가 없어 지도를 제공하지 않는다. 좌표를 임의로 만들지 않았다.",
+  "전화번호 컬럼은 개인 휴대폰이 섞여 있어 통째로 제외했다.",
+  "설립자·원장·강사 등 개인 실명 항목은 원본 API/CSV에 존재하지 않는다.",
+  "수강료는 학원이 공개에 동의한 경우에만 원본에 채워져 있다.",
+  "평점·후기·인기순위는 원본에 없으며 만들지 않았다."
+ ]
+}

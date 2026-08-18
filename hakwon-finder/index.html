@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>학원파인더 — 전국 학원·교습소 찾기</title>
+<meta name="description" content="나이스(NEIS) 교육정보 개방 포털의 학원교습소정보로 만든 전국 학원·교습소 디렉토리. 시도·시군구, 분야, 학원명으로 찾고 교습과정과 공개된 수강료를 확인합니다.">
+<meta name="theme-color" content="#0b1220">
+<meta name="color-scheme" content="dark light">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="학원파인더 — 전국 학원·교습소 찾기">
+<meta property="og:description" content="교육부·시도교육청 공개데이터 기반 전국 학원·교습소 디렉토리">
+<style>
+  :root{
+    --bg:#0b1220; --surface:#111a2b; --surface-2:#17233a; --line:#243352;
+    --fg:#e8eefc; --fg-dim:#9fb0d0; --fg-mute:#6d7f9f;
+    --accent:#a78bfa; --accent-fg:#241452; --accent-soft:rgba(167,139,250,.15);
+    --ok:#34d399; --warn:#fbbf24; --info:#60a5fa; --void:#94a3b8;
+    --radius:14px; --shadow:0 8px 28px rgba(0,0,0,.38);
+  }
+  html[data-theme="light"]{
+    --bg:#f5f7fc; --surface:#ffffff; --surface-2:#eef2fa; --line:#d8e0ef;
+    --fg:#131a2b; --fg-dim:#4a5670; --fg-mute:#6f7c95;
+    --accent:#6d4bd8; --accent-fg:#ffffff; --accent-soft:rgba(109,75,216,.10);
+    --ok:#0f8a5f; --warn:#a86500; --info:#1d63c9; --void:#66748e;
+    --shadow:0 6px 22px rgba(20,30,60,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--fg);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",
+         "Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    -webkit-text-size-adjust:100%;
+  }
+  a{color:var(--accent)}
+  button,select,input{font:inherit;color:inherit}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 14px}
+
+  /* ── 헤더 ─────────────────────────────────────── */
+  header{
+    position:sticky;top:0;z-index:40;background:var(--bg);
+    border-bottom:1px solid var(--line);
+    padding-top:env(safe-area-inset-top);
+  }
+  .hd{display:flex;align-items:center;gap:10px;padding:11px 0}
+  .logo{
+    width:34px;height:34px;border-radius:9px;background:var(--accent);
+    color:var(--accent-fg);display:grid;place-items:center;
+    font-weight:800;font-size:17px;flex:none;
+  }
+  .ttl{font-weight:800;font-size:18px;letter-spacing:-.2px}
+  .sub{font-size:12px;color:var(--fg-mute);margin-top:1px}
+  .spacer{flex:1}
+  .iconbtn{
+    background:var(--surface-2);border:1px solid var(--line);color:var(--fg-dim);
+    border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:16px;
+  }
+  .iconbtn:hover{color:var(--fg);border-color:var(--accent)}
+
+  /* ── 필터 ─────────────────────────────────────── */
+  .bar{display:flex;flex-wrap:wrap;gap:8px;padding:0 0 11px}
+  .field{position:relative;display:flex;align-items:center}
+  select,.searchbox input{
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:9px 11px;min-height:40px;outline:none;
+  }
+  select{cursor:pointer;max-width:190px}
+  select:focus,.searchbox input:focus{border-color:var(--accent)}
+  .searchbox{flex:1;min-width:190px;display:flex}
+  .searchbox input{width:100%}
+  .toggles{display:flex;flex-wrap:wrap;gap:6px;padding-bottom:11px}
+  .chip{
+    background:var(--surface);border:1px solid var(--line);color:var(--fg-dim);
+    border-radius:999px;padding:6px 12px;font-size:13.5px;cursor:pointer;
+    white-space:nowrap;
+  }
+  .chip[aria-pressed="true"]{
+    background:var(--accent-soft);border-color:var(--accent);
+    color:var(--fg);font-weight:600;
+  }
+  .chip:hover{border-color:var(--accent)}
+
+  /* ── 상태줄 ───────────────────────────────────── */
+  .status{
+    display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
+    padding:12px 0 8px;font-size:13.5px;color:var(--fg-dim);
+  }
+  .status b{color:var(--fg);font-size:16px}
+
+  /* ── 목록 ─────────────────────────────────────── */
+  .grid{display:grid;gap:9px;grid-template-columns:1fr;padding-bottom:22px}
+  @media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1040px){.grid{grid-template-columns:1fr 1fr 1fr}}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:13px 14px;cursor:pointer;text-align:left;width:100%;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .card:hover{border-color:var(--accent)}
+  .card h3{margin:0;font-size:15.5px;line-height:1.35;font-weight:700;
+           word-break:keep-all;overflow-wrap:anywhere}
+  .card .addr{font-size:13px;color:var(--fg-dim);
+              overflow-wrap:anywhere;word-break:keep-all}
+  .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:1px}
+  .tag{
+    font-size:11.5px;padding:2.5px 8px;border-radius:999px;
+    background:var(--surface-2);color:var(--fg-dim);border:1px solid var(--line);
+    white-space:nowrap;
+  }
+  .tag.k{background:var(--accent-soft);border-color:var(--accent);color:var(--fg)}
+  .tag.fee{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 45%,transparent)}
+  .tag.rest{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent)}
+  .tag.dorm{color:var(--info);border-color:color-mix(in srgb,var(--info) 45%,transparent)}
+
+  .more{margin:0 auto 26px;display:block}
+  .btn{
+    background:var(--surface-2);border:1px solid var(--line);color:var(--fg);
+    border-radius:10px;padding:10px 18px;cursor:pointer;
+  }
+  .btn:hover{border-color:var(--accent)}
+  .btn.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:700}
+
+  .empty{padding:44px 10px;text-align:center;color:var(--fg-mute)}
+  .empty p{margin:6px 0}
+
+  /* ── 시도 고르기(첫 화면) ─────────────────────── */
+  .pickwrap{padding:8px 0 26px}
+  .pickwrap h2{font-size:15px;margin:0 0 10px;color:var(--fg-dim);font-weight:600}
+  .sidogrid{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .sidobtn{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:13px;cursor:pointer;text-align:left;
+  }
+  .sidobtn:hover{border-color:var(--accent);background:var(--accent-soft)}
+  .sidobtn .nm{font-weight:700;font-size:15px}
+  .sidobtn .ct{font-size:12.5px;color:var(--fg-mute);margin-top:2px}
+
+  /* ── 상세 시트 ────────────────────────────────── */
+  .backdrop{
+    position:fixed;inset:0;background:rgba(4,8,18,.62);z-index:60;
+    display:none;align-items:flex-end;justify-content:center;
+  }
+  .backdrop.on{display:flex}
+  @media(min-width:720px){.backdrop.on{align-items:center}}
+  .sheet{
+    background:var(--surface);width:100%;max-width:620px;max-height:88vh;overflow:auto;
+    border-radius:18px 18px 0 0;padding:18px 18px calc(20px + env(safe-area-inset-bottom));
+    box-shadow:var(--shadow);
+  }
+  @media(min-width:720px){.sheet{border-radius:18px}}
+  .sheet h2{margin:0 6px 2px 0;font-size:19px;line-height:1.35;
+            word-break:keep-all;overflow-wrap:anywhere}
+  .sheethd{display:flex;align-items:flex-start;gap:10px}
+  .dl{margin:14px 0 0;display:grid;grid-template-columns:92px 1fr;gap:8px 12px;font-size:14.5px}
+  .dl dt{color:var(--fg-mute);font-size:13.5px}
+  .dl dd{margin:0;overflow-wrap:anywhere;word-break:keep-all}
+  .feelist{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:4px}
+  .feelist li{display:flex;justify-content:space-between;gap:12px;
+              border-bottom:1px dashed var(--line);padding-bottom:3px;font-size:14px}
+  .feelist .amt{color:var(--ok);font-weight:600;white-space:nowrap}
+  .maplinks{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}
+  .maplinks a{
+    text-decoration:none;background:var(--surface-2);border:1px solid var(--line);
+    color:var(--fg-dim);border-radius:9px;padding:8px 13px;font-size:13.5px;
+  }
+  .maplinks a:hover{border-color:var(--accent);color:var(--fg)}
+  .notice{
+    margin-top:16px;padding:11px 12px;border-radius:10px;background:var(--surface-2);
+    border:1px solid var(--line);font-size:12.5px;color:var(--fg-mute);line-height:1.6;
+  }
+  .notice b{color:var(--fg-dim)}
+
+  footer{
+    border-top:1px solid var(--line);margin-top:8px;
+    padding:18px 0 calc(26px + env(safe-area-inset-bottom));
+    font-size:12.5px;color:var(--fg-mute);line-height:1.7;
+  }
+  footer a{color:var(--fg-dim)}
+  .loading{padding:36px;text-align:center;color:var(--fg-mute)}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="hd">
+      <div class="logo" aria-hidden="true">학</div>
+      <div>
+        <div class="ttl">학원파인더</div>
+        <div class="sub" id="hdsub">전국 학원·교습소</div>
+      </div>
+      <div class="spacer"></div>
+      <button class="iconbtn" id="themeBtn" title="밝게/어둡게" aria-label="밝게/어둡게 전환">◐</button>
+    </div>
+    <div class="bar">
+      <div class="field"><select id="selSido" aria-label="시도 선택"></select></div>
+      <div class="field"><select id="selSgg" aria-label="시군구 선택"></select></div>
+      <div class="searchbox">
+        <input id="q" type="search" placeholder="학원명 검색 (초성도 됩니다)" aria-label="학원명 검색">
+      </div>
+    </div>
+    <div class="toggles" id="toggles"></div>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <div class="loading" id="boot">데이터를 불러오는 중…</div>
+</main>
+
+<footer class="wrap">
+  <div id="srcline"></div>
+  <p style="margin:8px 0 0">
+    이 서비스는 <b>학원 등록정보만</b> 보여줍니다. 평점·후기·순위·시설 사진은 원본에 없어
+    제공하지 않으며, 임의로 만들지도 않았습니다. 수강료는 학원이 공개에 동의한 경우에만 표시됩니다.
+    등록 정보는 교육청 신고 기준이라 현장과 다를 수 있으니 방문 전 확인하세요.
+  </p>
+  <p style="margin:8px 0 0">
+    <a href="privacy.html">개인정보 처리방침</a>
+  </p>
+</footer>
+
+<div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+"use strict";
+/* ────────────────────────────────────────────────────────────────────────
+   학원파인더 전국판
+   데이터: 나이스(NEIS) 교육정보 개방 포털 「학원교습소정보」
+   좌표가 원본에 없으므로 지도는 제공하지 않는다(좌표를 만들어내지 않는다).
+   ──────────────────────────────────────────────────────────────────────── */
+
+var IDX = null;                 // data/index.json
+var sido = null;                // 선택된 시도 메타
+var sggSel = "";                // 선택된 시군구 slug ("" = 시도 전체)
+var listAll = [];               // 현재 목록(전체 후보)
+var shown = 0;
+var PAGE = 60;
+var mode = "sgg";               // "sgg" = 시군구 상세 목록 / "search" = 시도 검색색인
+var cacheSgg = {};              // slug -> records
+var cacheSearch = {};           // sidoSlug -> index
+var filt = {kind:"", realm:"", feeOnly:false};
+
+var $ = function(s){ return document.querySelector(s); };
+var el = function(t,c){ var e=document.createElement(t); if(c)e.className=c; return e; };
+
+/* ── 초성 ────────────────────────────────────────────────────────────── */
+var CHO = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+function choseong(s){
+  var out = "";
+  for (var i=0;i<s.length;i++){
+    var c = s.charCodeAt(i);
+    if (c>=0xAC00 && c<=0xD7A3) out += CHO[Math.floor((c-0xAC00)/588)];
+    else out += s[i];
+  }
+  return out;
+}
+function isChoOnly(s){
+  if (!s) return false;
+  for (var i=0;i<s.length;i++){ if (CHO.indexOf(s[i])<0) return false; }
+  return true;
+}
+function norm(s){ return (s||"").toLowerCase().replace(/[\s·・.\-()]/g,""); }
+
+/* ── 유틸 ────────────────────────────────────────────────────────────── */
+function esc(s){
+  return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+function won(n){ return Number(n).toLocaleString("ko-KR"); }
+function ymd(s){
+  if(!s || s.length!==8) return "";
+  return s.slice(0,4)+"."+s.slice(4,6)+"."+s.slice(6,8);
+}
+function getJSON(url){
+  return fetch(url,{cache:"default"}).then(function(r){
+    if(!r.ok) throw new Error(url+" → HTTP "+r.status);
+    return r.json();
+  });
+}
+
+/* ── 부팅 ────────────────────────────────────────────────────────────── */
+(function initTheme(){
+  var t = localStorage.getItem("hf.theme");
+  if (t) document.documentElement.setAttribute("data-theme", t);
+})();
+$("#themeBtn").addEventListener("click", function(){
+  var cur = document.documentElement.getAttribute("data-theme")==="light" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", cur);
+  localStorage.setItem("hf.theme", cur);
+  var m = document.querySelector('meta[name="theme-color"]');
+  if (m) m.setAttribute("content", cur==="light" ? "#f5f7fc" : "#0b1220");
+});
+
+getJSON("data/index.json").then(function(d){
+  IDX = d;
+  buildSidoSelect();
+  buildToggles();
+  var line = "출처: " + esc(d.source.name) + " · 제공 " + esc(d.source.provider) +
+             " · 기준일 " + ymd(d.basis_date) + " · 수록 " + won(d.total) + "곳" +
+             " · 갱신 " + d.built_at;
+  $("#srcline").innerHTML = line;
+  $("#hdsub").textContent = "전국 " + won(d.total) + "곳 · " + ymd(d.basis_date) + " 기준";
+  var last = localStorage.getItem("hf.sido");
+  if (last && IDX.regions.some(function(r){return r.slug===last;})) {
+    $("#selSido").value = last;
+    onSido();
+  } else {
+    renderSidoPicker();
+  }
+}).catch(function(e){
+  $("#boot").innerHTML = "데이터를 불러오지 못했습니다.<br><small>"+esc(e.message)+"</small>";
+});
+
+function buildSidoSelect(){
+  var s = $("#selSido");
+  s.innerHTML = '<option value="">시도 선택</option>';
+  IDX.regions.forEach(function(r){
+    var o = el("option"); o.value=r.slug;
+    o.textContent = r.name + " (" + won(r.count) + ")";
+    s.appendChild(o);
+  });
+  s.addEventListener("change", onSido);
+  $("#selSgg").addEventListener("change", onSgg);
+  var t=null;
+  $("#q").addEventListener("input", function(){
+    clearTimeout(t); t = setTimeout(applyAndRender, 180);
+  });
+}
+
+function buildToggles(){
+  var box = $("#toggles");
+  box.innerHTML = "";
+  function chip(label, on, fn){
+    var b = el("button","chip");
+    b.type="button"; b.textContent=label;
+    b.setAttribute("aria-pressed", on?"true":"false");
+    b.addEventListener("click", function(){
+      fn(b.getAttribute("aria-pressed")!=="true");
+      buildToggles(); applyAndRender();
+    });
+    box.appendChild(b);
+  }
+  chip("학원", filt.kind==="학원", function(v){ filt.kind = v?"학원":""; });
+  chip("교습소", filt.kind==="교습소", function(v){ filt.kind = v?"교습소":""; });
+  chip("수강료 공개", filt.feeOnly, function(v){ filt.feeOnly = v; });
+
+  var sel = el("select");
+  sel.setAttribute("aria-label","분야 선택");
+  sel.innerHTML = '<option value="">분야 전체</option>';
+  IDX.realms.forEach(function(r){
+    var o=el("option"); o.value=r.name;
+    o.textContent = r.name + " (" + won(r.count) + ")";
+    if (r.name===filt.realm) o.selected = true;
+    sel.appendChild(o);
+  });
+  sel.addEventListener("change", function(){ filt.realm = sel.value; applyAndRender(); });
+  box.appendChild(sel);
+}
+
+/* ── 시도 고르기 첫 화면 ─────────────────────────────────────────────── */
+function renderSidoPicker(){
+  var m = $("#main");
+  m.innerHTML = "";
+  var w = el("div","pickwrap");
+  var h = el("h2"); h.textContent = "지역을 고르세요";
+  w.appendChild(h);
+  var g = el("div","sidogrid");
+  IDX.regions.forEach(function(r){
+    var b = el("button","sidobtn"); b.type="button";
+    b.innerHTML = '<div class="nm">'+esc(r.name)+'</div>'+
+                  '<div class="ct">'+won(r.count)+'곳 · 시군구 '+
+                  r.sigungu.filter(function(s){return s.name!=="(주소 불명)";}).length+'</div>';
+    b.addEventListener("click", function(){
+      $("#selSido").value = r.slug; onSido();
+    });
+    g.appendChild(b);
+  });
+  w.appendChild(g);
+  m.appendChild(w);
+}
+
+/* ── 시도/시군구 선택 ────────────────────────────────────────────────── */
+function onSido(){
+  var slug = $("#selSido").value;
+  if (!slug){ sido=null; sggSel=""; buildSggSelect(); renderSidoPicker(); return; }
+  sido = IDX.regions.filter(function(r){return r.slug===slug;})[0];
+  localStorage.setItem("hf.sido", slug);
+  sggSel = "";
+  buildSggSelect();
+  loadCurrent();
+}
+function onSgg(){
+  sggSel = $("#selSgg").value;
+  loadCurrent();
+}
+function buildSggSelect(){
+  var s = $("#selSgg");
+  if (!sido){ s.innerHTML='<option value="">시군구</option>'; s.disabled=true; return; }
+  s.disabled = false;
+  s.innerHTML = '<option value="">시군구 전체 ('+won(sido.count)+')</option>';
+  sido.sigungu.forEach(function(g){
+    var o=el("option"); o.value=g.slug;
+    o.textContent = g.name + " (" + won(g.count) + ")";
+    s.appendChild(o);
+  });
+  s.value = sggSel;
+}
+
+/* ── 데이터 로드 ─────────────────────────────────────────────────────── */
+function loadCurrent(){
+  if (!sido) return;
+  if (sggSel){
+    mode = "sgg";
+    var key = sido.slug+"/"+sggSel;
+    if (cacheSgg[key]){ listAll = cacheSgg[key]; applyAndRender(); return; }
+    busy("목록을 불러오는 중…");
+    getJSON("data/regions/"+sido.slug+"/"+sggSel+".json").then(function(rs){
+      cacheSgg[key] = rs; listAll = rs; applyAndRender();
+    }).catch(fail);
+  } else {
+    // 시군구를 안 골랐으면 시도 전체 — 경량 검색색인으로 다룬다
+    mode = "search";
+    if (cacheSearch[sido.slug]){ applyAndRender(); return; }
+    busy("시도 전체 목록을 준비하는 중…");
+    getJSON("data/search/"+sido.slug+".json").then(function(ix){
+      ix.cho = ix.n.map(function(x){ return choseong(x); });
+      ix.nn  = ix.n.map(function(x){ return norm(x); });
+      cacheSearch[sido.slug] = ix;
+      applyAndRender();
+    }).catch(fail);
+  }
+}
+function busy(msg){ $("#main").innerHTML = '<div class="loading">'+esc(msg)+'</div>'; }
+function fail(e){
+  $("#main").innerHTML = '<div class="empty"><p>불러오지 못했습니다.</p><p><small>'+
+                         esc(e.message)+'</small></p></div>';
+}
+
+/* ── 필터 적용 ───────────────────────────────────────────────────────── */
+function matchName(nameNorm, nameCho, q){
+  if (isChoOnly(q)) return nameCho.indexOf(q) >= 0;
+  return nameNorm.indexOf(norm(q)) >= 0;
+}
+
+function applyAndRender(){
+  if (!sido) return;
+  var q = $("#q").value.trim();
+  var rows = [];
+
+  if (mode === "sgg"){
+    for (var i=0;i<listAll.length;i++){
+      var r = listAll[i];
+      if (filt.kind && r.k!==filt.kind) continue;
+      if (filt.realm && r.f!==filt.realm) continue;
+      if (filt.feeOnly && !r.p) continue;
+      if (q && !matchName(norm(r.n), choseong(r.n), q)) continue;
+      rows.push({light:false, rec:r, sgg:r.u});
+    }
+  } else {
+    var ix = cacheSearch[sido.slug];
+    if (!ix) return;
+    var names = sido.sigungu;
+    for (var j=0;j<ix.n.length;j++){
+      if (filt.kind && ix.k[j]!==filt.kind) continue;
+      if (filt.realm && ix.f[j]!==filt.realm) continue;
+      if (filt.feeOnly && !ix.p[j]) continue;
+      if (q && !matchName(ix.nn[j], ix.cho[j], q)) continue;
+      rows.push({light:true, n:ix.n[j], gi:ix.g[j], di:ix.d[j],
+                 k:ix.k[j], f:ix.f[j], p:ix.p[j], sgg:names[ix.g[j]].name});
+    }
+  }
+  renderList(rows);
+}
+
+/* ── 목록 렌더 ───────────────────────────────────────────────────────── */
+var curRows = [];
+function renderList(rows){
+  curRows = rows; shown = 0;
+  var m = $("#main");
+  m.innerHTML = "";
+
+  var st = el("div","status");
+  var where = sido.name + (sggSel ? " " + sido.sigungu.filter(function(g){
+      return g.slug===sggSel; })[0].name : " 전체");
+  st.innerHTML = "<b>"+won(rows.length)+"</b>곳 · "+esc(where);
+  if (mode==="search")
+    st.innerHTML += ' <span style="color:var(--fg-mute)">— 시군구를 고르면 주소까지 함께 보입니다</span>';
+  m.appendChild(st);
+
+  if (!rows.length){
+    var e = el("div","empty");
+    e.innerHTML = "<p>조건에 맞는 학원이 없습니다.</p><p>검색어나 필터를 바꿔 보세요.</p>";
+    m.appendChild(e);
+    return;
+  }
+  var g = el("div","grid"); g.id="grid";
+  m.appendChild(g);
+  var more = el("button","btn more"); more.type="button"; more.id="moreBtn";
+  more.textContent = "더 보기";
+  more.addEventListener("click", function(){ page(); });
+  m.appendChild(more);
+  page();
+}
+
+function page(){
+  var g = $("#grid");
+  var end = Math.min(shown+PAGE, curRows.length);
+  for (var i=shown;i<end;i++) g.appendChild(cardOf(curRows[i], i));
+  shown = end;
+  var b = $("#moreBtn");
+  if (b) b.style.display = (shown>=curRows.length) ? "none" : "block";
+}
+
+function cardOf(row, i){
+  var c = el("button","card"); c.type="button";
+  var name = row.light ? row.n : row.rec.n;
+  var kind = row.light ? row.k : row.rec.k;
+  var realm= row.light ? row.f : row.rec.f;
+  var h = el("h3"); h.textContent = name; c.appendChild(h);
+
+  var a = el("div","addr");
+  a.textContent = row.light ? (sido.name+" "+row.sgg) : row.rec.a;
+  c.appendChild(a);
+
+  var t = el("div","tags");
+  t.appendChild(tagOf(kind,"k"));
+  if (realm) t.appendChild(tagOf(realm));
+  if (!row.light){
+    if (row.rec.c && row.rec.c!==realm) t.appendChild(tagOf(row.rec.c));
+    if (row.rec.p) t.appendChild(tagOf("수강료 공개","fee"));
+    if (row.rec.h) t.appendChild(tagOf("휴원 중","rest"));
+    if (row.rec.b) t.appendChild(tagOf("기숙사","dorm"));
+  } else if (row.p){
+    t.appendChild(tagOf("수강료 공개","fee"));   // 시군구는 위 주소줄에 이미 있다
+  }
+  c.appendChild(t);
+  c.addEventListener("click", function(){ openDetail(row); });
+  return c;
+}
+function tagOf(txt, cls){
+  var s = el("span","tag"+(cls?" "+cls:"")); s.textContent = txt; return s;
+}
+
+/* ── 상세 ────────────────────────────────────────────────────────────── */
+function openDetail(row){
+  if (row.light){
+    var g = sido.sigungu[row.gi];
+    var key = sido.slug+"/"+g.slug;
+    if (cacheSgg[key]){ showSheet(cacheSgg[key][row.di]); return; }
+    showSheetLoading();
+    getJSON("data/regions/"+sido.slug+"/"+g.slug+".json").then(function(rs){
+      cacheSgg[key]=rs; showSheet(rs[row.di]);
+    }).catch(function(e){
+      $("#sheet").innerHTML = '<div class="empty"><p>상세를 불러오지 못했습니다.</p><p><small>'+
+                              esc(e.message)+'</small></p></div>';
+    });
+  } else {
+    showSheet(row.rec);
+  }
+}
+function showSheetLoading(){
+  $("#sheet").innerHTML = '<div class="loading">불러오는 중…</div>';
+  $("#backdrop").classList.add("on");
+  document.body.style.overflow="hidden";
+}
+
+function parseFees(s){
+  // 원본 형식: "과목:금액, 과목:금액, …"
+  var out = [];
+  s.split(",").forEach(function(part){
+    var p = part.trim(); if (!p) return;
+    var k = p.lastIndexOf(":");
+    if (k < 0){ out.push({name:p, amt:""}); return; }
+    var nm = p.slice(0,k).trim(), va = p.slice(k+1).trim();
+    out.push({name:nm, amt: /^\d+$/.test(va) ? won(va)+"원" : va});
+  });
+  return out;
+}
+
+function showSheet(r){
+  if (!r){ return; }
+  var s = $("#sheet");
+  var q = encodeURIComponent(r.a || r.n);
+  var rows = [];
+  rows.push(["구분", r.k]);
+  rows.push(["분야", r.f || "—"]);
+  if (r.o) rows.push(["교습계열", r.o]);
+  if (r.c) rows.push(["교습과정", r.c]);
+  if (r.l && r.l !== r.c) rows.push(["교습과정 목록", r.l]);
+  rows.push(["주소", (r.a||"—") + (r.z ? " ("+r.z+")" : "")]);
+  if (r.t) rows.push(["정원", won(r.t)+"명"]);
+  if (r.m) rows.push(["일시수용", won(r.m)+"명"]);
+  if (r.e) rows.push(["개설일", ymd(r.e)]);
+  if (r.r) rows.push(["등록일", ymd(r.r)]);
+  if (r.b) rows.push(["기숙사", "운영"]);
+  if (r.h) rows.push(["상태", "휴원 중 (교육청 신고 기준)"]);
+
+  var html = '<div class="sheethd"><h2 id="shTitle">'+esc(r.n)+'</h2>'+
+             '<div class="spacer"></div>'+
+             '<button class="iconbtn" id="closeBtn" aria-label="닫기">✕</button></div>';
+  html += '<div class="tags" style="margin-top:6px">'+
+          '<span class="tag k">'+esc(r.k)+'</span>'+
+          (r.p ? '<span class="tag fee">수강료 공개</span>' : '')+
+          (r.h ? '<span class="tag rest">휴원 중</span>' : '')+
+          (r.b ? '<span class="tag dorm">기숙사</span>' : '')+'</div>';
+
+  html += '<dl class="dl">';
+  rows.forEach(function(kv){
+    html += "<dt>"+esc(kv[0])+"</dt><dd>"+esc(kv[1])+"</dd>";
+  });
+  html += "</dl>";
+
+  if (r.p){
+    var fees = parseFees(r.p);
+    html += '<div style="margin-top:16px"><div style="font-size:13.5px;color:var(--fg-mute)">'+
+            '인당 수강료 <span style="color:var(--fg-dim)">— 학원이 공개에 동의한 값</span></div>'+
+            '<ul class="feelist">';
+    fees.forEach(function(f){
+      html += "<li><span>"+esc(f.name)+'</span><span class="amt">'+esc(f.amt)+"</span></li>";
+    });
+    html += "</ul></div>";
+  }
+
+  if (r.a){
+    html += '<div class="maplinks">'+
+      '<a target="_blank" rel="noopener" href="https://map.kakao.com/?q='+q+'">카카오맵에서 보기</a>'+
+      '<a target="_blank" rel="noopener" href="https://map.naver.com/p/search/'+q+'">네이버지도</a>'+
+      '<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query='+q+'">구글지도</a>'+
+      '</div>';
+  }
+
+  html += '<div class="notice">'+
+    '<b>원본에 없어 표시하지 않는 것</b><br>'+
+    '위치 좌표, 전화번호, 평점·후기·순위, 강사 정보, 시설 사진, 실제 운영시간. '+
+    '지도 링크는 주소로 검색해 여는 것이라 실제 위치와 다를 수 있습니다.<br>'+
+    (r.p ? '' : '이 학원은 수강료를 공개하지 않아 금액이 없습니다.<br>')+
+    '등록 정보는 시도교육청 신고 기준이며 현장과 다를 수 있습니다.'+
+    '</div>';
+
+  s.innerHTML = html;
+  $("#backdrop").classList.add("on");
+  document.body.style.overflow = "hidden";
+  $("#closeBtn").addEventListener("click", closeSheet);
+  s.scrollTop = 0;
+}
+function closeSheet(){
+  $("#backdrop").classList.remove("on");
+  document.body.style.overflow = "";
+}
+$("#backdrop").addEventListener("click", function(e){
+  if (e.target === $("#backdrop")) closeSheet();
+});
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape") closeSheet();
+});
+
+/* 무한 스크롤 */
+window.addEventListener("scroll", function(){
+  if (!curRows.length || shown >= curRows.length) return;
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 700) page();
+});
+
+/* PWA */
+if ("serviceWorker" in navigator){
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
+</script>
+</body>
+</html>

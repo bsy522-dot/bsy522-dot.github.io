@@ -1,0 +1,18 @@
+{
+  "name": "학원파인더 — 전국 학원·교습소 찾기",
+  "short_name": "학원파인더",
+  "description": "나이스(NEIS) 교육정보 개방 포털의 학원교습소정보로 만든 전국 학원·교습소 디렉토리",
+  "lang": "ko",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "categories": ["education", "utilities"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
