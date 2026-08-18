@@ -71,5 +71,17 @@
         "41:FC:27:89:DC:11:00:B4:CC:9E:61:32:CB:88:53:86:39:30:0B:24:7F:77:38:41:7C:FB:54:C4:34:84:E9:2E"
       ]
     }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.bsy522_dot.hakwonfinder",
+      "sha256_cert_fingerprints": [
+        "0B:C9:D2:23:C3:83:4F:7B:EB:E3:04:3C:4F:EA:A4:C9:0E:2F:99:26:4F:22:0B:8C:5D:5C:93:A8:C9:A2:B8:D6"
+      ]
+    }
   }
 ]
