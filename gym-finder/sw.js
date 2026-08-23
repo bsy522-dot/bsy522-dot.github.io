@@ -1,8 +1,7 @@
-/* 헬스장파인더 서비스워커
-   - 앱 셸: 캐시 우선(설치 후 오프라인에서도 껍데기는 뜬다)
-   - 데이터(JSON): 네트워크 우선 + 캐시 폴백(갱신된 데이터를 먼저 쓰되 끊기면 마지막 것)
-   - 지도 타일: 캐시하지 않는다(OSM 이용정책상 대량 저장 금지) */
-var VERSION = "gymfinder-v1";
+/* 헬스장파인더 서비스워커 v2 (2026-08-23)
+   v1은 앱 셸(HTML)을 캐시 우선으로 줘서 화면을 고쳐도 폰에 옛 화면이 남는 구조였다.
+   → 전부 네트워크 우선(끊겼을 때만 캐시 폴백). 지도 타일은 종전대로 캐시하지 않는다(OSM 정책). */
+var VERSION = "gymfinder-v2";
 var SHELL = [
   "./",
   "./index.html",
@@ -40,31 +39,16 @@ self.addEventListener("fetch", function(e){
   var url = new URL(req.url);
   if(url.origin !== self.location.origin) return;   // OSM 타일 등 외부는 통과
 
-  var isData = url.pathname.indexOf("/data/") >= 0;
-
-  if(isData){
-    e.respondWith(
-      fetch(req).then(function(res){
-        if(res && res.ok){
-          var copy = res.clone();
-          caches.open(VERSION).then(function(c){ c.put(req, copy); });
-        }
-        return res;
-      }).catch(function(){
-        return caches.match(req);
-      })
-    );
-    return;
-  }
-
   e.respondWith(
-    caches.match(req).then(function(hit){
-      return hit || fetch(req).then(function(res){
-        if(res && res.ok && res.type === "basic"){
-          var copy = res.clone();
-          caches.open(VERSION).then(function(c){ c.put(req, copy); });
-        }
-        return res;
+    fetch(req).then(function(res){
+      if(res && res.ok && res.type === "basic"){
+        var copy = res.clone();
+        caches.open(VERSION).then(function(c){ c.put(req, copy); });
+      }
+      return res;
+    }).catch(function(){
+      return caches.match(req).then(function(hit){
+        return hit || caches.match("./index.html");
       });
     })
   );

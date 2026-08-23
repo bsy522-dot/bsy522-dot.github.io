@@ -1,8 +1,9 @@
-/* 학원파인더 전국판 — 서비스워커
-   껍데기(HTML·아이콘·매니페스트)만 캐시한다.
-   지역 데이터는 46MB짜리 묶음이라 미리 캐시하지 않고, 한 번 받은 것만 남긴다. */
-var SHELL = "hakwon-shell-v1";
-var DATA  = "hakwon-data-v1";
+/* 학원파인더 전국판 — 서비스워커 v2 (2026-08-23)
+   v1은 껍데기(HTML)를 캐시 우선으로 줘서 새 화면(나이·과목 필터)이 배포돼도
+   폰에 영원히 옛 화면이 남았다. → HTML·셸은 네트워크 우선(끊겼을 때만 캐시),
+   지역 데이터는 종전대로 네트워크 우선 + 캐시 폴백. */
+var SHELL = "hakwon-shell-v2";
+var DATA  = "hakwon-data-v2";
 var SHELL_FILES = [
   "./", "./index.html", "./privacy.html", "./manifest.json",
   "./icon-192.png", "./icon-512.png"
@@ -32,29 +33,18 @@ self.addEventListener("fetch", function (e) {
   var url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // 데이터는 네트워크 우선(월 1회 갱신되므로 최신을 먼저 본다), 실패 시 캐시
-  if (url.pathname.indexOf("/data/") >= 0) {
-    e.respondWith(
-      fetch(req).then(function (res) {
-        if (res && res.ok) {
-          var copy = res.clone();
-          caches.open(DATA).then(function (c) { c.put(req, copy); });
-        }
-        return res;
-      }).catch(function () { return caches.match(req); })
-    );
-    return;
-  }
-
-  // 껍데기는 캐시 우선
+  // 전부 네트워크 우선 — 최신을 먼저 보고, 끊겼을 때만 캐시로 버틴다
+  var bucket = url.pathname.indexOf("/data/") >= 0 ? DATA : SHELL;
   e.respondWith(
-    caches.match(req).then(function (hit) {
-      return hit || fetch(req).then(function (res) {
-        if (res && res.ok && res.type === "basic") {
-          var copy = res.clone();
-          caches.open(SHELL).then(function (c) { c.put(req, copy); });
-        }
-        return res;
+    fetch(req).then(function (res) {
+      if (res && res.ok && res.type === "basic") {
+        var copy = res.clone();
+        caches.open(bucket).then(function (c) { c.put(req, copy); });
+      }
+      return res;
+    }).catch(function () {
+      return caches.match(req).then(function (hit) {
+        return hit || caches.match("./index.html");
       });
     })
   );
