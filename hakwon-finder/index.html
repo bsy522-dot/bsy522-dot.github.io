@@ -84,6 +84,14 @@
   }
   .chip:hover{border-color:var(--accent)}
 
+  /* ── 문센파인더식 라벨 필터 행 (2026-08-23) ───── */
+  .frow{display:flex;align-items:flex-start;gap:8px;padding:0 0 8px}
+  .frow .lbl{flex:none;font-size:13px;color:var(--fg-mute);padding:7px 0 0;min-width:34px}
+  .frow .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .subrow{margin:-3px 0 9px 42px;display:flex;flex-wrap:wrap;gap:6px}
+  .chip.sub{font-size:12.5px;padding:4.5px 10px}
+  .hint-est{font-size:11px;color:var(--fg-mute);padding:0 0 9px 42px}
+
   /* ── 상태줄 ───────────────────────────────────── */
   .status{
     display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
@@ -204,7 +212,11 @@
         <input id="q" type="search" placeholder="학원명 검색 (초성도 됩니다)" aria-label="학원명 검색">
       </div>
     </div>
-    <div class="toggles" id="toggles"></div>
+    <div class="frow"><span class="lbl">종류</span><div class="chips" id="rowKind"></div></div>
+    <div class="frow"><span class="lbl">나이</span><div class="chips" id="rowAge"></div></div>
+    <div class="frow"><span class="lbl">과목</span><div class="chips" id="rowCat"></div></div>
+    <div class="subrow" id="rowSub" style="display:none"></div>
+    <div class="hint-est" id="estHint" style="display:none">나이·과목 구분은 등록정보(학원명·교습과정) 기반 추정입니다 — 방문 전 확인하세요</div>
   </div>
 </header>
 
@@ -245,7 +257,69 @@ var PAGE = 60;
 var mode = "sgg";               // "sgg" = 시군구 상세 목록 / "search" = 시도 검색색인
 var cacheSgg = {};              // slug -> records
 var cacheSearch = {};           // sidoSlug -> index
-var filt = {kind:"", realm:"", feeOnly:false};
+var filt = {kind:"", realm:"", feeOnly:false, age:"", cat:"", sub:""};
+
+/* ── 나이·과목 분류 (문센파인더 배치, 2026-08-23) ─────────────────────
+   원본에 나이대·세부과목 필드가 없으므로 학원명·분야·교습계열·교습과정으로
+   "추정" 분류한다(화면에 추정임을 명시). 없는 정보를 만들지 않는 원칙 유지. */
+var AGES = [
+  {id:"",       nm:"전체"},
+  {id:"infant", nm:"유아·어린이"},
+  {id:"school", nm:"초·중·고"},
+  {id:"adult",  nm:"성인"}
+];
+var AGE_RE = {
+  infant: /유아|유치|키즈|어린이|아기|베이비|몬테소리|놀이학교|미취학/,
+  school: /초·?중·?고|초등|중등|고등|입시|보습|보통교과|진학|중고생|청소년/,
+  adult:  /성인|일반인|고시|공무원|간호|직업|이·?미용|바리스타|소믈리에|중장비|용접|어학\(성인\)/
+};
+var CATS = [
+  {id:"music",  nm:"🎹 음악·악기", re:/음악|피아노|바이올린|첼로|플루트|플룻|성악|보컬|국악|관현악|드럼/,
+   subs:[["피아노",/피아노/],["바이올린",/바이올린/],["첼로",/첼로/],["플루트",/플루트|플룻/],["드럼",/드럼/],["기타",/기타(?!\()/],["성악·보컬",/성악|보컬/],["실용음악",/실용음악/],["국악",/국악|가야금|판소리|사물놀이/]]},
+  {id:"art",    nm:"🎨 미술", re:/미술|디자인|웹툰|만화|도예|도자/,
+   subs:[["미술",/미술/],["디자인",/디자인/],["만화·웹툰",/만화|웹툰/],["도예",/도예|도자/]]},
+  {id:"dance",  nm:"💃 무용·댄스", re:/발레|무용|댄스/,
+   subs:[["발레",/발레/],["방송댄스",/방송댄스|스트릿|힙합/],["한국무용",/한국무용|전통무용/],["현대무용",/현대무용/]]},
+  {id:"study",  nm:"📚 보습·입시", re:/보습|입시|보통교과|진학/,
+   subs:[["수학",/수학|산수/],["국어",/국어/],["과학",/과학/],["종합",/종합|전과목/]]},
+  {id:"lang",   nm:"🗣 외국어", re:/외국어|어학|영어|중국어|일본어|국제/,
+   subs:[["영어",/영어/],["중국어",/중국어|중어/],["일본어",/일본어|일어/],["기타 외국어",/프랑스|독일어|스페인|러시아|베트남/]]},
+  {id:"essay",  nm:"✍ 논술·독서", re:/논술|독서(?!실)/, subs:[]},
+  {id:"coding", nm:"💻 코딩·컴퓨터", re:/컴퓨터|코딩|로봇|정보처리|소프트웨어|프로그래|정보교과/,
+   subs:[["코딩·로봇",/코딩|로봇/],["컴퓨터·정보처리",/컴퓨터|정보처리/]]},
+  {id:"math2",  nm:"🧮 주산·속셈", re:/주산|속셈|암산/, subs:[]},
+  {id:"cook",   nm:"🍳 요리·제과", re:/요리|조리|제과|제빵|바리스타|소믈리에|식음료/,
+   subs:[["제과제빵",/제과|제빵/],["바리스타",/바리스타|커피/],["조리·요리",/요리|조리/]]},
+  {id:"beauty", nm:"💇 미용", re:/미용|헤어|네일|메이크업/,
+   subs:[["헤어",/헤어/],["네일",/네일/],["메이크업",/메이크업/],["애견미용",/애견/]]},
+  {id:"job",    nm:"🛠 직업·자격", re:/간호조무|고시|공무원|자격|직업|산업기반|산업응용|기계|자동차|건축|용접|중장비|전기/,
+   subs:[["간호조무",/간호/],["공무원·고시",/고시|공무원/],["기술·기능",/기계|자동차|건축|용접|중장비|전기/]]},
+  {id:"read",   nm:"📖 독서실", re:/독서실/, subs:[]},
+  {id:"etc",    nm:"🎭 취미·기타", re:/바둑|서예|공예|연극|화술|웅변|스피치|속독|꽃꽂이|종이접기/,
+   subs:[["바둑",/바둑/],["서예",/서예/],["공예",/공예|꽃꽂이|종이접기/],["연극·스피치",/연극|화술|웅변|스피치/],["속독",/속독/]]}
+];
+function catOf(id){ for (var i=0;i<CATS.length;i++) if (CATS[i].id===id) return CATS[i]; return null; }
+function passExtra(n, f, o, c, l){
+  var hay = (n||"")+"|"+(f||"")+"|"+(o||"")+"|"+(c||"")+"|"+(l||"");
+  if (filt.age){
+    var sigI = AGE_RE.infant.test(hay), sigS = AGE_RE.school.test(hay), sigA = AGE_RE.adult.test(hay);
+    if (sigI || sigS || sigA){          // 신호가 하나라도 있으면 그 신호를 따르고,
+      if (filt.age==="infant" && !sigI) return false;
+      if (filt.age==="school" && !sigS) return false;
+      if (filt.age==="adult"  && !sigA) return false;
+    }                                   // 신호가 전혀 없으면 전 연령으로 보고 통과
+  }
+  if (filt.cat){
+    var cat = catOf(filt.cat);
+    if (cat && !cat.re.test(hay)) return false;
+    if (filt.sub && cat){
+      var sub = null;
+      for (var i=0;i<cat.subs.length;i++) if (cat.subs[i][0]===filt.sub) sub = cat.subs[i][1];
+      if (sub && !sub.test((n||"")+"|"+(c||"")+"|"+(l||""))) return false;
+    }
+  }
+  return true;
+}
 
 var $ = function(s){ return document.querySelector(s); };
 var el = function(t,c){ var e=document.createElement(t); if(c)e.className=c; return e; };
@@ -336,10 +410,8 @@ function buildSidoSelect(){
 }
 
 function buildToggles(){
-  var box = $("#toggles");
-  box.innerHTML = "";
-  function chip(label, on, fn){
-    var b = el("button","chip");
+  function chip(box, label, on, fn, cls){
+    var b = el("button","chip"+(cls?" "+cls:""));
     b.type="button"; b.textContent=label;
     b.setAttribute("aria-pressed", on?"true":"false");
     b.addEventListener("click", function(){
@@ -348,10 +420,11 @@ function buildToggles(){
     });
     box.appendChild(b);
   }
-  chip("학원", filt.kind==="학원", function(v){ filt.kind = v?"학원":""; });
-  chip("교습소", filt.kind==="교습소", function(v){ filt.kind = v?"교습소":""; });
-  chip("수강료 공개", filt.feeOnly, function(v){ filt.feeOnly = v; });
-
+  /* 종류 행: 학원/교습소/수강료 + 분야 select */
+  var rk = $("#rowKind"); rk.innerHTML = "";
+  chip(rk, "학원", filt.kind==="학원", function(v){ filt.kind = v?"학원":""; });
+  chip(rk, "교습소", filt.kind==="교습소", function(v){ filt.kind = v?"교습소":""; });
+  chip(rk, "수강료 공개", filt.feeOnly, function(v){ filt.feeOnly = v; });
   var sel = el("select");
   sel.setAttribute("aria-label","분야 선택");
   sel.innerHTML = '<option value="">분야 전체</option>';
@@ -362,7 +435,37 @@ function buildToggles(){
     sel.appendChild(o);
   });
   sel.addEventListener("change", function(){ filt.realm = sel.value; applyAndRender(); });
-  box.appendChild(sel);
+  rk.appendChild(sel);
+
+  /* 나이 행 */
+  var ra = $("#rowAge"); ra.innerHTML = "";
+  AGES.forEach(function(a){
+    chip(ra, a.nm, filt.age===a.id && (a.id!=="" || filt.age===""), function(v){
+      filt.age = (a.id==="") ? "" : (v ? a.id : "");
+    });
+  });
+
+  /* 과목 행 (대분류) + 세부 행 */
+  var rc = $("#rowCat"); rc.innerHTML = "";
+  chip(rc, "전체", filt.cat==="", function(){ filt.cat=""; filt.sub=""; });
+  CATS.forEach(function(cdef){
+    var label = cdef.nm + (cdef.subs.length ? " ▸" : "");
+    chip(rc, label, filt.cat===cdef.id, function(v){
+      filt.cat = v ? cdef.id : ""; filt.sub = "";
+    });
+  });
+  var rs = $("#rowSub"); rs.innerHTML = "";
+  var cur = catOf(filt.cat);
+  if (cur && cur.subs.length){
+    rs.style.display = "flex";
+    chip(rs, "전체", filt.sub==="", function(){ filt.sub=""; }, "sub");
+    cur.subs.forEach(function(sd){
+      chip(rs, sd[0], filt.sub===sd[0], function(v){ filt.sub = v ? sd[0] : ""; }, "sub");
+    });
+  } else {
+    rs.style.display = "none";
+  }
+  $("#estHint").style.display = (filt.age || filt.cat) ? "block" : "none";
 }
 
 /* ── 시도 고르기 첫 화면 ─────────────────────────────────────────────── */
@@ -461,6 +564,7 @@ function applyAndRender(){
       if (filt.kind && r.k!==filt.kind) continue;
       if (filt.realm && r.f!==filt.realm) continue;
       if (filt.feeOnly && !r.p) continue;
+      if (!passExtra(r.n, r.f, r.o, r.c, r.l)) continue;
       if (q && !matchName(norm(r.n), choseong(r.n), q)) continue;
       rows.push({light:false, rec:r, sgg:r.u});
     }
@@ -472,6 +576,7 @@ function applyAndRender(){
       if (filt.kind && ix.k[j]!==filt.kind) continue;
       if (filt.realm && ix.f[j]!==filt.realm) continue;
       if (filt.feeOnly && !ix.p[j]) continue;
+      if (!passExtra(ix.n[j], ix.f[j], "", ix.c ? ix.c[j] : "", "")) continue;
       if (q && !matchName(ix.nn[j], ix.cho[j], q)) continue;
       rows.push({light:true, n:ix.n[j], gi:ix.g[j], di:ix.d[j],
                  k:ix.k[j], f:ix.f[j], p:ix.p[j], sgg:names[ix.g[j]].name});
@@ -490,9 +595,13 @@ function renderList(rows){
   var st = el("div","status");
   var where = sido.name + (sggSel ? " " + sido.sigungu.filter(function(g){
       return g.slug===sggSel; })[0].name : " 전체");
-  st.innerHTML = "<b>"+won(rows.length)+"</b>곳 · "+esc(where);
+  var picked = [];
+  if (filt.cat){ var cd=catOf(filt.cat); if (cd) picked.push(filt.sub ? cd.nm.split(" ")[0]+" "+filt.sub : cd.nm); }
+  if (filt.age){ AGES.forEach(function(a){ if(a.id===filt.age) picked.push(a.nm); }); }
+  st.innerHTML = (picked.length ? esc(picked.join(" · "))+" · " : "") +
+                 "<b>"+won(rows.length)+"</b>곳 · "+esc(where);
   if (mode==="search")
-    st.innerHTML += ' <span style="color:var(--fg-mute)">— 시군구를 고르면 주소까지 함께 보입니다</span>';
+    st.innerHTML += ' <span style="color:var(--fg-mute)">— 시군구를 고르면 주소·교습과정까지 함께 보입니다</span>';
   m.appendChild(st);
 
   if (!rows.length){

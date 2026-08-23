@@ -1,6 +1,6 @@
 {
  "app": "학원파인더 전국판",
- "built_at": "2026-08-18",
+ "built_at": "2026-08-23",
  "basis_date": "20260731",
  "source": {
   "name": "나이스(NEIS) 교육정보 개방 포털 — 학원교습소정보",
@@ -17,7 +17,7 @@
    "name": "서울특별시",
    "slug": "seoul",
    "count": 25497,
-   "search_bytes": 1812603,
+   "search_bytes": 2105208,
    "sigungu": [
     {
      "name": "(주소 불명)",
@@ -181,7 +181,7 @@
    "name": "부산광역시",
    "slug": "busan",
    "count": 9103,
-   "search_bytes": 630019,
+   "search_bytes": 734449,
    "sigungu": [
     {
      "name": "강서구",
@@ -285,7 +285,7 @@
    "name": "대구광역시",
    "slug": "daegu",
    "count": 8029,
-   "search_bytes": 558645,
+   "search_bytes": 643282,
    "sigungu": [
     {
      "name": "군위군",
@@ -347,7 +347,7 @@
    "name": "인천광역시",
    "slug": "incheon",
    "count": 6914,
-   "search_bytes": 481026,
+   "search_bytes": 552202,
    "sigungu": [
     {
      "name": "(주소 불명)",
@@ -451,7 +451,7 @@
    "name": "대전광역시",
    "slug": "daejeon",
    "count": 3822,
-   "search_bytes": 261814,
+   "search_bytes": 301743,
    "sigungu": [
     {
      "name": "대덕구",
@@ -489,7 +489,7 @@
    "name": "울산광역시",
    "slug": "ulsan",
    "count": 3703,
-   "search_bytes": 253764,
+   "search_bytes": 299369,
    "sigungu": [
     {
      "name": "남구",
@@ -527,7 +527,7 @@
    "name": "세종특별자치시",
    "slug": "sejong",
    "count": 1751,
-   "search_bytes": 120796,
+   "search_bytes": 141175,
    "sigungu": [
     {
      "name": "세종특별자치시",
@@ -541,7 +541,7 @@
    "name": "경기도",
    "slug": "gyeonggi",
    "count": 39171,
-   "search_bytes": 2755650,
+   "search_bytes": 3165705,
    "sigungu": [
     {
      "name": "(주소 불명)",
@@ -849,7 +849,7 @@
    "name": "강원특별자치도",
    "slug": "gangwon",
    "count": 3208,
-   "search_bytes": 217241,
+   "search_bytes": 253908,
    "sigungu": [
     {
      "name": "강릉시",
@@ -965,7 +965,7 @@
    "name": "충청북도",
    "slug": "chungbuk",
    "count": 3470,
-   "search_bytes": 232679,
+   "search_bytes": 275115,
    "sigungu": [
     {
      "name": "괴산군",
@@ -1057,7 +1057,7 @@
    "name": "충청남도",
    "slug": "chungnam",
    "count": 4482,
-   "search_bytes": 298543,
+   "search_bytes": 352551,
    "sigungu": [
     {
      "name": "(주소 불명)",
@@ -1173,7 +1173,7 @@
    "name": "전북특별자치도",
    "slug": "jeonbuk",
    "count": 4731,
-   "search_bytes": 318358,
+   "search_bytes": 374895,
    "sigungu": [
     {
      "name": "고창군",
@@ -1271,7 +1271,7 @@
    "name": "전남광주통합특별시",
    "slug": "jeonnam-gwangju",
    "count": 8300,
-   "search_bytes": 569401,
+   "search_bytes": 661481,
    "sigungu": [
     {
      "name": "(주소 불명)",
@@ -1447,7 +1447,7 @@
    "name": "경상북도",
    "slug": "gyeongbuk",
    "count": 5737,
-   "search_bytes": 391100,
+   "search_bytes": 455588,
    "sigungu": [
     {
      "name": "경산시",
@@ -1599,7 +1599,7 @@
    "name": "경상남도",
    "slug": "gyeongnam",
    "count": 8758,
-   "search_bytes": 597527,
+   "search_bytes": 693212,
    "sigungu": [
     {
      "name": "(주소 불명)",
@@ -1745,7 +1745,7 @@
    "name": "제주특별자치도",
    "slug": "jeju",
    "count": 1765,
-   "search_bytes": 119036,
+   "search_bytes": 140022,
    "sigungu": [
     {
      "name": "서귀포시",
