@@ -24,6 +24,13 @@ self.addEventListener("activate", function (e) {
         if (k !== SHELL && k !== DATA) return caches.delete(k);
       }));
     }).then(function () { return self.clients.claim(); })
+      .then(function () { return self.clients.matchAll({ type: "window" }); })
+      .then(function (cs) {
+        /* 새 워커가 접수하는 순간 열려 있는 화면을 스스로 새로고침 — 옛 화면이 남지 않게 (2026-08-23) */
+        cs.forEach(function (c) {
+          if (c.url.indexOf(self.location.origin) === 0 && "navigate" in c) { c.navigate(c.url).catch(function () {}); }
+        });
+      })
   );
 });
 
