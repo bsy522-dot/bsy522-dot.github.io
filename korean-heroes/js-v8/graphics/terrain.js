@@ -20,10 +20,11 @@ export const TILE = {
   WATER:    4, // 물
   ROAD:     5, // 길
   SINDANSU: 6, // 신단수 (제단)
+  FLOOR:    7, // 건물 부지 / 마을 바닥 (다진 흙 — 통행 가능, 장식 없음)
 };
 
 // 타일별 추가 높이 — 인덱스 0~6
-const EXTRA_H = [0.00, 0.00, 0.06, 0.30, -0.08, 0.00, 0.00];
+const EXTRA_H = [0.00, 0.00, 0.06, 0.30, -0.08, 0.00, 0.00, 0.02];
 
 // 타일별 재질 — 인덱스 0~6
 // ★ 2026-07-17: 산 전용 어두운 암석 재질 — MAT.stone(밝은 회백)이 전구처럼 하얗게
@@ -39,6 +40,7 @@ const TILE_MAT = [
   MAT.dirt,       // 4 WATER (바닥, 수면은 장식)
   MAT.path,       // 5 ROAD
   MAT.dirt,       // 6 SINDANSU (바닥 흙, 신단수는 장식)
+  MAT.dirt,       // 7 FLOOR (건물 부지 — 다진 흙)
 ];
 
 export const PASSABLE = (t) => t !== TILE.MOUNTAIN && t !== TILE.WATER;

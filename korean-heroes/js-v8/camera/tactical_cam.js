@@ -56,6 +56,11 @@ export function createTacticalCam(opts = {}) {
     distance: cfg.position.distanceTo(cfg.target),
     // 키보드 상태
     keys: { W: false, A: false, S: false, D: false, Q: false, E: false, Plus: false, Minus: false },
+    // ★ 2026-08-31: 카메라 이동 경계. setCamBounds()로 맵 크기를 넣으면 target이
+    //   맵 밖으로 나가지 못한다 — 맵이 화면 구석으로 밀려나던 문제(감사 B4).
+    //   줌이 바뀌면 허용 범위도 달라지므로 맵 정보만 들고 매 프레임 계산한다.
+    boundsMap: null,     // { centerX, centerZ, worldW, worldH } | null
+    boundsSlack: 1.5,
     cfg
   };
   cam.userData._tactical = state;
@@ -95,6 +100,19 @@ export function updateTacticalCam(cam, state) {
   if (s.keys.Plus) s.camSize = Math.max(s.camSizeMin, s.camSize - 0.1);
   if (s.keys.Minus) s.camSize = Math.min(s.camSizeMax, s.camSize + 0.1);
 
+  // 경계 클램프 — 팬/추적/드래그가 어디서 target을 옮겼든 여기서 최종 보정.
+  // 시야가 맵보다 크면 허용폭이 0이 되어 카메라가 맵 중앙에 고정된다.
+  if (s.boundsMap) {
+    const b = s.boundsMap;
+    const a2 = aspect();
+    const halfW = s.camSize * a2;                                   // 화면 가로 절반(월드)
+    const halfD = s.camSize / Math.max(0.25, Math.sin(s.elevation)); // 지면 깊이 절반
+    const spanX = Math.max(0, b.worldW / 2 + s.boundsSlack - halfW);
+    const spanZ = Math.max(0, b.worldH / 2 + s.boundsSlack - halfD * 0.55);
+    s.target.x = Math.min(b.centerX + spanX, Math.max(b.centerX - spanX, s.target.x));
+    s.target.z = Math.min(b.centerZ + spanZ, Math.max(b.centerZ - spanZ, s.target.z));
+  }
+
   // 구면 좌표 → 카메라 위치
   const horiz = Math.cos(s.elevation) * s.distance;
   const y = Math.sin(s.elevation) * s.distance;
@@ -112,6 +130,31 @@ export function updateTacticalCam(cam, state) {
   cam.top = s.camSize;
   cam.bottom = -s.camSize;
   cam.updateProjectionMatrix();
+}
+
+/**
+ * 카메라 이동 경계 설정.
+ *
+ * 맵 크기를 등록해 두면 매 프레임 현재 줌 기준으로 허용 범위를 계산해 target을
+ * 클램프한다. 시야가 맵보다 크면 범위가 한 점(맵 중앙)으로 수렴해 카메라가
+ * 중앙에 고정된다 — 맵이 화면 구석으로 밀려나던 문제(2026-08-31 감사 B4).
+ *
+ * @param {Object} state  createTacticalCam이 돌려준 state
+ * @param {Object} map    { centerX, centerZ, worldW, worldH }
+ * @param {number} slack  맵 밖으로 허용할 여유(월드유닛). 기본 1.5
+ */
+export function setCamBounds(state, map, slack = 1.5) {
+  if (!state) return;
+  if (!map) { state.boundsMap = null; return; }
+  state.boundsMap = {
+    centerX: map.centerX, centerZ: map.centerZ,
+    worldW: map.worldW, worldH: map.worldH,
+  };
+  state.boundsSlack = slack;
+}
+
+export function clearCamBounds(state) {
+  if (state) state.boundsMap = null;
 }
 
 /**

@@ -29,8 +29,8 @@
         { "speakerId": "pungbaek", "speaker": "풍백", "text": "바람은 천왕의 뜻을 따르겠습니다." },
         { "speakerId": "usa", "speaker": "우사", "text": "비 또한 인간 세상에 이로움이 되리니." },
         { "speakerId": "unsa", "speaker": "운사", "text": "구름은 길을 여는 자. 천왕의 길이 되겠습니다." },
-        { "speakerId": "narrator", "speaker": "해설", "text": "환웅 일행이 하강 중 신시(神市) 마을에 도착했다." },
-        { "speakerId": "narrator", "speaker": "해설", "text": "환인께서 신단수에 내리시었다. 그 옆에서 뜻을 받들라." },
+        { "speakerId": "narrator", "speaker": "해설", "text": "환웅 일행이 하강 중 환인의 마을에 이르렀다." },
+        { "speakerId": "narrator", "speaker": "해설", "text": "환인의 뜻이 신단수에 깃들었다. 그 앞에서 뜻을 받들라." },
         { "speakerId": "hwanwoong", "speaker": "환웅", "text": "우선 마을을 둘러보고 준비를 하자. 회의장에서 작전을 논의해야 한다." }
       ]
     },
@@ -41,6 +41,7 @@
       "camera": "character",
       "player": "hwanwoong",
       "bgm": "peace",
+      "objective": "풍백과 회의 후 출진문으로",
       "exitTrigger": "gate",
       "triggers": {
         "ep1_council": {
@@ -92,11 +93,11 @@
             ]
           }
         },
-        "ep1_hwanwoong_guide": {
+        "ep1_guide": {
           "type": "dialogue",
           "lines": [
-            { "speakerId": "hwanwoong", "speaker": "환웅", "text": "아버지의 뜻이 여기 계신다. 신단수 앞에서 고개를 숙이고 가거라." },
-            { "speakerId": "hwanwoong", "speaker": "환웅", "text": "풍백이 회의장에서 기다리고 있다. 작전을 먼저 논의하라." }
+            { "speakerId": "elder", "speaker": "마을 어른", "text": "아버지의 뜻이 여기 계십니다. 신단수 앞에서 고개를 숙이고 가십시오." },
+            { "speakerId": "elder", "speaker": "마을 어른", "text": "풍백께서 회의장에서 기다리고 계십니다. 작전을 먼저 논의하십시오." }
           ]
         },
         "ep1_sindansu": {
@@ -109,7 +110,7 @@
         "ep1_campfire": {
           "type": "dialogue",
           "lines": [
-            { "speakerId": "narrator", "speaker": "해설", "text": "모닥불이 타닥타닥 튀며 신시의 밤을 밝힌다." }
+            { "speakerId": "narrator", "speaker": "해설", "text": "모닥불이 타닥타닥 튀며 마을의 밤을 밝힌다." }
           ]
         }
       }

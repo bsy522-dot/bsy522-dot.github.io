@@ -88,12 +88,29 @@ const STYLES = `
 .v8-aq-hp-fill.v8-low { background: linear-gradient(90deg, #e04020, #ff7040); }
 .v8-aq-hp-fill.v8-mid { background: linear-gradient(90deg, #e0c020, #ffe060); }
 
+/* ★ 2026-08-31 감사 싸구려 #8: 세로 리스트가 화면 좌측 40%를 덮어 격자가
+   1/4밖에 안 보였다. 좁은 화면에서는 상단 가로 띠(초상+HP)로 접는다. */
 @media (max-width: 720px) {
-  #v8-action-queue { left: 6px; top: 162px; gap: 4px; }
-  .v8-aq-item { min-width: 100px; padding: 2px 5px 2px 2px; }
-  .v8-aq-portrait { width: 28px; height: 28px; font-size: 16px; }
-  .v8-aq-name { font-size: 11px; }
-  .v8-aq-title { font-size: 10px; letter-spacing: 2px; }
+  #v8-action-queue {
+    left: 4px; right: 4px; top: 46px;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+  }
+  .v8-aq-title { display: none; }
+  #v8-aq-list { display: flex; flex-direction: row; gap: 4px; flex-wrap: nowrap; }
+  .v8-aq-item {
+    flex-direction: column;
+    min-width: 0; width: 36px;
+    padding: 2px; gap: 2px;
+    border-radius: 8px;
+  }
+  .v8-aq-item.v8-active { transform: translateY(3px) scale(1.06); }
+  .v8-aq-name { display: none; }
+  .v8-aq-info { width: 30px; flex: none; }
+  .v8-aq-portrait { width: 30px; height: 30px; font-size: 16px; border-width: 1.5px; }
+  .v8-aq-hp { height: 3px; margin-top: 1px; }
 }
 `;
 

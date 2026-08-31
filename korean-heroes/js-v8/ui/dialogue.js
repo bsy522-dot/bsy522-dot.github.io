@@ -241,7 +241,19 @@ export class DialogueRunner {
     const line = this.lines[this.index];
     const pid = line.speakerId || line.portrait;
     const p = (pid && portraitsData[pid]) || { emoji: '📜', color: '#888' };
-    this.portraitEl.textContent = p.emoji;
+    // ★ 2026-08-31: 큰 초상은 일러스트인데 화자 칩만 OS 이모지라 같은 인물이
+    //   한 화면에 두 얼굴로 보였다(감사 싸구려 #3). 칩도 같은 초상을 쓴다.
+    if (p.image) {
+      this.portraitEl.innerHTML = '';
+      const im = document.createElement('img');
+      im.src = p.image;
+      im.alt = line.speaker || pid || '';
+      this.portraitEl.appendChild(im);
+    } else {
+      const svg = pid ? getPortraitSVG(pid) : null;
+      if (svg) this.portraitEl.innerHTML = svg;
+      else this.portraitEl.textContent = p.emoji;
+    }
     this.portraitEl.style.borderColor = p.color;
     this.speakerEl.textContent = line.speaker || (pid ? pid : '');
     this.speakerEl.style.color = p.color && p.color !== '#888' ? p.color : '#FFD700';

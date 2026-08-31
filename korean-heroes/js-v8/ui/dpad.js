@@ -128,10 +128,15 @@ const STYLE = `
 }
 #v8-dpad-ab .v8-dpad-ab-label {
   position: absolute;
-  font-size: 9px; color: #c4956a; letter-spacing: 1px;
-  text-shadow: 0 1px 2px #000;
+  font-size: 10px; color: #ffd9a0; letter-spacing: 0;
+  text-shadow: 0 1px 3px #000, 0 0 6px #000;
   pointer-events: none;
+  white-space: nowrap;
+  word-break: keep-all;
 }
+/* A는 우하단, B는 좌상단 버튼 — 라벨은 각 버튼 바깥쪽에 */
+#v8-dpad-ab .v8-lbl-a { right: 0; bottom: -13px; width: 64px; text-align: center; }
+#v8-dpad-ab .v8-lbl-b { left: 0; top: -13px; width: 64px; text-align: center; }
 
 #v8-dpad-shoulder {
   position: absolute;
@@ -286,7 +291,9 @@ function _buildUI() {
     </div>
     <div id="v8-dpad-ab">
       <div class="v8-dpad-ab-btn v8-dpad-b">B</div>
+      <div class="v8-dpad-ab-label v8-lbl-b"></div>
       <div class="v8-dpad-ab-btn v8-dpad-a">A</div>
+      <div class="v8-dpad-ab-label v8-lbl-a"></div>
     </div>
     <div id="v8-dpad-menu" title="대기/턴종료 (Space)">대기</div>
   `;
@@ -466,6 +473,19 @@ export function initDPad() {
 }
 
 export function onDPadInput(cb) { _cb = cb; }
+
+/**
+ * A/B 버튼 아래 붙는 기능 라벨. 씬마다 A·B가 하는 일이 달라(전투=결정/취소,
+ * 마을=대화/출진) 무엇을 누르면 되는지 화면에서 바로 보이게 한다.
+ * 빈 문자열/undefined면 라벨을 지운다.
+ */
+export function setDPadLabels(aLabel, bLabel) {
+  if (!_root) return;
+  const a = _root.querySelector('.v8-lbl-a');
+  const b = _root.querySelector('.v8-lbl-b');
+  if (a) a.textContent = aLabel || '';
+  if (b) b.textContent = bLabel || '';
+}
 
 export function showDPad() {
   if (!_root) return;

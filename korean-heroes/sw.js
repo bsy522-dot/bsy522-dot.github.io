@@ -1,4 +1,6 @@
-const CACHE = 'khero-v1';
+// ★ 2026-08-31: 캐시 이름을 올려야 기존 설치본이 옛 js-v8 모듈을 계속 쓰지 않는다.
+// (HTML은 네트워크 우선이라 새 index.html이 옛 모듈을 불러 어긋나는 사고를 막는다)
+const CACHE = 'khero-v2';
 const PRECACHE = [
   './',
   './index.html',

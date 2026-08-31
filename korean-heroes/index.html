@@ -233,18 +233,55 @@
   #v8-title .v8-title-cast {
     position: relative;
     z-index: 2;
-    margin: 0 0 32px;
+    margin: 0 0 28px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(6px, 2vw, 14px);
+    max-width: 96vw;
     font-size: clamp(20px, 3vw, 32px);
     color: #ffe2a0;
-    letter-spacing: 4px;
+    letter-spacing: 0;
     text-shadow: 0 0 12px rgba(255,180,40,0.5), 0 2px 6px #000;
   }
   #v8-title .v8-title-cast span {
-    display: inline-block;
-    margin: 0 8px;
+    display: block;
+    margin: 0;
     transition: transform .3s;
+    vertical-align: middle;
   }
-  #v8-title .v8-title-cast span:hover { transform: translateY(-4px) scale(1.2); }
+  #v8-title .v8-title-cast span:hover { transform: translateY(-4px) scale(1.12); }
+  /* ★ 2026-08-31: OS 이모지 대신 실제 초상/아이콘 — 기종마다 모양이 달라지던 문제 */
+  #v8-title .v8-title-cast img,
+  #v8-title .v8-title-cast svg {
+    display: block;
+    width: clamp(40px, 15vw, 60px);
+    height: clamp(40px, 15vw, 60px);
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 18%;
+    border: 2px solid rgba(255,215,0,.62);
+    background: radial-gradient(circle at 32% 26%, rgba(90,60,24,.9), rgba(20,12,4,.92));
+    box-shadow: 0 3px 10px rgba(0,0,0,.55), 0 0 14px rgba(255,180,60,.25);
+  }
+  #v8-title .v8-title-cast .v8-cast-icon svg { padding: 6px; }
+
+  /* 이어하기 버튼 — 부제(어디까지 왔는지)를 아래 줄에 */
+  #v8-title button.v8-continue-btn {
+    background: linear-gradient(180deg, #6b4a18 0%, #33210a 100%);
+    border-color: #ffe27a;
+    line-height: 1.25;
+  }
+  #v8-title button.v8-continue-btn .v8-cont-sub {
+    display: block;
+    margin-top: 3px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #e8c98a;
+    letter-spacing: 0;
+    word-break: keep-all;
+  }
   #v8-title .menu {
     position: relative;
     z-index: 2;
@@ -440,9 +477,14 @@
   }
   @media (max-width: 720px) {
     #v8-first-turn-hint {
-      top: 12%; right: 8px; left: 8px; max-width: none;
-      font-size: 13px;
+      /* 상단은 행동 순서 띠·미니맵 자리 — 안내는 아래쪽 여백으로 내린다 */
+      top: auto; bottom: 200px; right: 10px; left: 10px; max-width: none;
+      font-size: 12.5px; padding: 8px 12px; line-height: 1.45;
+      transform: translateY(14px);
+      word-break: keep-all;
     }
+    #v8-first-turn-hint.v8-show { transform: translateY(0); }
+    #v8-first-turn-hint b { font-size: 14px; margin-bottom: 2px; }
   }
 
   #ui-root { pointer-events: none; }
@@ -515,18 +557,18 @@
   <h1>한국사 영웅전</h1>
   <p class="subtitle">고조선의 서막</p>
   <div class="v8-title-cast">
-    <span title="환웅 천왕">👑</span>
-    <span title="신단수">🌳</span>
-    <span title="비파형 동검">⚔️</span>
-    <span title="단군 왕검">🏛️</span>
-    <span title="웅녀">🌸</span>
+    <span title="환웅 천왕"><img src="./assets/portraits/hwanoong.png" alt="환웅" loading="lazy"></span>
+    <span title="신단수" class="v8-cast-icon"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M18 34h4v-9h-4z" fill="#6b4226"/><circle cx="20" cy="15" r="10" fill="#2f5a22"/><circle cx="12" cy="20" r="6.5" fill="#40702c"/><circle cx="28" cy="20" r="6.5" fill="#40702c"/></svg></span>
+    <span title="비파형 동검" class="v8-cast-icon"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3c3 6 3.4 10 1.6 13.5C23.6 20 24 24 20 31c-4-7-3.6-11-1.6-14.5C16.6 13 17 9 20 3z" fill="#cd7f32"/><rect x="13" y="30" width="14" height="2.6" rx="1.3" fill="#8b5a2b"/><rect x="18.7" y="32" width="2.6" height="6" rx="1.3" fill="#8b5a2b"/></svg></span>
+    <span title="단군 왕검"><img src="./assets/portraits/dangun.png" alt="단군" loading="lazy"></span>
+    <span title="웅녀"><img src="./assets/portraits/ungnyeo.png" alt="웅녀" loading="lazy"></span>
   </div>
   <div class="menu">
     <button class="v8-start-btn" data-action="ep1">EP.1 · 환웅의 시험</button>
-    <button class="v8-start-btn" data-action="ep2" style="opacity:.55;border-color:#8a6a3a;color:#c4956a">EP.2 · 단군의 건국 (추후)</button>
+    <button class="v8-start-btn" data-action="ep2">EP.2 · 단군의 건국</button>
     <button class="v8-start-btn" data-action="settings" style="min-width:auto;padding:10px 20px;font-size:15px">⚙ 설정</button>
   </div>
-  <div class="version">PRIME Holdings</div>
+  <div class="version">AP Works</div>
 </div>
 
 <!-- 시네마틱 -->
@@ -552,10 +594,11 @@
 <!-- 첫 턴 안내 (영걸전 스타일 가이드) -->
 <div id="v8-first-turn-hint">
   <b>전투 안내</b>
-  ① 아군(황금 깃발)을 클릭<br>
+  ① 아군(황금 깃발)을 탭 <span class="v8-hint-key">또는 A</span><br>
   ② <span style="color:#7ab8ff">파란 칸</span>으로 이동<br>
   ③ <span style="color:#ff7a7a">빨간 칸</span>의 적 공격<br>
-  ④ 우측 패널의 [공격/스킬/대기]
+  ④ 하단 패널의 [공격/스킬/대기]<br>
+  <span class="v8-hint-key">커서 이동 = 조이스틱 · 취소 = B</span>
 </div>
 
 <!-- Three.js importmap -->
@@ -729,6 +772,7 @@ import {
 } from './js-v8/graphics/effects.js';
 
 import { CameraSwitcher } from './js-v8/camera/switcher.js';
+import { setCamBounds, clearCamBounds } from './js-v8/camera/tactical_cam.js';
 
 import { TurnManager, PHASE } from './js-v8/battle/turn_manager.js';
 import { calcMoveRange, findPath, calcAttackRange, manhattan } from './js-v8/battle/movement.js';
@@ -750,7 +794,7 @@ import { showInventory, showItemSelect, showVictory, showDefeat, showEpisodeSele
 import { CutinOverlay, registerPortraits as registerCutinPortraits, registerPortraitArt as registerCutinPortraitArt } from './js-v8/ui/cutin.js';
 import { getPortraitSVG } from './js-v8/ui/portrait_art.js';
 import { initCursor, disposeCursor, getCursor, setCursor, moveCursor, hideCursor, showCursor, tickCursor } from './js-v8/ui/cursor.js';
-import { initDPad, onDPadInput, showDPad, hideDPad } from './js-v8/ui/dpad.js';
+import { initDPad, onDPadInput, showDPad, hideDPad, setDPadLabels } from './js-v8/ui/dpad.js';
 import { initAttackPreview, showAttackPreview, hideAttackPreview, registerPortraits as registerApPortraits, registerPortraitArt as registerApPortraitArt } from './js-v8/ui/attack_preview.js';
 // dpad.js 키보드 핸들러가 다이얼로그 활성 시 양보할 수 있도록 전역 노출
 window.isDialogueActive = isDialogueActive;
@@ -846,6 +890,9 @@ const GameState = {
   skillHighlight: null,
   pendingAction: null,
   flags: { ep1_cleared: false },
+  inventory: {},
+  party: {},              // 세이브로 잇는 아군 성장치 { unitId: {level, xp} }
+  currentSceneIndex: null,
 };
 
 // engine State에도 노출
@@ -935,10 +982,124 @@ onSettingsChange((s) => {
   audio.setSFXVolume(s.sfxVolume / 100);
 });
 
+// ── 세이브 / 진행도 ──────────────────────────────
+// 진행 상황을 기기 안(localStorage)에만 저장한다. 서버로 나가지 않는다.
+//   history-rpg-save-v8      : 이어하기 체크포인트 (씬 단위)
+//   history-rpg-progress-v8  : 클리어한 에피소드 기록
+const SAVE_KEY = 'history-rpg-save-v8';
+const PROGRESS_KEY = 'history-rpg-progress-v8';
+const SAVE_VERSION = 1;
+const EP_TITLES = { ep1: 'EP.1 · 환웅의 시험', ep2: 'EP.2 · 단군의 건국' };
+
+function _readJson(key) {
+  try { const r = localStorage.getItem(key); return r ? JSON.parse(r) : null; }
+  catch (e) { return null; }
+}
+function _writeJson(key, obj) {
+  try { localStorage.setItem(key, JSON.stringify(obj)); return true; }
+  catch (e) { console.warn('[save] 저장 실패(용량/프라이빗 모드):', e); return false; }
+}
+
+function storyOf(epId) {
+  return epId === 'ep1' ? DATA.story_ep1 : (epId === 'ep2' ? DATA.story_ep2 : null);
+}
+
+/** 유효한 세이브만 반환 — 버전·에피소드·씬 인덱스를 모두 검사 */
+function loadSave() {
+  const sv = _readJson(SAVE_KEY);
+  if (!sv || sv.v !== SAVE_VERSION) return null;
+  const story = storyOf(sv.ep);
+  if (!story || !Array.isArray(story.scenes)) return null;
+  if (!(Number.isInteger(sv.sceneIndex) && sv.sceneIndex >= 0 && sv.sceneIndex < story.scenes.length)) return null;
+  return sv;
+}
+function clearSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
+
+function loadProgress() {
+  const p = _readJson(PROGRESS_KEY);
+  return (p && Array.isArray(p.cleared)) ? p : { cleared: [] };
+}
+function markCleared(epId) {
+  const p = loadProgress();
+  if (!p.cleared.includes(epId)) p.cleared.push(epId);
+  p.updatedAt = Date.now();
+  _writeJson(PROGRESS_KEY, p);
+}
+
+function sceneLabel(scene) {
+  if (!scene) return '';
+  if (scene.type === 'battle') return (DATA.maps[scene.mapId]?.name) || '전투';
+  if (scene.type === 'exploration') return (DATA.maps[scene.mapId]?.name) || '마을';
+  if (scene.type === 'cinematic') return '이야기';
+  return '대화';
+}
+
+/** 아군 성장치 스냅샷 — 전투를 거치며 오른 레벨/경험치를 다음 전투로 잇는다 */
+function capturePartyStats() {
+  const out = { ...(GameState.party || {}) };
+  for (const u of (GameState.allies || [])) {
+    if (!u || !u.id) continue;
+    out[u.id] = { level: u.level || 1, xp: u.xp || 0 };
+  }
+  return out;
+}
+
+function saveCheckpoint(epId, sceneIndex, scene) {
+  GameState.party = capturePartyStats();
+  const payload = {
+    v: SAVE_VERSION,
+    ep: epId,
+    sceneIndex,
+    sceneId: scene?.id || null,
+    label: `${EP_TITLES[epId] || epId} · ${sceneLabel(scene)}`,
+    flags: { ...(GameState.flags || {}) },
+    inventory: { ...(GameState.inventory || {}) },
+    party: GameState.party,
+    at: Date.now(),
+  };
+  _writeJson(SAVE_KEY, payload);
+  DLOG('[save] checkpoint', payload.ep, payload.sceneIndex, payload.sceneId);
+}
+
+/** 씬 진행 중 상태가 바뀌었을 때(플래그·아이템 획득) 즉시 재저장 */
+function saveNow() {
+  const ep = GameState.currentEp;
+  const i = GameState.currentSceneIndex;
+  if (!ep || !Number.isInteger(i)) return;
+  const sc = storyOf(ep)?.scenes?.[i];
+  if (sc) saveCheckpoint(ep, i, sc);
+}
+
+/** 씬 잔재(전장·마을·유닛) 일괄 제거 — 에피소드 전환 시 이전 무대가 비쳐 보이던 문제 */
+function resetSceneObjects() {
+  try { clearBattleScene(); } catch (e) { console.warn('[reset] clearBattleScene', e); }
+  if (GameState.townGroup) {
+    State.scene.remove(GameState.townGroup);
+    GameState.townGroup = null;
+  }
+  if (GameState.playerMesh) {
+    State.scene.remove(GameState.playerMesh);
+    GameState.playerMesh = null;
+  }
+  // 마을 NPC 등 남은 콘텐츠 오브젝트 제거 (카메라·조명은 유지)
+  for (const c of [...State.scene.children]) {
+    const t = c.userData && c.userData.type;
+    if (c.isLight || c.isCamera) continue;
+    if (t === 'npc' || t === 'unit' || t === 'squad' || t === 'environment' ||
+        t === 'tileMap' || (c.name || '').startsWith('town_')) {
+      State.scene.remove(c);
+    }
+  }
+  GameState.units = []; GameState.allies = []; GameState.enemies = [];
+  GameState.terrain3d = null;
+  try { clearCamBounds(GameState.switcher?.tacticalState); } catch (e) {}
+}
+
 // ── 타이틀 플로우 ────────────────────────────────
 function showTitle() {
   setMode('title');
   setHUDScene('title');
+  resetSceneObjects();
   const t = document.getElementById('v8-title');
   t.classList.remove('v8-hidden');
   hideUnitPanel();
@@ -967,6 +1128,38 @@ function showTitle() {
       });
     });
   }
+  refreshTitleMenu();
+}
+
+// 타이틀 메뉴 — 세이브가 있으면 '이어하기'를 맨 위에 노출
+function refreshTitleMenu() {
+  const menu = document.querySelector('#v8-title .menu');
+  if (!menu) return;
+  const sv = loadSave();
+  let btn = menu.querySelector('button[data-action="continue"]');
+  if (sv) {
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.className = 'v8-start-btn v8-continue-btn';
+      btn.type = 'button';
+      btn.dataset.action = 'continue';
+      btn.addEventListener('click', () => {
+        audio.playSFX('click');
+        resumeFromSave();
+      });
+      menu.insertBefore(btn, menu.firstChild);
+    }
+    btn.innerHTML = '이어하기<span class="v8-cont-sub"></span>';
+    btn.querySelector('.v8-cont-sub').textContent = sv.label || '';
+  } else if (btn) {
+    btn.remove();
+  }
+}
+
+function resumeFromSave() {
+  const sv = loadSave();
+  if (!sv) { showTurnBanner('저장된 기록이 없습니다', 1400); refreshTitleMenu(); return; }
+  startEpisode(sv.ep, { fromScene: sv.sceneIndex, restore: sv });
 }
 
 function hideTitle() {
@@ -980,18 +1173,30 @@ function hideTitle() {
 }
 
 // ── 에피소드 시작 ────────────────────────────────
-async function startEpisode(epId) {
+async function startEpisode(epId, opts = {}) {
   try {
-    DLOG('Episode start:', epId);
-    GameState.currentEp = epId;
-    const story = epId === 'ep1' ? DATA.story_ep1 : DATA.story_ep2;
+    DLOG('Episode start:', epId, opts);
+    const story = storyOf(epId);
     if (!story) throw new Error('스토리 데이터 없음: ' + epId);
 
+    const restore = opts.restore || null;
+    const startIdx = Number.isInteger(opts.fromScene) ? opts.fromScene : 0;
+
+    GameState.currentEp = epId;
+    GameState.flags = restore ? { ...(restore.flags || {}) } : { ep1_cleared: false };
+    GameState.inventory = restore ? { ...(restore.inventory || {}) } : {};
+    GameState.party = restore ? { ...(restore.party || {}) } : {};
+
     hideTitle();
+    resetSceneObjects();
     audio.stopBGM();
 
-    for (const scene of story.scenes) {
+    for (let sceneIdx = startIdx; sceneIdx < story.scenes.length; sceneIdx++) {
+      const scene = story.scenes[sceneIdx];
       GameState.currentScene = scene;
+      GameState.currentSceneIndex = sceneIdx;
+      // 씬 시작 = 체크포인트. 앱을 껐다 켜면 이 씬의 처음부터 재개된다.
+      saveCheckpoint(epId, sceneIdx, scene);
       window.__v8CurrentScene = (scene.type || '?') + ':' + (scene.id || '?');
       window.__lastTrigger = 'scene:' + scene.id;
       DLOG('Scene:', scene.id, scene.type);
@@ -1000,9 +1205,15 @@ async function startEpisode(epId) {
         if (scene.type === 'dialogue' || scene.type === 'tutorial') {
           await playDialogueScene(scene);
         } else if (scene.type === 'battle') {
-          await playBattleScene(scene);
+          // ★ 2026-08-31: '재시도'가 다음 씬(승리 대사)으로 넘어가 진 전투가
+          //   이긴 것으로 처리되던 버그 — 재시도는 같은 전투를 다시 돌린다.
+          let retryGuard = 0;
+          do {
+            await playBattleScene(scene);
+            retryGuard++;
+          } while (GameState.flags.battleResult === 'retry' && retryGuard < 30);
           if (GameState.flags.battleResult === 'defeat') {
-            // 패배 시 타이틀 복귀
+            // 패배 시 타이틀 복귀 (체크포인트는 이 전투 시작 지점에 남는다)
             showTitle();
             return;
           }
@@ -1020,10 +1231,16 @@ async function startEpisode(epId) {
       }
     }
 
-    // 에피소드 완료 → EP.1 클리어 플래그 + 다음 에피소드 예고
+    // 에피소드 완료 → 클리어 기록 + 다음 에피소드 예고
     if (epId === 'ep1') GameState.flags.ep1_cleared = true;
-    if (story.next === 'ep2') {
+    markCleared(epId);
+    GameState.currentSceneIndex = null;
+    if (story.next === 'ep2' && DATA.story_ep2) {
+      // 이어하기가 EP.2 첫 장면을 가리키게 해 다음 행동을 남긴다
+      saveCheckpoint('ep2', 0, DATA.story_ep2.scenes[0]);
       await showEpPreview('EP.2', '단군의 건국', '신시에 내려선 환웅의 아들 단군 — 새로운 나라 고조선을 세운다.');
+    } else {
+      clearSave();
     }
     showTitle();
   } catch (e) {
@@ -1081,7 +1298,9 @@ async function playDialogueScene(scene) {
       camSize: ts.camSize,
       azimuth: ts.azimuth,
       elevation: ts.elevation,
+      boundsMap: ts.boundsMap || null,
     };
+    clearCamBounds(ts);   // 무대는 원점(0,0)에 서므로 맵 경계를 풀어야 한다
     sw.setLockMode(null);
     await sw.switchTo('tactical', 0, { force: true });
     ts.target.set(0, 0.55, 0);
@@ -1133,6 +1352,7 @@ async function playDialogueScene(scene) {
       ts.camSize = savedCam.camSize;
       ts.azimuth = savedCam.azimuth;
       ts.elevation = savedCam.elevation;
+      ts.boundsMap = savedCam.boundsMap || null;
       if (savedCam.lock) sw.setLockMode(savedCam.lock);
     }
   }
@@ -1169,7 +1389,10 @@ async function playBattleScene(scene) {
   {
     const envCx = mapData.width * TILE_SIZE / 2;
     const envCz = mapData.height * TILE_SIZE / 2;
-    const env = buildEnvironment(scene.env || 'dawn', { centerX: envCx, centerZ: envCz });
+    const env = buildEnvironment(scene.env || 'dawn', {
+      centerX: envCx, centerZ: envCz,
+      mapRadius: Math.hypot(mapData.width, mapData.height) * TILE_SIZE / 2,
+    });
     State.scene.add(env);
     GameState.env3d = env;
     if (env.userData.fog && State.scene.fog) {
@@ -1251,6 +1474,12 @@ async function playBattleScene(scene) {
     Math.max(GameState.switcher.tacticalState.camSizeMin, _autoSize)
   );
 
+  // ★ 2026-08-31: 카메라 이동 경계 — 전장이 화면 구석으로 밀려나지 않게
+  setCamBounds(GameState.switcher.tacticalState, {
+    centerX: cx, centerZ: cz,
+    worldW: mapData.width * TILE_SIZE, worldH: mapData.height * TILE_SIZE,
+  });
+
   // 카메라 잠금 (EP.1)
   const camLocked = (scene.camera === 'tactical_locked');
   GameState.switcher.setLockMode(camLocked ? 'tactical' : null);
@@ -1322,6 +1551,7 @@ async function playBattleScene(scene) {
   if (!State.updateCallbacks.includes(tickCursor)) State.updateCallbacks.push(tickCursor);
   initDPad();
   onDPadInput(handleDPadInput);
+  setDPadLabels('결정', '취소');
   showDPad();
   // ★ 2026-07-07 QA P1: 전투용 dpad 레이아웃(조이스틱 숨김·버튼을 유닛 패널 위로)
   document.body.classList.add('v8-mode-battle');
@@ -1357,6 +1587,9 @@ async function playBattleScene(scene) {
       }).start());
     }
     audio.playBGM('victory');
+    // 전투에서 오른 레벨/경험치를 세이브에 반영
+    GameState.party = capturePartyStats();
+    saveNow();
     await showVictoryScreen(scene);
   } else if (GameState.flags.battleResult === 'defeat') {
     await showDefeatScreen(scene);
@@ -1394,12 +1627,23 @@ async function showDefeatScreen(scene) {
 
 function instantiateUnits(ids, defs, team, starts) {
   const arr = [];
+  const seenIds = new Set();
   (ids || []).forEach((id, i) => {
     const d = defs[id];
     if (!d) { console.warn('[unit missing]', id); return; }
     const start = starts[i] || [0, 0];
+    // ★ 2026-08-31: 같은 유닛을 여러 기 배치하면(예: ep2 호족병사 2기) id가 겹쳐
+    //   메시 Map·유닛 조회가 서로를 덮어썼다. 런타임 id만 고유화한다.
+    let uid = id;
+    if (seenIds.has(uid)) {
+      let k = 2;
+      while (seenIds.has(`${id}#${k}`)) k++;
+      uid = `${id}#${k}`;
+    }
+    seenIds.add(uid);
     const u = {
-      id,
+      id: uid,
+      defId: id,
       name: d.name,
       title: d.title,
       class: d.class,
@@ -1423,6 +1667,17 @@ function instantiateUnits(ids, defs, team, starts) {
       mpMax: d.mmp || d.mp,
       xpMax: 100,
     };
+    // 세이브에 남은 성장치 복원 — 레벨업 공식(xp_level.js)을 그대로 재적용
+    const grown = (team === 'ally') ? (GameState.party || {})[uid] : null;
+    if (grown && grown.level > 1) {
+      const lv = Math.min(30, grown.level);
+      for (let k = 1; k < lv; k++) tryLevelUp(u, { suppressFx: true });
+      u.hp = u.mhp; u.mp = u.mmp;
+      u.xp = grown.xp || 0;
+    }
+    u.xpAtStart = u.xp || 0;
+    u.levelAtStart = u.level || 1;
+    u.hpMax = u.mhp; u.mpMax = u.mmp;
     arr.push(u);
   });
   return arr;
@@ -2142,11 +2397,17 @@ function showTurnBanner(text, duration = 1200) {
 }
 
 // 첫 턴 가이드 — 우측 상단 영걸전 안내
+let _hintTimer = null;
 function showFirstTurnHint() {
   const el = document.getElementById('v8-first-turn-hint');
-  if (el) el.classList.add('v8-show');
+  if (!el) return;
+  el.classList.add('v8-show');
+  // 계속 화면을 가리지 않도록 10초 뒤 자동으로 접는다 (유닛 선택 시에도 사라짐)
+  clearTimeout(_hintTimer);
+  _hintTimer = setTimeout(() => el.classList.remove('v8-show'), 10000);
 }
 function hideFirstTurnHint() {
+  clearTimeout(_hintTimer);
   const el = document.getElementById('v8-first-turn-hint');
   if (el) el.classList.remove('v8-show');
 }
@@ -2231,6 +2492,7 @@ async function playExplorationScene(scene) {
   const townEnv = buildEnvironment('day', {
     centerX: mapData.width * TILE_SIZE / 2,
     centerZ: mapData.height * TILE_SIZE / 2,
+    mapRadius: Math.hypot(mapData.width, mapData.height) * TILE_SIZE / 2,
   });
   State.scene.add(townEnv);
   if (townEnv.userData.fog && State.scene.fog) {
@@ -2282,13 +2544,19 @@ async function playExplorationScene(scene) {
     const cz = mapData.height * TILE_SIZE / 2;
     GameState.switcher.tacticalState.target.set(cx, 0, cz);
     const _aspect = window.innerWidth / window.innerHeight;
-    const fitW = (mapData.width  * TILE_SIZE) / (2 * Math.max(_aspect, 0.4)) * 1.2;
-    const fitH = (mapData.height * TILE_SIZE) / 2 * 1.2;
-    const _autoSize = Math.max(fitW, fitH, 12);
+    // 여백 1.2 → 1.05: 마을이 화면 가운데 조막만하게 뜨던 문제 (감사 B4)
+    const fitW = (mapData.width  * TILE_SIZE) / (2 * Math.max(_aspect, 0.4)) * 1.05;
+    const fitH = (mapData.height * TILE_SIZE) / 2 * 1.05;
+    const _autoSize = Math.max(fitW, fitH, 10);
     GameState.switcher.tacticalState.camSize = Math.min(
       GameState.switcher.tacticalState.camSizeMax,
       Math.max(GameState.switcher.tacticalState.camSizeMin, _autoSize)
     );
+    // 마을이 화면 구석으로 밀리지 않게 — 시야가 맵보다 크면 중앙 고정
+    setCamBounds(GameState.switcher.tacticalState, {
+      centerX: cx, centerZ: cz,
+      worldW: mapData.width * TILE_SIZE, worldH: mapData.height * TILE_SIZE,
+    });
   }
   await GameState.switcher.switchTo(targetCam, 700, { force: true });
 
@@ -2301,8 +2569,11 @@ async function playExplorationScene(scene) {
     camMode: targetCam,
     camLocked: false,
     location: mapData.name || '마을',
+    objective: scene.objective || '',
   });
   hideUnitPanel();
+  // ★ 마을에는 전투용 '대기'(턴 종료) 버튼이 필요 없다 — 씬 클래스로 숨김
+  document.body.classList.add('v8-mode-town');
 
   // BGM
   audio.stopBGM();
@@ -2318,6 +2589,7 @@ async function playExplorationScene(scene) {
 
   // 마을 컨트롤 — 새 가상 조이스틱 + A/B 버튼 사용
   initDPad();
+  setDPadLabels('대화·조사', '출진');
   showDPad();
   onDPadInput((cmd) => {
     if (isDialogueActive()) return;
@@ -2454,6 +2726,8 @@ async function playExplorationScene(scene) {
         GameState.flags[body.setFlag] = true;
         DLOG('[trigger] flag set:', body.setFlag);
       }
+      // 진행 상황(플래그·소지품)이 바뀌었으니 즉시 저장
+      if (body.setFlag || Array.isArray(body.grant)) saveNow();
     }
 
     // exitScene: 현재 exploration 씬 종료
@@ -2591,6 +2865,8 @@ async function playExplorationScene(scene) {
   }
   if (hint && hint.parentNode) hint.parentNode.removeChild(hint);
   hideDPad();
+  document.body.classList.remove('v8-mode-town');
+  clearCamBounds(GameState.switcher?.tacticalState);
 
   State.scene.remove(playerMesh);
   for (const m of npcMeshes) State.scene.remove(m);
@@ -2613,7 +2889,7 @@ function _showExplorationHint(title) {
   h.style.cssText = [
     'position:fixed', 'top:52px', 'left:50%', 'transform:translateX(-50%)',
     'z-index:240', 'pointer-events:none',
-    'padding:10px 18px',
+    'padding:8px 14px', 'max-width:86vw',
     'background:rgba(26,20,40,0.78)',
     'border:1px solid #ffd700', 'border-radius:6px',
     'color:#ffd700', "font-family:'Nanum Myeongjo','Batang','Malgun Gothic',serif",
@@ -2627,9 +2903,11 @@ function _showExplorationHint(title) {
     ? '이동: 조이스틱 · 대화/조사: A · 출진: B'
     : '이동: WASD/방향키 · 대화: E/Enter · 출진: ESC';
   h.innerHTML = `
-    <div style="font-size:17px;font-weight:700;margin-bottom:4px;">${title}</div>
+    <div style="font-size:16px;font-weight:700;margin-bottom:3px;word-break:keep-all;">${title}</div>
     <div style="font-size:12px;color:#e8d0a0;font-weight:400;word-break:keep-all;">${controls}</div>
   `;
+  // 20초 뒤 자연스럽게 사라짐 — 화면을 계속 가리지 않게
+  setTimeout(() => { h.style.transition = 'opacity .8s'; h.style.opacity = '0'; }, 20000);
   document.body.appendChild(h);
   return h;
 }
@@ -2679,7 +2957,9 @@ async function playCinematicScene(scene) {
     cineSavedCam = {
       lock: sw.lockMode, target: ts.target.clone(),
       camSize: ts.camSize, azimuth: ts.azimuth, elevation: ts.elevation,
+      boundsMap: ts.boundsMap || null,
     };
+    clearCamBounds(ts);
     sw.setLockMode(null);
     await sw.switchTo('tactical', 0, { force: true });
     ts.target.set(0, 0.55, 0);
@@ -2769,6 +3049,7 @@ async function playCinematicScene(scene) {
       ts.camSize = cineSavedCam.camSize;
       ts.azimuth = cineSavedCam.azimuth;
       ts.elevation = cineSavedCam.elevation;
+      ts.boundsMap = cineSavedCam.boundsMap || null;
       if (cineSavedCam.lock) sw.setLockMode(cineSavedCam.lock);
     }
   }
@@ -2803,7 +3084,13 @@ audio.setSFXVolume(s.sfxVolume / 100);
 
 // 전역 노출 (디버그) — 에피소드 시작 전에 노출해야 QA가 진행 중 상태를 읽을 수 있다
 if (DEBUG) {
-  window.v8 = { GameState, State, DATA, startEpisode, audio, THREE };
+  window.v8 = {
+    GameState, State, DATA, startEpisode, audio, THREE,
+    // QA 자동 플레이가 사람과 같은 경로로 게임을 조작할 수 있도록 노출 (?debug=1 전용)
+    PHASE, handleAction, performAttack, performSkill, onTileClick, handleDPadInput,
+    calcMoveRange, manhattan, animateMove,
+    loadSave, clearSave, loadProgress, saveNow,
+  };
 
   // ★ QA 자동 플레이 헬퍼 — 실제 게임 함수(selectUnit/confirmMove/performAttack)로
   //   아군 1기를 한 수 진행. 사람 플레이와 동일 경로.
@@ -2870,6 +3157,14 @@ if (FORCE_EP === '1') {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('./sw.js').catch(function() {});
+  });
+  // 새 워커가 곧바로 제어권을 잡으면(skipWaiting+claim) 한 번만 새로고침 —
+  // 배포 직후 첫 실행에서 새 HTML + 옛 캐시 모듈이 섞이는 것을 막는다.
+  var _swReloaded = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function() {
+    if (_swReloaded) return;
+    _swReloaded = true;
+    location.reload();
   });
 }
 </script>

@@ -500,3 +500,113 @@
 
 /* 마을(비전투)에서는 L/R 유닛 사이클 버튼 숨김 */
 body:not(.v8-mode-battle) #v8-dpad-shoulder { display: none !important; }
+
+/* ═══════════ 2026-08-31 품질감사 반영 ═══════════ */
+
+/* ── (1) 한글 단어 중간 줄바꿈 방지 ──────────────────────────
+   HUD·대사·오버레이의 한국어 텍스트가 "아 / 군 턴", "환 / 인의 마을"처럼
+   음절 단위로 쪼개지던 문제. 어절 단위(keep-all)로 끊고, 한 어절이 폭을
+   넘길 때만 강제 줄바꿈(overflow-wrap)한다. */
+#v8-hud-top, #v8-hud-top *,
+#v8-turn-badge, #v8-turn-side, #v8-objective, #v8-location,
+#v8-ally-count, #v8-ally-count *,
+#v8-unit-panel, #v8-unit-panel *,
+#v8-dialogue, #v8-dialogue *,
+#v8-turn-banner, #v8-ep-preview, #v8-ep-preview *,
+#v8-cinematic, #v8-cinematic *,
+#v8-action-queue, #v8-action-queue *,
+.v8-modal, .v8-modal * {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 상단 바는 한 줄 고정 — 넘치면 말줄임 */
+#v8-hud-top .v8-slot { min-width: 0; }
+#v8-location {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 34vw;
+}
+/* 목표는 잘리면 뜻이 사라지므로 두 줄까지 허용 (어절 단위 줄바꿈) */
+#v8-objective {
+  max-width: 58vw;
+  line-height: 1.16;
+  max-height: 2.4em;
+  overflow: hidden;
+  font-size: 12.5px;
+}
+#v8-turn-badge, #v8-ally-count { white-space: nowrap; }
+
+/* ── (2) 마을(탐험) 씬: 전투용 '대기'(턴 종료) 버튼 숨김 ────────
+   탐험 중인데 전투 턴종료 버튼이 하단 중앙에 남아 있던 문제. */
+body.v8-mode-town #v8-dpad-menu { display: none !important; }
+#v8-hud.v8-scene-exploration #v8-objective { display: inline !important; }
+#v8-hud.v8-scene-exploration #v8-objective:empty { display: none !important; }
+
+/* ── (3) 대화창 — 고정 높이로 생기던 하단 빈 공간 제거 ──────── */
+#v8-dialogue {
+  height: auto;
+  min-height: 0;
+  max-height: 42vh;
+  padding-bottom: 26px;
+}
+.v8-dlg-text { min-height: 2.6em; }
+@media (max-width: 720px) {
+  #v8-dialogue { padding: 12px 16px 24px; }
+  .v8-dlg-text { font-size: 14.5px; min-height: 2.4em; }
+  .v8-dlg-portrait { width: 34px; height: 34px; font-size: 20px; }
+  .v8-dlg-speaker { font-size: 15px; }
+}
+/* 화자 칩에 실제 초상이 들어갈 때 — 이모지 대신 이미지/SVG를 꽉 채움 */
+.v8-dlg-portrait { overflow: hidden; padding: 0; }
+.v8-dlg-portrait img, .v8-dlg-portrait svg {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 16%;
+  display: block;
+}
+
+/* ── (4) 전투 화면 공간 재배치 ──────────────────────────────
+   좁은 화면에서 '행동 순서' 패널이 좌측을, A/B·대기 버튼이 중앙을 덮어
+   실제 격자가 화면의 1/4밖에 안 보이던 문제(감사 싸구려 #8).
+   · 행동 순서 → 상단 가로 띠(초상+HP만)
+   · 유닛 패널 → 높이 축소
+   · A/B·줌·대기 → 화면 하단 가장자리로 */
+@media (max-width: 720px) {
+  /* (행동 순서 가로 띠는 action_queue.js의 자체 style에서 정의 — 주입 순서상 그쪽이 이긴다) */
+
+  /* 유닛 패널 다이어트 */
+  #v8-unit-panel { padding: 8px 12px 10px; }
+  #v8-unit-panel .v8-unit-head { margin-bottom: 4px; gap: 8px; }
+  #v8-unit-panel .v8-unit-portrait { width: 30px; height: 30px; font-size: 18px; }
+  #v8-unit-panel .v8-unit-name { font-size: 14px; }
+  #v8-unit-panel .v8-unit-lv { font-size: 11px; }
+  #v8-unit-panel .v8-bar { font-size: 10px; gap: 5px; }
+  #v8-unit-panel .v8-bar-label { width: 22px; }
+  #v8-unit-panel .v8-bar-track { height: 8px; }
+  #v8-unit-panel .v8-bar-val { width: 46px; }
+  #v8-unit-panel .v8-actions { margin-top: 7px; gap: 5px; }
+  #v8-unit-panel .v8-action-btn { min-width: 0; padding: 8px 6px; font-size: 13px; }
+
+  /* 조작 버튼을 격자 밖(화면 최하단)으로 */
+  body.v8-mode-battle #v8-dpad-ab   { bottom: 126px; width: 132px; height: 108px; }
+  body.v8-mode-battle #v8-dpad-menu { bottom: 132px; padding: 6px 16px; }
+  body.v8-mode-battle #v8-dpad-zoom { bottom: 126px; }
+  #v8-dpad-ab .v8-dpad-ab-btn { width: 56px; height: 56px; font-size: 20px; }
+  #v8-dpad-zoom .v8-dpad-zb { width: 40px; height: 40px; font-size: 20px; }
+}
+
+/* 유닛 패널이 닫혀 있는 동안엔 버튼을 화면 맨 아래로 — 격자 최대 확보.
+   (v8-panel-open 클래스는 hud.js showUnitPanel/hideUnitPanel이 토글) */
+body.v8-mode-battle:not(.v8-panel-open) #v8-dpad-ab   { bottom: 22px; }
+body.v8-mode-battle:not(.v8-panel-open) #v8-dpad-menu { bottom: 30px; }
+body.v8-mode-battle:not(.v8-panel-open) #v8-dpad-zoom { bottom: 22px; }
+
+/* 전투 안내 보조 문구 */
+#v8-first-turn-hint .v8-hint-key {
+  color: #c9e8ff; font-size: 12px;
+}
+
+/* 날씨 아이콘 SVG */
+#v8-weather { display: inline-flex; align-items: center; }
+#v8-weather svg.v8-wx { width: 20px; height: 20px; display: block; fill: none; }

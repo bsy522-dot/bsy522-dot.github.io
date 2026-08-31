@@ -59,6 +59,7 @@
           { "speakerId": "dangun", "speaker": "단군", "text": "회의를 소집하라." }
         ]
       },
+      "objective": "회의장에서 회의 소집",
       "exitTrigger": "council",
       "nextSceneOnExit": "council"
     },
