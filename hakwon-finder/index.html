@@ -49,13 +49,17 @@
     padding-top:env(safe-area-inset-top);
   }
   .hd{display:flex;align-items:center;gap:10px;padding:11px 0}
+  /* 글자를 키우면(안드로이드 textZoom) 로고도 같이 커져야 제목과 안 겹친다 */
   .logo{
-    width:34px;height:34px;border-radius:9px;background:var(--accent);
+    width:2.1em;height:2.1em;min-width:2.1em;border-radius:.55em;background:var(--accent);
     color:var(--accent-fg);display:grid;place-items:center;
-    font-weight:800;font-size:17px;flex:none;
+    font-weight:800;font-size:1.06em;flex:none;
   }
-  .ttl{font-weight:800;font-size:18px;letter-spacing:-.2px}
-  .sub{font-size:12px;color:var(--fg-mute);margin-top:1px}
+  .hdtxt{min-width:0;flex:1 1 auto}
+  .ttl{font-weight:800;font-size:1.13em;letter-spacing:-.2px;
+       overflow-wrap:anywhere;word-break:keep-all}
+  .sub{font-size:.75em;color:var(--fg-mute);margin-top:1px;
+       overflow-wrap:anywhere;word-break:keep-all}
   .spacer{flex:1}
   .iconbtn{
     background:var(--surface-2);border:1px solid var(--line);color:var(--fg-dim);
@@ -267,7 +271,7 @@
   <div class="wrap">
     <div class="hd">
       <div class="logo" aria-hidden="true">학</div>
-      <div>
+      <div class="hdtxt">
         <div class="ttl">학원파인더</div>
         <div class="sub" id="hdsub">전국 학원·교습소</div>
       </div>
@@ -753,8 +757,9 @@ function renderSidoPicker(){
 
   if (GEO && GEO.rows && GEO.rows.length && navigator.geolocation){
     var nb = el("button","nearbtn"); nb.type="button"; nb.id="nearBtn";
-    nb.innerHTML = '<span class="ic" aria-hidden="true">📍</span><span>내 주변 학원 찾기' +
-                   '<small>지금 있는 시군구를 자동으로 골라 줍니다</small></span>';
+    nb.innerHTML = '<span class="ic" aria-hidden="true">📍</span><span>내 지역 자동으로 고르기' +
+                   '<small>지금 있는 시군구를 찾아 줍니다 · 학원까지의 거리는 ' +
+                   '원본에 좌표가 없어 알 수 없습니다</small></span>';
     nb.addEventListener("click", function(){ locateMe(nb); });
     w.appendChild(nb);
   }
@@ -924,7 +929,7 @@ function locateMe(btn){
       ? "위치 권한이 거부되어 아래에서 지역을 골라야 합니다."
       : "위치를 받지 못했습니다(" + esc(err.message) + "). 아래에서 지역을 고르세요.";
     if (btn){ btn.disabled = false; btn.querySelector("small").textContent =
-              "지금 있는 시군구를 자동으로 골라 줍니다"; }
+              "지금 있는 시군구를 찾아 줍니다 · 학원까지의 거리는 원본에 좌표가 없어 알 수 없습니다"; }
     render();
   }, {enableHighAccuracy:false, timeout:8000, maximumAge:600000});
 }
