@@ -233,7 +233,7 @@
   }
   .sheet h2{margin:0 0 5px; font-size:1.15rem; letter-spacing:-.02em; padding-right:52px}
   .sheet .close{position:absolute; top:10px; right:12px}
-  .kv{display:grid; grid-template-columns:minmax(0,4.6em) minmax(0,1fr);
+  .kv{display:grid; grid-template-columns:minmax(0,5.2em) minmax(0,1fr);
     gap:7px 10px; margin:14px 0 0; font-size:.88rem}
   .kv dt{color:var(--fg-mute); font-size:.78rem; padding-top:2px}
   .kv dd{margin:0; word-break:break-word; min-width:0}
@@ -988,7 +988,7 @@ function openSheet(r){
     ["주소", r.a],
     ["시군구", r.u]
   ];
-  if(r._d != null && isFinite(r._d)) kv.push(["내 위치에서", fmtDist(r._d)]);
+  if(r._d != null && isFinite(r._d)) kv.push(["거리", fmtDist(r._d)]);
 
   var head =
     '<button class="icon-btn close" id="sheetClose" aria-label="닫기">✕</button>' +
