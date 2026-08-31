@@ -414,6 +414,16 @@ var esc = function(s){
 };
 var fmt = function(n){ return Number(n).toLocaleString("ko-KR"); };
 
+/* 목록 1·2·3위가 "(유)" "(의)" "(주)" 로 시작하면 명부처럼 보인다.
+   화면에는 법인격 표기를 뗀 상호를 쓰고, 등록 상호는 상세의 "원본 정보"에 그대로 남긴다.
+   (검색은 원본 상호(r.n)로 하므로 "주식회사"로도 계속 찾힌다.) */
+var CORP_PRE = /^\s*(\(주\)|\(유\)|\(의\)|\(재\)|\(사\)|\(합\)|주식회사|유한회사|유한책임회사|합자회사|의료법인|재단법인|사단법인|사회복지법인|학교법인)\s*/;
+var CORP_POST = /\s*(\(주\)|\(유\)|주식회사)\s*$/;
+function dispName(n){
+  var s = String(n == null ? "" : n).replace(CORP_PRE, "").replace(CORP_POST, "").trim();
+  return s || String(n == null ? "" : n);   // 전부 지워지면 원본을 그대로 쓴다
+}
+
 var SVG_PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"' +
   ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
   '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>';
@@ -738,7 +748,7 @@ function drawMap(){
       radius: 5, weight: 1.5, color: STATUS_COLOR[r.s] || "#94a3b8",
       fillColor: STATUS_COLOR[r.s] || "#94a3b8", fillOpacity: .55
     });
-    m.bindPopup("<b>" + esc(r.n) + "</b>" + esc(r.a));
+    m.bindPopup("<b>" + esc(dispName(r.n)) + "</b>" + esc(r.a));
     m.on("click", function(){ openSheet(r); });
     m.addTo(layer);
     bounds.push([r.y, r.x]);
@@ -941,7 +951,7 @@ function renderMore(){
     b.className = "cardmain";
     b.dataset.idx = i;
     b.innerHTML =
-      '<div class="top"><span class="name">' + esc(r.n) + "</span>" +
+      '<div class="top"><span class="name">' + esc(dispName(r.n)) + "</span>" +
       '<span class="badge ' + STATUS_CLASS[r.s] + '">' + esc(statusLabel(r)) + "</span></div>" +
       '<div class="addr">' + esc(r.a) + "</div>" +
       '<div class="meta">' + meta.join(" · ") + "</div>";
@@ -952,7 +962,7 @@ function renderMore(){
       var a = document.createElement("a");
       a.className = "callbtn";
       a.href = "tel:" + String(r.p).replace(/[^0-9+]/g, "");
-      a.setAttribute("aria-label", r.n + " 전화 걸기 " + fmtPhone(r.p));
+      a.setAttribute("aria-label", dispName(r.n) + " 전화 걸기 " + fmtPhone(r.p));
       a.innerHTML = SVG_PHONE + "<span>전화</span>";
       card.appendChild(a);
     }
@@ -992,7 +1002,7 @@ function openSheet(r){
 
   var head =
     '<button class="icon-btn close" id="sheetClose" aria-label="닫기">✕</button>' +
-    '<h2 id="sheetName">' + esc(r.n) + "</h2>" +
+    '<h2 id="sheetName">' + esc(dispName(r.n)) + "</h2>" +
     '<span class="badge ' + STATUS_CLASS[r.s] + '">' + esc(statusLabel(r)) + "</span>";
 
   var action;
@@ -1018,6 +1028,7 @@ function openSheet(r){
 
   /* 관리번호·인허가일은 행정 내부 값이다. 기본은 접어둔다. */
   var raw = "<details class=\"raw\"><summary>원본 정보 (행정 데이터)</summary><dl class=\"kv\">" +
+    (dispName(r.n) !== r.n ? "<dt>등록 상호</dt><dd>" + esc(r.n) + "</dd>" : "") +
     "<dt>인허가일</dt><dd>" + esc(r.d || "-") + "</dd>" +
     "<dt>관리번호</dt><dd>" + esc(r.i) + "</dd>" +
     "</dl></details>";
