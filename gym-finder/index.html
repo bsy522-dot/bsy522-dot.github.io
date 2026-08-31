@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>헬스장파인더 — 전국 헬스장·수영장 위치와 영업상태</title>
-<meta name="description" content="행정안전부 인허가 데이터로 만든 전국 체력단련장·수영장·종합체육시설 디렉토리. 시도·시군구별 위치, 영업/휴업/폐업 상태를 지도와 목록으로 확인합니다.">
+<title>헬스장파인더 — 내 주변 헬스장·수영장 찾기</title>
+<meta name="description" content="행정안전부 인허가 데이터로 만든 전국 체력단련장·수영장·종합체육시설 디렉토리. 내 위치에서 가까운 순으로 보고, 전화번호가 있으면 바로 걸 수 있습니다.">
 <meta name="theme-color" content="#0f172a">
 <meta name="color-scheme" content="dark light">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta property="og:type" content="website">
-<meta property="og:title" content="헬스장파인더 — 전국 헬스장·수영장 위치와 영업상태">
+<meta property="og:title" content="헬스장파인더 — 내 주변 헬스장·수영장 찾기">
 <meta property="og:description" content="행정안전부 인허가 데이터 기반 전국 체력단련장·수영장 디렉토리">
 <link rel="stylesheet" href="vendor/leaflet.css">
 <style>
@@ -21,94 +21,138 @@
     --accent:#34d399; --accent-fg:#052e1b; --accent-soft:rgba(52,211,153,.14);
     --open:#34d399; --rest:#fbbf24; --closed:#f87171; --void:#94a3b8;
     --radius:14px; --shadow:0 8px 28px rgba(0,0,0,.38);
+    --tap:44px;                 /* 최소 터치 타겟 */
   }
   html[data-theme="light"]{
     --bg:#f4f7fb; --surface:#ffffff; --surface-2:#eef3fa; --line:#d8e2f0;
-    --fg:#101a2c; --fg-dim:#4a5b76; --fg-mute:#7c8aa3;
+    --fg:#101a2c; --fg-dim:#4a5b76; --fg-mute:#6b7a94;
     --accent:#0f9d63; --accent-fg:#ffffff; --accent-soft:rgba(15,157,99,.12);
-    --open:#0f9d63; --rest:#b7791f; --closed:#d64545; --void:#8494ab;
+    --open:#0f9d63; --rest:#a06a10; --closed:#d64545; --void:#7a8aa1;
     --shadow:0 8px 24px rgba(16,26,44,.10);
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
+  html{height:100%}
   body{
     margin:0; background:var(--bg); color:var(--fg);
     font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","맑은 고딕",
       "Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
     font-size:15px; line-height:1.5; -webkit-text-size-adjust:100%;
+    /* 글자확대 시에도 레이아웃이 무너지지 않도록 높이 계산을 JS 가 아닌
+       flex 에 맡긴다. (예전엔 main 높이를 calc(100vh - 헤더높이) 로 박아넣어서
+       헤더가 커지면 목록이 사라졌다.) */
+    height:100vh; height:100dvh;
+    display:flex; flex-direction:column; overflow:hidden;
   }
   button,select,input{font:inherit; color:inherit}
   button{cursor:pointer}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 
   /* ---------- header ---------- */
   header{
-    position:sticky; top:0; z-index:600; background:var(--surface);
-    border-bottom:1px solid var(--line); padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px)*0);
+    flex:none; background:var(--surface); border-bottom:1px solid var(--line);
+    padding:8px 12px 9px;
+    /* 하드 상한 — 글자를 아무리 키워도 헤더가 화면의 38% 를 넘지 못한다.
+       (건수·목록/지도 줄은 header 밖으로 빼서 항상 보이게 했다.) */
+    max-height:38vh; overflow-y:auto; overscroll-behavior:contain;
   }
-  .bar{display:flex; align-items:center; gap:10px}
-  .brand{display:flex; flex-direction:column; align-items:flex-start; gap:0; min-width:0}
-  .brand h1{margin:0; font-size:18px; font-weight:800; letter-spacing:-.02em; white-space:nowrap}
+  .bar{display:flex; align-items:center; gap:8px; min-width:0}
+  .brand{display:flex; flex-direction:column; align-items:flex-start; min-width:0; flex:1}
+  .brand h1{margin:0; font-size:1.15rem; font-weight:800; letter-spacing:-.02em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%}
   .brand .dot{color:var(--accent)}
-  .brand small{color:var(--fg-mute); font-size:11px; white-space:nowrap;
-    overflow:hidden; text-overflow:ellipsis; max-width:100%}
-  @media (min-width:900px){
-    .brand{flex-direction:row; align-items:baseline; gap:9px}
-  }
-  .spacer{flex:1}
+  .brand small{color:var(--fg-mute); font-size:.75rem; line-height:1.35;
+    overflow:hidden; text-overflow:ellipsis; max-width:100%; white-space:nowrap}
   .icon-btn{
-    background:var(--surface-2); border:1px solid var(--line); color:var(--fg-dim);
-    border-radius:10px; width:36px; height:36px; display:grid; place-items:center; font-size:15px;
+    flex:none; background:var(--surface-2); border:1px solid var(--line); color:var(--fg-dim);
+    border-radius:11px; min-width:var(--tap); min-height:var(--tap);
+    display:grid; place-items:center; font-size:1rem;
   }
   .icon-btn:hover{color:var(--fg); border-color:var(--accent)}
 
-  /* ---------- filters ---------- */
-  .filters{display:flex; flex-wrap:wrap; gap:8px; margin-top:9px}
-  .field{position:relative; flex:1 1 140px; min-width:0; max-width:300px}
-  .field.search{flex:1 1 100%; order:-1; max-width:none}
-  @media (min-width:900px){
-    .field.search{flex:1 1 300px; order:0; max-width:420px}
+  /* 내 주변 / 지역 — 이 앱의 주 행동. 라벨을 반드시 붙인다. */
+  .quick{display:flex; gap:8px; margin-top:8px; flex-wrap:wrap}
+  .qbtn{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    min-height:var(--tap); padding:6px 14px; border-radius:12px;
+    border:1px solid var(--line); background:var(--surface-2); color:var(--fg);
+    font-size:.9rem; font-weight:600; min-width:0;
   }
-  select,input[type="search"]{
+  .qbtn svg{flex:none; width:1.05em; height:1.05em}
+  .qbtn .lbl{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+  /* em 기준 폭 — 글자를 키우면 눌려 잘리는 대신 다음 줄로 내려간다 */
+  .qbtn.near{flex:0 1 auto; background:var(--accent); border-color:var(--accent);
+    color:var(--accent-fg); font-weight:700}
+  .qbtn.near[aria-pressed="true"]{box-shadow:inset 0 0 0 2px rgba(255,255,255,.28)}
+  .qbtn.region{flex:1 1 12em; justify-content:space-between; text-align:left}
+  .qbtn .caret{flex:none; opacity:.7; font-size:.75em}
+
+  /* ---------- 검색 ---------- */
+  .field{position:relative; margin-top:8px; min-width:0}
+  input[type="search"]{
     width:100%; background:var(--surface-2); border:1px solid var(--line);
-    color:var(--fg); border-radius:10px; padding:9px 11px; outline:none; min-width:0;
-    -webkit-appearance:none; appearance:none;
+    color:var(--fg); border-radius:11px; padding:0 12px; min-height:var(--tap);
+    outline:none; min-width:0; -webkit-appearance:none; appearance:none;
+    text-overflow:ellipsis;
   }
-  select{background-image:linear-gradient(45deg,transparent 50%,var(--fg-mute) 50%),
-    linear-gradient(135deg,var(--fg-mute) 50%,transparent 50%);
-    background-position:calc(100% - 16px) 17px, calc(100% - 11px) 17px;
-    background-size:5px 5px,5px 5px; background-repeat:no-repeat; padding-right:30px}
+  input::placeholder{text-overflow:ellipsis}
+  input:focus{border-color:var(--accent)}
   input[type="search"]::-webkit-search-cancel-button{filter:invert(.5)}
-  select:focus,input:focus{border-color:var(--accent)}
-  .chips{display:flex; gap:6px; flex-wrap:nowrap; margin-top:8px;
-    overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; padding-bottom:1px}
+
+  /* ---------- 필터 칩 ---------- */
+  .chipsWrap{position:relative; margin-top:8px}
+  /* 양옆이 잘려 있다는 사실을 페이드로 알린다(스크롤 힌트) */
+  .chipsWrap::after,.chipsWrap::before{
+    content:""; position:absolute; top:0; bottom:0; width:30px;
+    pointer-events:none; opacity:0; transition:opacity .15s; z-index:1;
+  }
+  .chipsWrap::after{right:0; background:linear-gradient(to right,transparent,var(--surface))}
+  .chipsWrap::before{left:0; background:linear-gradient(to left,transparent,var(--surface))}
+  .chipsWrap[data-more="1"]::after{opacity:1}
+  .chipsWrap[data-back="1"]::before{opacity:1}
+  .chips{
+    display:flex; gap:6px; flex-wrap:nowrap; overflow-x:auto;
+    scrollbar-width:none; -ms-overflow-style:none; padding:1px 0;
+  }
   .chips::-webkit-scrollbar{display:none}
-  @media (min-width:900px){ .chips{flex-wrap:wrap; overflow:visible} }
   .chip{
+    flex:none; display:inline-flex; align-items:center; gap:5px;
     background:var(--surface-2); border:1px solid var(--line); color:var(--fg-dim);
-    border-radius:999px; padding:5px 12px; font-size:13px; white-space:nowrap;
+    border-radius:999px; padding:0 13px; min-height:var(--tap);
+    font-size:.83rem; white-space:nowrap;
   }
   .chip[aria-pressed="true"]{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
-  .chip .cnt{opacity:.65; font-size:11px; margin-left:4px}
+  .chip .cnt{opacity:.65; font-size:.72rem}
+  .chipdiv{flex:none; width:1px; background:var(--line); margin:8px 3px; align-self:stretch}
 
+  /* 건수와 목록/지도 전환은 헤더 상한에 걸려 잘리면 안 되므로 header 밖에 둔다. */
   .summary{
-    display:flex; align-items:center; gap:8px; margin-top:9px;
-    font-size:12.5px; color:var(--fg-dim); flex-wrap:wrap;
+    flex:none; display:flex; align-items:center; gap:8px;
+    background:var(--surface); border-bottom:1px solid var(--line);
+    padding:6px 12px 7px; font-size:.8rem; color:var(--fg-dim);
+    flex-wrap:wrap; min-width:0;
   }
   .summary b{color:var(--fg); font-variant-numeric:tabular-nums}
-  .viewtabs{display:none; gap:6px; margin-left:auto}
-  .viewtabs .chip{padding:5px 14px}
+  #countLine{min-width:0; overflow:hidden; text-overflow:ellipsis}
+  .viewtabs{display:none; gap:6px; margin-left:auto; flex:none}
+
+  /* 목록을 내리면 브랜드줄·업종칩을 접어 화면을 돌려준다 */
+  header.compact .bar,
+  header.compact .chipsWrap{display:none}
 
   /* ---------- layout ---------- */
-  main{display:grid; grid-template-columns:1fr; height:calc(100vh - var(--head,208px)); min-height:340px}
-  @media (min-width:900px){ main{grid-template-columns:minmax(360px,42%) 1fr} }
-  .pane{min-height:0; overflow:hidden; display:flex; flex-direction:column}
+  main{flex:1; min-height:0; display:grid; grid-template-columns:1fr}
+  @media (min-width:900px){
+    main{grid-template-columns:minmax(360px,42%) 1fr}
+    .qbtn.region{flex:0 1 20em}
+  }
+  .pane{min-height:0; min-width:0; overflow:hidden; display:flex; flex-direction:column}
   #listPane{border-right:1px solid var(--line)}
   #mapPane{position:relative}
   #map{position:absolute; inset:0; background:var(--surface-2)}
   .maphint{
-    position:absolute; left:56px; right:10px; top:10px; z-index:500;
+    position:absolute; left:52px; right:8px; top:8px; z-index:500;
     background:var(--surface); border:1px solid var(--line); border-radius:10px;
-    padding:7px 11px; font-size:12px; color:var(--fg-dim); box-shadow:var(--shadow);
+    padding:7px 11px; font-size:.75rem; color:var(--fg-dim); box-shadow:var(--shadow);
   }
   @media (max-width:899px){
     main{grid-template-columns:1fr}
@@ -118,117 +162,215 @@
     body[data-view="map"] #mapPane{display:flex}
   }
 
-  /* ---------- list ---------- */
-  .listwrap{overflow-y:auto; -webkit-overflow-scrolling:touch; padding:10px 12px 40px; flex:1}
+  /* ---------- 목록 ---------- */
+  .listwrap{overflow-y:auto; -webkit-overflow-scrolling:touch; padding:10px 12px 0; flex:1}
   .card{
+    display:flex; align-items:stretch; gap:8px;
     background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
-    padding:11px 13px; margin-bottom:8px; display:block; width:100%; text-align:left;
+    margin-bottom:8px; overflow:hidden;
   }
   .card:hover{border-color:var(--accent)}
   .card.active{border-color:var(--accent); background:var(--accent-soft)}
-  .card .top{display:flex; align-items:center; gap:7px; margin-bottom:4px}
-  .card .name{font-weight:700; font-size:15px; letter-spacing:-.01em;
+  .cardmain{
+    flex:1; min-width:0; background:none; border:0; text-align:left;
+    padding:11px 4px 11px 13px; color:inherit;
+  }
+  .card .top{display:flex; align-items:center; gap:7px; margin-bottom:3px; min-width:0}
+  .card .name{font-weight:700; font-size:.95rem; letter-spacing:-.01em; min-width:0;
     overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .badge{font-size:11px; padding:2px 7px; border-radius:999px; white-space:nowrap; flex:none;
+  .badge{font-size:.7rem; padding:1px 7px; border-radius:999px; white-space:nowrap; flex:none;
     border:1px solid currentColor; font-weight:600}
   .b-open{color:var(--open)} .b-rest{color:var(--rest)}
   .b-closed{color:var(--closed)} .b-void{color:var(--void)}
-  .card .addr{font-size:12.5px; color:var(--fg-dim); overflow:hidden;
+  .card .addr{font-size:.8rem; color:var(--fg-dim); overflow:hidden;
     text-overflow:ellipsis; white-space:nowrap}
-  .card .meta{font-size:11.5px; color:var(--fg-mute); margin-top:3px;
-    display:flex; gap:8px; flex-wrap:wrap}
-  .empty{text-align:center; color:var(--fg-mute); padding:48px 16px; font-size:14px}
-  .empty b{display:block; color:var(--fg-dim); margin-bottom:6px; font-size:15px}
-  .more{width:100%; padding:11px; border-radius:10px; background:var(--surface-2);
-    border:1px solid var(--line); color:var(--fg-dim); margin-top:4px}
+  .card .meta{font-size:.74rem; color:var(--fg-mute); margin-top:3px;
+    display:flex; gap:7px; flex-wrap:wrap}
+  .card .meta .d{color:var(--accent); font-weight:700}
+  /* 앱 안에서 끝나는 행동 — 카드에서 바로 전화 */
+  .callbtn{
+    flex:none; width:3.9em; min-width:var(--tap); display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:2px; text-decoration:none;
+    background:var(--accent-soft); color:var(--accent); border-left:1px solid var(--line);
+    font-size:.68rem; font-weight:700;
+  }
+  .callbtn svg{width:1.35em; height:1.35em}
+  .callbtn:hover{background:var(--accent); color:var(--accent-fg)}
 
-  /* ---------- detail sheet ---------- */
+  .empty{text-align:center; color:var(--fg-mute); padding:40px 16px; font-size:.9rem}
+  .empty b{display:block; color:var(--fg-dim); margin-bottom:6px; font-size:1rem}
+  .more{width:100%; min-height:var(--tap); padding:11px; border-radius:11px;
+    background:var(--surface-2); border:1px solid var(--line); color:var(--fg-dim); margin-top:4px}
+
+  /* ---------- 첫 화면 안내 ---------- */
+  .intro{padding:26px 18px 10px; text-align:center}
+  .intro .ill{width:64px; height:64px; margin:0 auto 14px; color:var(--accent)}
+  .intro h2{margin:0 0 8px; font-size:1.15rem; letter-spacing:-.02em}
+  .intro p{margin:0 auto 18px; max-width:32em; color:var(--fg-dim); font-size:.86rem; line-height:1.6}
+  .intro .btns{display:flex; flex-direction:column; gap:9px; max-width:22em; margin:0 auto}
+  .btn-primary,.btn-ghost{
+    min-height:48px; border-radius:12px; font-size:.95rem; font-weight:700;
+    display:inline-flex; align-items:center; justify-content:center; gap:7px;
+    border:1px solid var(--accent);
+  }
+  .btn-primary{background:var(--accent); color:var(--accent-fg)}
+  .btn-ghost{background:transparent; color:var(--fg); border-color:var(--line)}
+  .intro .fine{margin-top:16px; font-size:.74rem; color:var(--fg-mute); line-height:1.6}
+
+  /* ---------- 시트 ---------- */
   .scrim{position:fixed; inset:0; background:rgba(3,7,16,.55); z-index:900; display:none}
   .scrim.on{display:block}
   .sheet{
     position:fixed; z-index:901; background:var(--surface); border:1px solid var(--line);
-    box-shadow:var(--shadow); display:none; overflow-y:auto;
-    left:0; right:0; bottom:0; max-height:82vh; border-radius:18px 18px 0 0;
+    box-shadow:var(--shadow); display:none; overflow-y:auto; overscroll-behavior:contain;
+    left:0; right:0; bottom:0; max-height:86vh; border-radius:18px 18px 0 0;
     padding:16px 16px calc(22px + env(safe-area-inset-bottom,0px));
   }
   .sheet.on{display:block}
   @media (min-width:900px){
     .sheet{left:50%; right:auto; top:50%; bottom:auto; transform:translate(-50%,-50%);
-      width:min(520px,92vw); max-height:82vh; border-radius:16px}
+      width:min(540px,92vw); max-height:86vh; border-radius:16px}
   }
-  .sheet h2{margin:0 0 4px; font-size:19px; letter-spacing:-.02em; padding-right:36px}
-  .sheet .close{position:absolute; top:12px; right:12px}
-  .kv{display:grid; grid-template-columns:78px 1fr; gap:7px 10px; margin:14px 0 0; font-size:14px}
-  .kv dt{color:var(--fg-mute); font-size:12.5px; padding-top:1px}
-  .kv dd{margin:0; word-break:break-word}
-  .links{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px}
+  .sheet h2{margin:0 0 5px; font-size:1.15rem; letter-spacing:-.02em; padding-right:52px}
+  .sheet .close{position:absolute; top:10px; right:12px}
+  .kv{display:grid; grid-template-columns:minmax(0,4.6em) minmax(0,1fr);
+    gap:7px 10px; margin:14px 0 0; font-size:.88rem}
+  .kv dt{color:var(--fg-mute); font-size:.78rem; padding-top:2px}
+  .kv dd{margin:0; word-break:break-word; min-width:0}
+
+  /* 상세화면 1순위 = 전화 걸기. 지도 앱은 보조. */
+  .callbig{
+    display:flex; align-items:center; justify-content:center; gap:9px;
+    margin-top:14px; min-height:52px; border-radius:13px; text-decoration:none;
+    background:var(--accent); color:var(--accent-fg); font-weight:800; font-size:1.02rem;
+    border:1px solid var(--accent);
+  }
+  .callbig svg{width:1.15em; height:1.15em}
+  .nophone{
+    margin-top:14px; padding:11px 13px; border-radius:12px; font-size:.82rem; line-height:1.55;
+    background:var(--surface-2); border:1px dashed var(--line); color:var(--fg-dim);
+  }
+  .maplinks{margin-top:12px}
+  .maplinks .lbl{font-size:.75rem; color:var(--fg-mute); margin-bottom:6px}
+  .links{display:flex; gap:7px; flex-wrap:wrap}
   .links a{
-    flex:1 1 auto; text-align:center; text-decoration:none; padding:10px 12px; border-radius:10px;
-    background:var(--surface-2); border:1px solid var(--line); color:var(--fg-dim); font-size:13.5px;
+    flex:1 1 6em; text-align:center; text-decoration:none; padding:0 10px;
+    min-height:var(--tap); display:inline-flex; align-items:center; justify-content:center;
+    border-radius:11px; background:var(--surface-2); border:1px solid var(--line);
+    color:var(--fg-dim); font-size:.82rem;
   }
-  .links a.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-fg); font-weight:700}
+  .links a:hover{border-color:var(--accent); color:var(--fg)}
+  details.raw{margin-top:14px; border-top:1px solid var(--line); padding-top:10px}
+  details.raw summary{
+    cursor:pointer; font-size:.78rem; color:var(--fg-mute);
+    min-height:var(--tap); display:flex; align-items:center;
+  }
+  details.raw .kv{margin-top:4px; font-size:.8rem}
   .notice{
-    margin-top:14px; padding:10px 12px; border-radius:10px; font-size:12.5px;
-    background:var(--surface-2); border:1px solid var(--line); color:var(--fg-mute); line-height:1.55;
+    margin-top:14px; padding:10px 12px; border-radius:11px; font-size:.78rem;
+    background:var(--surface-2); border:1px solid var(--line); color:var(--fg-mute); line-height:1.6;
   }
+
+  /* 지역 선택 시트 */
+  .rgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(8.5em,1fr)); gap:7px; margin-top:12px}
+  .rbtn{
+    min-height:var(--tap); border-radius:11px; border:1px solid var(--line);
+    background:var(--surface-2); color:var(--fg); font-size:.85rem; padding:6px 9px;
+    display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:1px;
+    text-align:left; min-width:0;
+  }
+  .rbtn:hover{border-color:var(--accent)}
+  .rbtn[aria-pressed="true"]{background:var(--accent-soft); border-color:var(--accent)}
+  .rbtn .rn{font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:100%}
+  .rbtn .rc{font-size:.72rem; color:var(--fg-mute)}
+  .backline{display:flex; align-items:center; gap:8px; margin-top:2px}
+  .backbtn{
+    min-height:var(--tap); padding:0 12px; border-radius:11px;
+    border:1px solid var(--line); background:var(--surface-2); color:var(--fg-dim); font-size:.85rem;
+  }
+
   footer{
-    border-top:1px solid var(--line); padding:14px 16px 26px; font-size:12px;
-    color:var(--fg-mute); background:var(--surface); line-height:1.6;
+    border-top:1px solid var(--line); margin-top:14px; padding:14px 2px 26px;
+    font-size:.74rem; color:var(--fg-mute); line-height:1.7;
   }
-  footer a{color:var(--fg-dim)}
+  footer a{color:var(--fg-dim); display:inline-block; padding:6px 0}
+  footer b{color:var(--fg-dim)}
   .toast{
     position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:950;
     background:var(--surface); border:1px solid var(--line); color:var(--fg);
-    padding:9px 16px; border-radius:999px; font-size:13px; box-shadow:var(--shadow);
-    opacity:0; pointer-events:none; transition:opacity .18s;
+    padding:10px 16px; border-radius:999px; font-size:.82rem; box-shadow:var(--shadow);
+    opacity:0; pointer-events:none; transition:opacity .18s; max-width:88vw; text-align:center;
   }
   .toast.on{opacity:1}
   .leaflet-container{background:var(--surface-2); font:inherit}
   .leaflet-popup-content-wrapper,.leaflet-popup-tip{
     background:var(--surface); color:var(--fg); border:1px solid var(--line)}
-  .leaflet-popup-content{margin:10px 12px; font-size:13px}
+  .leaflet-popup-content{margin:10px 12px; font-size:.82rem}
   .leaflet-popup-content b{display:block; margin-bottom:3px}
   .leaflet-bar a{background:var(--surface); color:var(--fg); border-color:var(--line)}
   .leaflet-bar a:hover{background:var(--surface-2)}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important}}
 </style>
 </head>
 <body data-view="list">
 
-<header>
+<header id="hdr">
   <div class="bar">
     <div class="brand">
       <h1>헬스장<span class="dot">파인더</span></h1>
       <small id="dataStamp">데이터 불러오는 중…</small>
     </div>
-    <div class="spacer"></div>
-    <button class="icon-btn" id="nearBtn" title="내 주변에서 찾기" aria-label="내 주변에서 찾기">◎</button>
     <button class="icon-btn" id="themeBtn" title="밝기 전환" aria-label="밝기 전환">◐</button>
   </div>
 
-  <div class="filters">
-    <div class="field search">
-      <input type="search" id="q" placeholder="시설명 검색 (초성 검색 가능 — 예: ㅅㅍㅊ)"
-             autocomplete="off" aria-label="시설명 검색">
-    </div>
-    <div class="field"><select id="sido" aria-label="시도 선택"></select></div>
-    <div class="field"><select id="sigungu" aria-label="시군구 선택"><option value="">시군구 전체</option></select></div>
+  <div class="quick">
+    <button class="qbtn near" id="nearBtn" aria-pressed="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>
+      </svg>
+      <span class="lbl">내 주변</span>
+    </button>
+    <button class="qbtn region" id="regionBtn" aria-haspopup="dialog">
+      <span class="lbl" id="regionLabel">지역 선택</span>
+      <span class="caret" aria-hidden="true">▼</span>
+    </button>
   </div>
 
-  <div class="chips" id="catChips" role="group" aria-label="업종 필터"></div>
+  <div class="field">
+    <input type="search" id="q" placeholder="시설명 검색 (초성 가능)"
+           autocomplete="off" aria-label="시설명 검색">
+  </div>
 
-  <div class="summary">
-    <span id="countLine">—</span>
-    <button class="chip" id="statusToggle" aria-pressed="true">영업중만</button>
-    <div class="viewtabs" role="group" aria-label="보기 전환">
-      <button class="chip" id="tabList" aria-pressed="true">목록</button>
-      <button class="chip" id="tabMap" aria-pressed="false">지도</button>
-    </div>
+  <div class="chipsWrap" id="chipsWrap">
+    <div class="chips" id="catChips" role="group" aria-label="업종·조건 필터"></div>
   </div>
 </header>
 
+<div class="summary" id="summaryBar">
+  <span id="countLine">—</span>
+  <div class="viewtabs" role="group" aria-label="보기 전환">
+    <button class="chip" id="tabList" aria-pressed="true">목록</button>
+    <button class="chip" id="tabMap" aria-pressed="false">지도</button>
+  </div>
+</div>
+
 <main>
   <section class="pane" id="listPane">
-    <div class="listwrap" id="listWrap"><div class="empty">불러오는 중…</div></div>
+    <div class="listwrap" id="listWrap">
+      <div id="listItems"><div class="empty">불러오는 중…</div></div>
+      <footer>
+        출처: 행정안전부 지방행정 인허가 데이터(체력단련장업·수영장업·종합체육시설업) —
+        공공데이터포털 <a href="https://www.data.go.kr/" target="_blank" rel="noopener">data.go.kr</a>,
+        이용허락범위 제한 없음. 원본은 매일 갱신되며 2일 전 기준으로 현행화됩니다.<br>
+        <span id="footStats"></span><br>
+        이 앱은 인허가 정보만 보여줍니다.
+        <b>이용료·운영시간·사진·평점은 원본 데이터에 없어 제공하지 않습니다.</b>
+        전화번호도 원본에서 필수 항목이 아니라 상당수가 비어 있습니다(지어내지 않습니다).
+        영업상태는 지자체 신고 기준이라 현장과 다를 수 있으니 방문 전 확인하세요.
+        <a href="privacy.html">개인정보처리방침</a>
+      </footer>
+    </div>
   </section>
   <section class="pane" id="mapPane">
     <div id="map"></div>
@@ -236,17 +378,9 @@
   </section>
 </main>
 
-<footer>
-  출처: 행정안전부 지방행정 인허가 데이터(체력단련장업·수영장업·종합체육시설업) —
-  공공데이터포털 <a href="https://www.data.go.kr/" target="_blank" rel="noopener">data.go.kr</a>,
-  이용허락범위 제한 없음. 원본은 매일 갱신되며 2일 전 기준으로 현행화됩니다.<br>
-  이 앱은 인허가 정보만 보여줍니다. <b>이용료·운영시간·시설·평점 정보는 원본 데이터에 없으므로 제공하지 않습니다.</b>
-  영업상태는 지자체 신고 기준이라 현장 상황과 다를 수 있으니 방문 전 확인하세요.
-  <a href="privacy.html">개인정보처리방침</a>
-</footer>
-
 <div class="scrim" id="scrim"></div>
 <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetName"></aside>
+<aside class="sheet" id="regionSheet" role="dialog" aria-modal="true" aria-label="지역 선택"></aside>
 <div class="toast" id="toast"></div>
 
 <script src="vendor/leaflet.js"></script>
@@ -259,12 +393,16 @@ var IDX = null;                 // index.json
 var CACHE = {};                 // slug -> 시설 배열
 var rows = [];                  // 현재 시도의 전체 배열
 var view = [];                  // 필터 통과분
-var shown = 0;                  // 목록에 그린 개수
+var shown = 0;
 var PAGE = 40;
 var MAX_MARKERS = 2500;
 var activeId = null;
 var here = null;                // 내 위치 [lat,lng]
+var nearMode = false;           // 거리순 정렬 중인지
 var map = null, layer = null, meMarker = null;
+var started = false;            // 지역이 한 번이라도 로드됐는지
+
+var S = { sido:"", sgg:"", openOnly:true, phoneOnly:false };
 
 var STATUS_CLASS = {1:"b-open", 2:"b-rest", 3:"b-closed", 4:"b-void", 5:"b-void"};
 
@@ -276,6 +414,10 @@ var esc = function(s){
 };
 var fmt = function(n){ return Number(n).toLocaleString("ko-KR"); };
 
+var SVG_PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"' +
+  ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>';
+
 /* 원본 전화번호는 구분기호 없이 들어온다(예: 025867721). 숫자는 그대로 두고 보기 좋게만 끊는다. */
 function fmtPhone(p){
   var d = String(p).replace(/[^0-9]/g, "");
@@ -285,10 +427,13 @@ function fmtPhone(p){
   }
   if(d.length === 10) return d.slice(0,3) + "-" + d.slice(3,6) + "-" + d.slice(6);
   if(d.length === 11) return d.slice(0,3) + "-" + d.slice(3,7) + "-" + d.slice(7);
-  // 지역번호 없이 등록된 국번(7~8자리)도 읽기 쉽게 끊어준다
   if(d.length === 8)  return d.slice(0,4) + "-" + d.slice(4);
   if(d.length === 7)  return d.slice(0,3) + "-" + d.slice(3);
   return p;
+}
+function fmtDist(km){
+  if(km == null || !isFinite(km)) return "";
+  return km < 1 ? Math.round(km * 1000) + "m" : km.toFixed(1) + "km";
 }
 
 /* ============ 초성 검색 ============ */
@@ -320,7 +465,7 @@ function toast(msg){
   el.textContent = msg;
   el.classList.add("on");
   clearTimeout(toastT);
-  toastT = setTimeout(function(){ el.classList.remove("on"); }, 2600);
+  toastT = setTimeout(function(){ el.classList.remove("on"); }, 2800);
 }
 
 /* ============ 테마 ============ */
@@ -343,14 +488,32 @@ $("themeBtn").addEventListener("click", function(){
   setTheme(document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light");
 });
 
-/* ============ 헤더 높이 -> 본문 높이 ============ */
-function syncHeight(){
-  var h = document.querySelector("header").offsetHeight;
-  document.documentElement.style.setProperty("--head", h + "px");
-  document.querySelector("main").style.height = "calc(100vh - " + h + "px)";
-  if(map) map.invalidateSize();
+/* ============ 레이어(시트) + 안드로이드 뒤로가기 ============
+   시트가 열려 있을 때 기기 뒤로가기는 앱을 나가는 게 아니라 시트만 닫아야 한다. */
+var layerOpen = null;   // "detail" | "region" | null
+function openLayer(kind){
+  if(!layerOpen){
+    try{ history.pushState({ gfLayer:1 }, ""); }catch(e){}
+  }
+  layerOpen = kind;
+  $("scrim").classList.add("on");
 }
-window.addEventListener("resize", syncHeight);
+function hideLayers(){
+  $("sheet").classList.remove("on");
+  $("regionSheet").classList.remove("on");
+  $("scrim").classList.remove("on");
+}
+function closeLayer(fromPop){
+  if(!layerOpen){ hideLayers(); return; }
+  layerOpen = null;
+  hideLayers();
+  if(!fromPop){
+    try{ history.back(); }catch(e){}
+  }
+}
+window.addEventListener("popstate", function(){
+  if(layerOpen) closeLayer(true);
+});
 
 /* ============ 부트 ============ */
 fetch("data/index.json")
@@ -360,73 +523,166 @@ fetch("data/index.json")
   })
   .then(function(j){ IDX = j; boot(); })
   .catch(function(e){
-    $("listWrap").innerHTML =
+    $("listItems").innerHTML =
       '<div class="empty"><b>데이터를 불러오지 못했습니다</b>' + esc(e.message) + "</div>";
   });
 
 function boot(){
+  /* 헤드라인은 '영업중' 기준으로 정직하게. 전체 30,375곳에는 폐업 12,143곳이 섞여 있다. */
   $("dataStamp").textContent =
-    "전국 " + fmt(IDX.total) + "곳 · 기준 " + (IDX.sourceUpdatedAt || "").slice(0, 10);
+    "영업중 " + fmt(IDX.totalOpen) + "곳 · 기준 " + (IDX.sourceUpdatedAt || "").slice(0, 10);
+  var dead = IDX.total - IDX.totalOpen;
+  $("footStats").innerHTML =
+    "수록 " + fmt(IDX.total) + "곳 = 영업중 <b>" + fmt(IDX.totalOpen) + "</b>곳 + 폐업·휴업·말소 " +
+    fmt(dead) + "곳. 기본 화면은 영업중만 보여줍니다." +
+    (IDX.phone ? " 영업중 시설의 전화번호 보유율 " +
+      fmt(IDX.phone.openWithPhone) + "/" + fmt(IDX.phone.openTotal) + "곳(" +
+      (100 - IDX.phone.missingPct).toFixed(1) + "%)." : "");
 
-  // 업종 칩
+  buildChips();
+
+  $("q").addEventListener("input", debounce(refresh, 160));
+  $("tabList").addEventListener("click", function(){ setView("list"); });
+  $("tabMap").addEventListener("click", function(){ setView("map"); });
+  $("nearBtn").addEventListener("click", function(){ nearMe(false); });
+  $("regionBtn").addEventListener("click", function(){ openRegionSheet(); });
+  $("scrim").addEventListener("click", function(){ closeLayer(false); });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && layerOpen) closeLayer(false);
+  });
+
+  initMap();
+  watchChipOverflow();
+  watchHeaderCompact();
+  decideStart();
+}
+
+function debounce(fn, ms){
+  var t = null;
+  return function(){ clearTimeout(t); t = setTimeout(fn, ms); };
+}
+
+/* ---- 업종·조건 칩 ---- */
+function buildChips(){
   var chips = $("catChips");
   IDX.categories.forEach(function(name, i){
     var b = document.createElement("button");
     b.className = "chip";
     b.dataset.cat = i;
     b.setAttribute("aria-pressed", "true");
-    b.innerHTML = esc(name) + '<span class="cnt">' + fmt(IDX.byCategory[i].total) + "</span>";
+    b.innerHTML = esc(name) + '<span class="cnt">' + fmt(IDX.byCategory[i].open) + "</span>";
     b.addEventListener("click", function(){
       var on = b.getAttribute("aria-pressed") === "true";
-      // 마지막 하나는 끄지 못하게
-      if(on && chips.querySelectorAll('[aria-pressed="true"]').length === 1) return;
+      if(on && chips.querySelectorAll("[data-cat][aria-pressed=\"true\"]").length === 1) return;
       b.setAttribute("aria-pressed", on ? "false" : "true");
       refresh();
     });
     chips.appendChild(b);
   });
 
-  // 시도
-  var sel = $("sido");
-  IDX.regions.forEach(function(r){
-    var o = document.createElement("option");
-    o.value = r.slug;
-    o.textContent = r.name + " (" + fmt(r.open) + ")";
-    sel.appendChild(o);
-  });
-  var last = null;
-  try{ last = localStorage.getItem("gf.sido"); }catch(e){}
-  sel.value = (last && IDX.regions.some(function(r){ return r.slug === last; }))
-    ? last : IDX.regions[0].slug;
+  var div = document.createElement("div");
+  div.className = "chipdiv";
+  div.setAttribute("aria-hidden", "true");
+  chips.appendChild(div);
 
-  sel.addEventListener("change", function(){
-    try{ localStorage.setItem("gf.sido", sel.value); }catch(e){}
-    loadRegion(sel.value);
-  });
-  $("sigungu").addEventListener("change", refresh);
-  $("statusToggle").addEventListener("click", function(){
-    var b = $("statusToggle");
-    var on = b.getAttribute("aria-pressed") === "true";
-    b.setAttribute("aria-pressed", on ? "false" : "true");
-    b.textContent = on ? "전체 상태" : "영업중만";
+  var st = document.createElement("button");
+  st.className = "chip"; st.id = "statusToggle";
+  st.setAttribute("aria-pressed", "true");
+  st.textContent = "영업중만";
+  st.addEventListener("click", function(){
+    S.openOnly = !S.openOnly;
+    st.setAttribute("aria-pressed", String(S.openOnly));
+    st.textContent = S.openOnly ? "영업중만" : "전체 상태";
     refresh();
   });
+  chips.appendChild(st);
 
-  var t = null;
-  $("q").addEventListener("input", function(){
-    clearTimeout(t);
-    t = setTimeout(refresh, 160);
+  /* 전화번호 결측이 많다는 사실을 숨기지 않고, 대신 '걸 수 있는 곳만' 고르게 해준다. */
+  var ph = document.createElement("button");
+  ph.className = "chip"; ph.id = "phoneToggle";
+  ph.setAttribute("aria-pressed", "false");
+  ph.textContent = "전화 있는 곳만";
+  ph.addEventListener("click", function(){
+    S.phoneOnly = !S.phoneOnly;
+    ph.setAttribute("aria-pressed", String(S.phoneOnly));
+    refresh();
   });
+  chips.appendChild(ph);
+}
 
-  $("tabList").addEventListener("click", function(){ setView("list"); });
-  $("tabMap").addEventListener("click", function(){ setView("map"); });
-  $("nearBtn").addEventListener("click", nearMe);
-  $("scrim").addEventListener("click", closeSheet);
-  document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeSheet(); });
+/* 업종 칩 행이 잘려 있으면 오른쪽 페이드로 알린다 */
+function watchChipOverflow(){
+  var wrap = $("chipsWrap"), el = $("catChips");
+  function upd(){
+    wrap.dataset.more = (el.scrollWidth - el.clientWidth - el.scrollLeft > 4) ? "1" : "0";
+    wrap.dataset.back = (el.scrollLeft > 4) ? "1" : "0";
+  }
+  el.addEventListener("scroll", upd, { passive:true });
+  window.addEventListener("resize", upd);
+  if(window.ResizeObserver) new ResizeObserver(upd).observe(el);
+  upd();
+}
 
-  initMap();
-  loadRegion(sel.value);
-  syncHeight();
+/* 목록을 내리면 헤더를 접어 화면을 돌려준다 (히스테리시스로 깜빡임 방지) */
+function watchHeaderCompact(){
+  var wrap = $("listWrap"), hdr = $("hdr");
+  wrap.addEventListener("scroll", function(){
+    var t = wrap.scrollTop;
+    if(t > 90) hdr.classList.add("compact");
+    else if(t < 30) hdr.classList.remove("compact");
+  }, { passive:true });
+}
+
+/* ============ 첫 화면 결정 ============
+   위치 권한이 이미 허용돼 있으면 묻지 않고 바로 '내 주변 거리순'.
+   아니면 지역을 고르게 안내한다. (서울 가나다순 명부를 들이밀지 않는다.) */
+function decideStart(){
+  var saved = null;
+  try{ saved = localStorage.getItem("gf.sido"); }catch(e){}
+  var valid = saved && IDX.regions.some(function(r){ return r.slug === saved; });
+
+  function fallback(state){
+    if(valid){ loadRegion(saved); }
+    else showIntro(state || "prompt");
+  }
+
+  if(navigator.permissions && navigator.permissions.query){
+    navigator.permissions.query({ name:"geolocation" }).then(function(st){
+      if(st.state === "granted") nearMe(true);
+      else fallback(st.state);
+    }).catch(function(){ fallback("prompt"); });
+  }else{
+    fallback("prompt");
+  }
+}
+
+function showIntro(state){
+  var denied = state === "denied";
+  $("listItems").innerHTML =
+    '<div class="intro">' +
+      '<svg class="ill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"' +
+      ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>' +
+      "<h2>" + (denied ? "지역을 골라주세요" : "가까운 곳부터 볼까요?") + "</h2>" +
+      "<p>" + (denied
+        ? "위치 권한이 꺼져 있어 거리순으로 보여드릴 수 없습니다. 아래에서 지역을 고르면 바로 목록이 나옵니다. 브라우저 주소창의 자물쇠 아이콘에서 위치를 다시 켤 수 있습니다."
+        : "위치를 켜면 지금 있는 곳에서 <b>가까운 순서</b>로 보여드립니다. 위치는 이 기기 안에서만 쓰이고 어디에도 전송하지 않습니다.") + "</p>" +
+      '<div class="btns">' +
+        (denied ? "" :
+          '<button class="btn-primary" id="introNear">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"' +
+          ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1.1em;height:1.1em">' +
+          '<path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>' +
+          "내 주변에서 찾기</button>") +
+        '<button class="btn-ghost" id="introRegion">지역으로 찾기</button>' +
+      "</div>" +
+      '<p class="fine">행정안전부 인허가 데이터 기준 전국 영업중 ' + fmt(IDX.totalOpen) +
+      "곳. 이용료·운영시간·후기는 원본에 없어 제공하지 않습니다.</p>" +
+    "</div>";
+  var n = $("introNear");
+  if(n) n.addEventListener("click", function(){ nearMe(false); });
+  $("introRegion").addEventListener("click", function(){ openRegionSheet(); });
+  $("countLine").innerHTML = "시작하려면 위치 또는 지역을 골라주세요";
 }
 
 function setView(v){
@@ -434,8 +690,6 @@ function setView(v){
   $("tabList").setAttribute("aria-pressed", String(v === "list"));
   $("tabMap").setAttribute("aria-pressed", String(v === "map"));
   if(v === "map" && map){
-    // 지도 패널이 숨겨진 동안에는 크기가 0이라 범위 계산이 어긋난다.
-    // 보이게 된 뒤에 크기를 다시 재고 밀린 fitBounds 를 적용한다.
     setTimeout(function(){ map.invalidateSize(); applyFit(); }, 40);
   }
 }
@@ -449,6 +703,10 @@ function initMap(){
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
   layer = L.layerGroup().addTo(map);
+  // 헤더가 접히거나 글자 크기가 바뀌면 지도 크기도 다시 잰다.
+  if(window.ResizeObserver){
+    new ResizeObserver(function(){ if(map) map.invalidateSize(); }).observe($("mapPane"));
+  }
 }
 
 var STATUS_COLOR = {1:"#34d399", 2:"#fbbf24", 3:"#f87171", 4:"#94a3b8", 5:"#94a3b8"};
@@ -507,48 +765,104 @@ function drawMap(){
 }
 
 /* ============ 지역 로드 ============ */
-function loadRegion(slug){
-  var reg = IDX.regions.filter(function(r){ return r.slug === slug; })[0];
-  $("listWrap").innerHTML = '<div class="empty">' + esc(reg ? reg.name : "") + " 불러오는 중…</div>";
+function regionOf(slug){
+  return IDX.regions.filter(function(r){ return r.slug === slug; })[0] || null;
+}
 
-  var done = function(arr){
-    rows = arr;
-    fillSigungu(reg);
-    refresh();
-  };
-  if(CACHE[slug]) return done(CACHE[slug]);
+function loadRegion(slug, then){
+  var reg = regionOf(slug);
+  if(!reg) return;
+  S.sido = slug;
+  started = true;
+  try{ localStorage.setItem("gf.sido", slug); }catch(e){}
+  updateRegionLabel();
 
+  if(CACHE[slug]){ rows = CACHE[slug]; refresh(); if(then) then(); return; }
+
+  $("listItems").innerHTML = '<div class="empty">' + esc(reg.name) + " 불러오는 중…</div>";
   fetch("data/regions/" + slug + ".json")
     .then(function(r){
       if(!r.ok) throw new Error(slug + ".json " + r.status);
       return r.json();
     })
-    .then(function(arr){ CACHE[slug] = arr; done(arr); })
+    .then(function(arr){
+      CACHE[slug] = arr; rows = arr; refresh(); if(then) then();
+    })
     .catch(function(e){
-      $("listWrap").innerHTML =
+      $("listItems").innerHTML =
         '<div class="empty"><b>지역 데이터를 불러오지 못했습니다</b>' + esc(e.message) + "</div>";
     });
 }
 
-function fillSigungu(reg){
-  var sel = $("sigungu");
-  sel.innerHTML = '<option value="">시군구 전체</option>';
-  if(!reg) return;
-  reg.sigungu.forEach(function(s){
-    var o = document.createElement("option");
-    o.value = s.name;
-    o.textContent = s.name + " (" + fmt(s.open) + ")";
-    sel.appendChild(o);
+function updateRegionLabel(){
+  var reg = regionOf(S.sido);
+  $("regionLabel").textContent = reg
+    ? (reg.name + (S.sgg ? " · " + S.sgg : ""))
+    : "지역 선택";
+}
+
+/* ---- 지역 선택 시트 (시도 -> 시군구 2단계) ---- */
+function openRegionSheet(step){
+  var el = $("regionSheet");
+  var html = '<button class="icon-btn close" id="regionClose" aria-label="닫기">✕</button>';
+
+  if(step === "sgg" && regionOf(S.sido)){
+    var reg = regionOf(S.sido);
+    html += '<h2>' + esc(reg.name) + "</h2>" +
+      '<div class="backline"><button class="backbtn" id="regionBack">← 다른 시·도</button></div>' +
+      '<div class="rgrid">' +
+      '<button class="rbtn" data-sgg="" aria-pressed="' + (S.sgg ? "false" : "true") + '">' +
+      '<span class="rn">전체</span><span class="rc">영업중 ' + fmt(reg.open) + "곳</span></button>" +
+      reg.sigungu.map(function(s){
+        return '<button class="rbtn" data-sgg="' + esc(s.name) + '" aria-pressed="' +
+          (S.sgg === s.name ? "true" : "false") + '"><span class="rn">' + esc(s.name) +
+          '</span><span class="rc">영업중 ' + fmt(s.open) + "곳</span></button>";
+      }).join("") + "</div>";
+  }else{
+    html += "<h2>지역 선택</h2>" +
+      '<div class="rgrid">' + IDX.regions.map(function(r){
+        return '<button class="rbtn" data-sido="' + esc(r.slug) + '" aria-pressed="' +
+          (S.sido === r.slug ? "true" : "false") + '"><span class="rn">' + esc(r.name) +
+          '</span><span class="rc">영업중 ' + fmt(r.open) + "곳</span></button>";
+      }).join("") + "</div>" +
+      '<div class="notice">지금 있는 곳에서 가까운 순으로 보고 싶다면 헤더의 <b>내 주변</b> 버튼을 눌러주세요.</div>';
+  }
+
+  el.innerHTML = html;
+  el.classList.add("on");
+  el.scrollTop = 0;
+  openLayer("region");
+
+  $("regionClose").addEventListener("click", function(){ closeLayer(false); });
+  var back = $("regionBack");
+  if(back) back.addEventListener("click", function(){ openRegionSheet(); });
+
+  Array.prototype.forEach.call(el.querySelectorAll("[data-sido]"), function(b){
+    b.addEventListener("click", function(){
+      var slug = b.dataset.sido;
+      if(slug !== S.sido){ S.sgg = ""; }
+      nearMode = false;
+      $("nearBtn").setAttribute("aria-pressed", "false");
+      loadRegion(slug, function(){ openRegionSheet("sgg"); });
+      if(CACHE[slug]) openRegionSheet("sgg");
+    });
+  });
+  Array.prototype.forEach.call(el.querySelectorAll("[data-sgg]"), function(b){
+    b.addEventListener("click", function(){
+      S.sgg = b.dataset.sgg;
+      updateRegionLabel();
+      closeLayer(false);
+      refresh();
+    });
   });
 }
 
 /* ============ 필터 ============ */
 function refresh(){
+  if(!started) return;
   var q = $("q").value.trim();
-  var sgg = $("sigungu").value;
-  var openOnly = $("statusToggle").getAttribute("aria-pressed") === "true";
   var cats = {};
-  Array.prototype.forEach.call($("catChips").children, function(b){
+  Array.prototype.forEach.call($("catChips").querySelectorAll("[data-cat]"), function(b){
     if(b.getAttribute("aria-pressed") === "true") cats[b.dataset.cat] = 1;
   });
 
@@ -558,8 +872,9 @@ function refresh(){
 
   view = rows.filter(function(r){
     if(!cats[r.c]) return false;
-    if(openOnly && r.s !== 1) return false;
-    if(sgg && r.u !== sgg) return false;
+    if(S.openOnly && r.s !== 1) return false;
+    if(S.phoneOnly && !r.p) return false;
+    if(S.sgg && r.u !== S.sgg) return false;
     if(!q) return true;
     if(isCho) return toCho(r.n).replace(/\s+/g, "").indexOf(choNeedle) >= 0;
     return r.n.toLowerCase().replace(/\s+/g, "").indexOf(needle) >= 0 ||
@@ -573,14 +888,22 @@ function refresh(){
     view.sort(function(a, b){ return a._d - b._d; });
   }
 
-  var open = 0, i;
-  for(i = 0; i < view.length; i++) if(view[i].s === 1) open++;
-  $("countLine").innerHTML = "<b>" + fmt(view.length) + "</b>곳" +
-    (openOnly ? "" : " · 영업중 <b>" + fmt(open) + "</b>");
+  var open = 0, withPhone = 0, i;
+  for(i = 0; i < view.length; i++){
+    if(view[i].s === 1) open++;
+    if(view[i].p) withPhone++;
+  }
+  var parts = [];
+  if(nearMode && here) parts.push("가까운 순");
+  parts.push("<b>" + fmt(view.length) + "</b>곳");
+  if(!S.openOnly) parts.push("영업중 <b>" + fmt(open) + "</b>");
+  if(!S.phoneOnly && view.length) parts.push("전화 <b>" + fmt(withPhone) + "</b>");
+  $("countLine").innerHTML = parts.join(" · ");
 
   shown = 0;
-  $("listWrap").innerHTML = "";
+  $("listItems").innerHTML = "";
   $("listWrap").scrollTop = 0;
+  $("hdr").classList.remove("compact");
   renderMore();
   drawMap();
 }
@@ -590,13 +913,15 @@ function statusLabel(r){
 }
 
 function renderMore(){
-  var wrap = $("listWrap");
+  var wrap = $("listItems");
   var old = wrap.querySelector(".more");
   if(old) old.remove();
 
   if(!view.length){
     wrap.innerHTML = '<div class="empty"><b>조건에 맞는 시설이 없습니다</b>' +
-      "검색어를 줄이거나 상태 필터를 ‘전체 상태’로 바꿔보세요.</div>";
+      (S.phoneOnly
+        ? "‘전화 있는 곳만’을 끄면 더 많이 보입니다. 원본 인허가 데이터에 전화번호가 없는 시설이 많습니다."
+        : "검색어를 줄이거나 상태 필터를 ‘전체 상태’로 바꿔보세요.") + "</div>";
     return;
   }
 
@@ -604,20 +929,34 @@ function renderMore(){
   var end = Math.min(shown + PAGE, view.length);
   for(var i = shown; i < end; i++){
     var r = view[i];
-    var b = document.createElement("button");
-    b.className = "card" + (r.i === activeId ? " active" : "");
-    b.dataset.idx = i;
-    var meta = [IDX.categories[r.c]];
-    if(r._d != null && isFinite(r._d)) meta.push(r._d.toFixed(1) + "km");
+    var card = document.createElement("div");
+    card.className = "card" + (r.i === activeId ? " active" : "");
+
+    var meta = [];
+    if(r._d != null && isFinite(r._d)) meta.push('<span class="d">' + esc(fmtDist(r._d)) + "</span>");
+    meta.push(esc(IDX.categories[r.c]));
     if(r.y == null) meta.push("좌표없음");
-    if(r.p) meta.push(fmtPhone(r.p));
+
+    var b = document.createElement("button");
+    b.className = "cardmain";
+    b.dataset.idx = i;
     b.innerHTML =
       '<div class="top"><span class="name">' + esc(r.n) + "</span>" +
       '<span class="badge ' + STATUS_CLASS[r.s] + '">' + esc(statusLabel(r)) + "</span></div>" +
       '<div class="addr">' + esc(r.a) + "</div>" +
-      '<div class="meta">' + meta.map(function(m){ return esc(m); }).join(" · ") + "</div>";
+      '<div class="meta">' + meta.join(" · ") + "</div>";
     b.addEventListener("click", function(){ openSheet(view[+this.dataset.idx]); });
-    frag.appendChild(b);
+    card.appendChild(b);
+
+    if(r.p){
+      var a = document.createElement("a");
+      a.className = "callbtn";
+      a.href = "tel:" + String(r.p).replace(/[^0-9+]/g, "");
+      a.setAttribute("aria-label", r.n + " 전화 걸기 " + fmtPhone(r.p));
+      a.innerHTML = SVG_PHONE + "<span>전화</span>";
+      card.appendChild(a);
+    }
+    frag.appendChild(card);
   }
   wrap.appendChild(frag);
   shown = end;
@@ -633,85 +972,118 @@ function renderMore(){
 
 $("listWrap").addEventListener("scroll", function(){
   var el = this;
-  if(shown < view.length && el.scrollTop + el.clientHeight > el.scrollHeight - 260) renderMore();
+  if(shown < view.length && el.scrollTop + el.clientHeight > el.scrollHeight - 320) renderMore();
 });
 
-/* ============ 상세 ============ */
+/* ============ 상세 ============
+   1순위는 앱 안에서 끝나는 행동(전화 걸기). 지도 앱은 보조 링크로 내린다. */
 function openSheet(r){
   if(!r) return;
   activeId = r.i;
   var mapq = encodeURIComponent(r.n + " " + r.a);
-  var rows_ = [
+
+  var kv = [
     ["업종", IDX.categories[r.c]],
     ["영업상태", statusLabel(r) + (r.e ? " (" + r.e + ")" : "")],
     ["주소", r.a],
     ["시군구", r.u]
   ];
-  if(r.p) rows_.push(["전화", '<a href="tel:' + esc(r.p) + '">' + esc(fmtPhone(r.p)) + "</a>"]);
-  if(r.d) rows_.push(["인허가일", r.d]);
-  if(r._d != null && isFinite(r._d)) rows_.push(["내 위치에서", r._d.toFixed(1) + "km"]);
-  rows_.push(["관리번호", r.i]);
+  if(r._d != null && isFinite(r._d)) kv.push(["내 위치에서", fmtDist(r._d)]);
 
-  var links =
-    '<a class="primary" href="https://map.kakao.com/?q=' + mapq + '" target="_blank" rel="noopener">카카오맵</a>' +
-    '<a href="https://map.naver.com/p/search/' + mapq + '" target="_blank" rel="noopener">네이버지도</a>' +
-    '<a href="https://www.google.com/maps/search/?api=1&query=' + mapq + '" target="_blank" rel="noopener">구글맵</a>';
-
-  $("sheet").innerHTML =
+  var head =
     '<button class="icon-btn close" id="sheetClose" aria-label="닫기">✕</button>' +
     '<h2 id="sheetName">' + esc(r.n) + "</h2>" +
-    '<span class="badge ' + STATUS_CLASS[r.s] + '">' + esc(statusLabel(r)) + "</span>" +
-    '<dl class="kv">' + rows_.map(function(kv){
-      return "<dt>" + esc(kv[0]) + "</dt><dd>" +
-        (kv[0] === "전화" ? kv[1] : esc(kv[1])) + "</dd>";
-    }).join("") + "</dl>" +
-    '<div class="links">' + links + "</div>" +
-    '<div class="notice">이용료·운영시간·시설·평점 정보는 행정안전부 인허가 데이터에 없어 표시하지 않습니다. ' +
+    '<span class="badge ' + STATUS_CLASS[r.s] + '">' + esc(statusLabel(r)) + "</span>";
+
+  var action;
+  if(r.p){
+    action = '<a class="callbig" href="tel:' + esc(String(r.p).replace(/[^0-9+]/g, "")) + '">' +
+      SVG_PHONE + "전화 걸기 " + esc(fmtPhone(r.p)) + "</a>" +
+      (r.pe ? '<div class="notice">이 번호는 같은 사업장이 함께 신고한 다른 체육시설업 인허가에서 ' +
+        "가져왔습니다(상호·주소가 완전히 일치하는 건만). 원본 체력단련장업 기록에는 번호가 비어 있습니다.</div>" : "");
+  }else{
+    action = '<div class="nophone"><b>전화번호가 원본에 없습니다.</b><br>' +
+      "행정안전부 인허가 서식에서 전화번호는 필수 항목이 아니라 " +
+      (IDX.phone ? "영업중 시설의 " + IDX.phone.missingPct + "%" : "상당수") +
+      "가 비어 있습니다. 없는 번호를 지어내지 않기 위해 빈칸으로 둡니다. " +
+      "아래 지도 앱에서 상호로 찾아보세요.</div>";
+  }
+
+  var links =
+    '<div class="maplinks"><div class="lbl">지도 앱에서 열기 (길찾기·로드뷰)</div><div class="links">' +
+    '<a href="https://map.kakao.com/?q=' + mapq + '" target="_blank" rel="noopener">카카오맵</a>' +
+    '<a href="https://map.naver.com/p/search/' + mapq + '" target="_blank" rel="noopener">네이버지도</a>' +
+    '<a href="https://www.google.com/maps/search/?api=1&query=' + mapq + '" target="_blank" rel="noopener">구글맵</a>' +
+    "</div></div>";
+
+  /* 관리번호·인허가일은 행정 내부 값이다. 기본은 접어둔다. */
+  var raw = "<details class=\"raw\"><summary>원본 정보 (행정 데이터)</summary><dl class=\"kv\">" +
+    "<dt>인허가일</dt><dd>" + esc(r.d || "-") + "</dd>" +
+    "<dt>관리번호</dt><dd>" + esc(r.i) + "</dd>" +
+    "</dl></details>";
+
+  $("sheet").innerHTML = head + action +
+    '<dl class="kv">' + kv.map(function(p){
+      return "<dt>" + esc(p[0]) + "</dt><dd>" + esc(p[1]) + "</dd>";
+    }).join("") + "</dl>" + links + raw +
+    '<div class="notice">이용료·운영시간·사진·평점은 행정안전부 인허가 데이터에 없어 표시하지 않습니다. ' +
     "영업상태는 지자체 신고 기준이라 실제와 다를 수 있으니 방문 전 확인하세요." +
     (r.y == null ? " 이 시설은 원본에 좌표가 없어 지도에 표시되지 않습니다." : "") + "</div>";
 
-  $("sheetClose").addEventListener("click", closeSheet);
+  $("sheetClose").addEventListener("click", function(){ closeLayer(false); });
   $("sheet").classList.add("on");
-  $("scrim").classList.add("on");
   $("sheet").scrollTop = 0;
+  openLayer("detail");
 
-  Array.prototype.forEach.call(document.querySelectorAll(".card"), function(c){
-    c.classList.toggle("active", view[+c.dataset.idx] && view[+c.dataset.idx].i === r.i);
+  Array.prototype.forEach.call(document.querySelectorAll(".cardmain"), function(c){
+    var rec = view[+c.dataset.idx];
+    c.parentNode.classList.toggle("active", !!rec && rec.i === r.i);
   });
   if(r.y != null && map && document.body.dataset.view === "map"){
     map.setView([r.y, r.x], Math.max(map.getZoom(), 15));
   }
 }
-function closeSheet(){
-  $("sheet").classList.remove("on");
-  $("scrim").classList.remove("on");
-}
 
 /* ============ 내 주변 ============ */
-function nearMe(){
-  if(!navigator.geolocation){ toast("이 브라우저는 위치 기능을 지원하지 않습니다"); return; }
-  toast("위치를 확인하는 중…");
+function nearMe(auto){
+  if(!navigator.geolocation){
+    toast("이 브라우저는 위치 기능을 지원하지 않습니다");
+    if(!started) showIntro("denied");
+    return;
+  }
+  if(!started){
+    $("listItems").innerHTML = '<div class="empty">위치를 확인하는 중…</div>';
+  }
+  if(!auto) toast("위치를 확인하는 중…");
+
   navigator.geolocation.getCurrentPosition(function(pos){
     here = [pos.coords.latitude, pos.coords.longitude];
+    nearMode = true;
+    $("nearBtn").setAttribute("aria-pressed", "true");
+
     var best = null, bestD = Infinity;
     IDX.regions.forEach(function(rg){
       if(!rg.center) return;
       var d = distKm(here[0], here[1], rg.center[0], rg.center[1]);
       if(d < bestD){ bestD = d; best = rg; }
     });
-    if(!best){ toast("가까운 지역을 찾지 못했습니다"); return; }
-    toast(best.name + " 기준으로 가까운 순 정렬");
-    if($("sido").value !== best.slug){
-      $("sido").value = best.slug;
-      try{ localStorage.setItem("gf.sido", best.slug); }catch(e){}
-      $("sigungu").value = "";
+    if(!best){ toast("가까운 지역을 찾지 못했습니다"); if(!started) showIntro("prompt"); return; }
+
+    S.sgg = "";
+    if(S.sido !== best.slug || !started){
       loadRegion(best.slug);
     }else{
-      $("sigungu").value = "";
+      updateRegionLabel();
       refresh();
     }
+    toast(best.name + " 기준 가까운 순으로 정렬했습니다");
   }, function(err){
-    toast(err.code === 1 ? "위치 권한이 거부되었습니다" : "위치를 가져오지 못했습니다");
+    $("nearBtn").setAttribute("aria-pressed", "false");
+    var denied = err.code === 1;
+    toast(denied ? "위치 권한이 거부되었습니다. 지역을 골라주세요."
+                 : "위치를 가져오지 못했습니다. 지역을 골라주세요.");
+    // 회복 경로 — 토스트 한 줄로 끝내지 않고 지역 선택으로 이어준다.
+    if(!started) showIntro(denied ? "denied" : "prompt");
   }, { enableHighAccuracy:false, timeout:10000, maximumAge:300000 });
 }
 
@@ -719,7 +1091,11 @@ function nearMe(){
 window.__gymfinder = {
   map: function(){ return map; },
   view: function(){ return view; },
-  index: function(){ return IDX; }
+  index: function(){ return IDX; },
+  state: function(){
+    return { sido:S.sido, sgg:S.sgg, openOnly:S.openOnly, phoneOnly:S.phoneOnly,
+             nearMode:nearMode, here:here, started:started, layer:layerOpen };
+  }
 };
 
 initTheme();
