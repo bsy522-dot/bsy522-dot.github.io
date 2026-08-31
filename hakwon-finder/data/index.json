@@ -1,6 +1,6 @@
 {
  "app": "학원파인더 전국판",
- "built_at": "2026-08-23",
+ "built_at": "2026-08-31",
  "basis_date": "20260731",
  "source": {
   "name": "나이스(NEIS) 교육정보 개방 포털 — 학원교습소정보",
@@ -17,163 +17,189 @@
    "name": "서울특별시",
    "slug": "seoul",
    "count": 25497,
-   "search_bytes": 2105208,
+   "search_bytes": 2622041,
    "sigungu": [
-    {
-     "name": "(주소 불명)",
-     "slug": "sgg00",
-     "count": 1,
-     "bytes": 257
-    },
     {
      "name": "강남구",
      "slug": "sgg01",
      "count": 3417,
-     "bytes": 1044821
+     "bytes": 1220897,
+     "dong_named": 2518
     },
     {
      "name": "강동구",
      "slug": "sgg02",
      "count": 1422,
-     "bytes": 519725
+     "bytes": 592308,
+     "dong_named": 923
     },
     {
      "name": "강북구",
      "slug": "sgg03",
      "count": 380,
-     "bytes": 129417
+     "bytes": 148258,
+     "dong_named": 275
     },
     {
      "name": "강서구",
      "slug": "sgg04",
      "count": 1391,
-     "bytes": 470916
+     "bytes": 537119,
+     "dong_named": 777
     },
     {
      "name": "관악구",
      "slug": "sgg05",
      "count": 733,
-     "bytes": 242356
+     "bytes": 279658,
+     "dong_named": 502
     },
     {
      "name": "광진구",
      "slug": "sgg06",
      "count": 729,
-     "bytes": 241107
+     "bytes": 278840,
+     "dong_named": 555
     },
     {
      "name": "구로구",
      "slug": "sgg07",
      "count": 790,
-     "bytes": 344960
+     "bytes": 381499,
+     "dong_named": 356
     },
     {
      "name": "금천구",
      "slug": "sgg08",
      "count": 366,
-     "bytes": 137506
+     "bytes": 153911,
+     "dong_named": 184
     },
     {
      "name": "노원구",
      "slug": "sgg09",
      "count": 1430,
-     "bytes": 506051
+     "bytes": 577639,
+     "dong_named": 760
     },
     {
      "name": "도봉구",
      "slug": "sgg10",
      "count": 597,
-     "bytes": 213173
+     "bytes": 245352,
+     "dong_named": 488
     },
     {
      "name": "동대문구",
      "slug": "sgg11",
      "count": 735,
-     "bytes": 256265
+     "bytes": 293297,
+     "dong_named": 487
     },
     {
      "name": "동작구",
      "slug": "sgg12",
      "count": 927,
-     "bytes": 316701
+     "bytes": 363152,
+     "dong_named": 538
     },
     {
      "name": "마포구",
      "slug": "sgg13",
      "count": 1164,
-     "bytes": 365939
+     "bytes": 425967,
+     "dong_named": 911
     },
     {
      "name": "서대문구",
      "slug": "sgg14",
      "count": 747,
-     "bytes": 251416
+     "bytes": 289653,
+     "dong_named": 513
     },
     {
      "name": "서초구",
      "slug": "sgg15",
      "count": 1827,
-     "bytes": 572253
+     "bytes": 664919,
+     "dong_named": 1280
     },
     {
      "name": "성동구",
      "slug": "sgg16",
      "count": 578,
-     "bytes": 192028
+     "bytes": 222503,
+     "dong_named": 398
     },
     {
      "name": "성북구",
      "slug": "sgg17",
      "count": 989,
-     "bytes": 337948
+     "bytes": 388132,
+     "dong_named": 691
     },
     {
      "name": "송파구",
      "slug": "sgg18",
      "count": 1966,
-     "bytes": 698303
+     "bytes": 796238,
+     "dong_named": 1262
     },
     {
      "name": "양천구",
      "slug": "sgg19",
      "count": 2105,
-     "bytes": 731615
+     "bytes": 831739,
+     "dong_named": 1140
     },
     {
      "name": "영등포구",
      "slug": "sgg20",
      "count": 871,
-     "bytes": 353726
+     "bytes": 393892,
+     "dong_named": 396
     },
     {
      "name": "용산구",
      "slug": "sgg21",
      "count": 242,
-     "bytes": 81313
+     "bytes": 93674,
+     "dong_named": 156
     },
     {
      "name": "은평구",
      "slug": "sgg22",
      "count": 1080,
-     "bytes": 350103
+     "bytes": 403106,
+     "dong_named": 669
     },
     {
      "name": "종로구",
      "slug": "sgg23",
      "count": 292,
-     "bytes": 90482
+     "bytes": 105671,
+     "dong_named": 180
     },
     {
      "name": "중구",
      "slug": "sgg24",
      "count": 161,
-     "bytes": 50648
+     "bytes": 58702,
+     "dong_named": 95
     },
     {
      "name": "중랑구",
      "slug": "sgg25",
      "count": 557,
-     "bytes": 193204
+     "bytes": 220767,
+     "dong_named": 349
+    },
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 1,
+     "bytes": 303,
+     "dong_named": 1
     }
    ]
   },
@@ -181,103 +207,119 @@
    "name": "부산광역시",
    "slug": "busan",
    "count": 9103,
-   "search_bytes": 734449,
+   "search_bytes": 927823,
    "sigungu": [
     {
      "name": "강서구",
      "slug": "sgg00",
      "count": 652,
-     "bytes": 218586
+     "bytes": 246399,
+     "dong_named": 352
     },
     {
      "name": "금정구",
      "slug": "sgg01",
      "count": 603,
-     "bytes": 193783
+     "bytes": 226212,
+     "dong_named": 493
     },
     {
      "name": "기장군",
      "slug": "sgg02",
      "count": 589,
-     "bytes": 187038
+     "bytes": 217215,
+     "dong_named": 589
     },
     {
      "name": "남구",
      "slug": "sgg03",
      "count": 648,
-     "bytes": 198548
+     "bytes": 227940,
+     "dong_named": 352
     },
     {
      "name": "동구",
      "slug": "sgg04",
      "count": 113,
-     "bytes": 32934
+     "bytes": 38579,
+     "dong_named": 95
     },
     {
      "name": "동래구",
      "slug": "sgg05",
      "count": 1148,
-     "bytes": 372486
+     "bytes": 432653,
+     "dong_named": 927
     },
     {
      "name": "부산진구",
      "slug": "sgg06",
      "count": 905,
-     "bytes": 280012
+     "bytes": 325277,
+     "dong_named": 631
     },
     {
      "name": "북구",
      "slug": "sgg07",
      "count": 637,
-     "bytes": 204652
+     "bytes": 234145,
+     "dong_named": 286
     },
     {
      "name": "사상구",
      "slug": "sgg08",
      "count": 269,
-     "bytes": 87595
+     "bytes": 99895,
+     "dong_named": 138
     },
     {
      "name": "사하구",
      "slug": "sgg09",
      "count": 673,
-     "bytes": 220872
+     "bytes": 254234,
+     "dong_named": 429
     },
     {
      "name": "서구",
      "slug": "sgg10",
      "count": 223,
-     "bytes": 73265
+     "bytes": 86198,
+     "dong_named": 169
     },
     {
      "name": "수영구",
      "slug": "sgg11",
      "count": 511,
-     "bytes": 156631
+     "bytes": 182669,
+     "dong_named": 354
     },
     {
      "name": "연제구",
      "slug": "sgg12",
      "count": 564,
-     "bytes": 181453
+     "bytes": 211179,
+     "dong_named": 449
     },
     {
      "name": "영도구",
      "slug": "sgg13",
      "count": 128,
-     "bytes": 42732
+     "bytes": 49352,
+     "dong_named": 82
     },
     {
      "name": "중구",
      "slug": "sgg14",
      "count": 48,
-     "bytes": 14027
+     "bytes": 16644,
+     "dong_named": 30
     },
     {
      "name": "해운대구",
      "slug": "sgg15",
      "count": 1392,
-     "bytes": 470179
+     "bytes": 530878,
+     "dong_named": 523
     }
    ]
   },
@@ -285,61 +327,70 @@
    "name": "대구광역시",
    "slug": "daegu",
    "count": 8029,
-   "search_bytes": 643282,
+   "search_bytes": 818853,
    "sigungu": [
     {
      "name": "군위군",
      "slug": "sgg00",
      "count": 15,
-     "bytes": 5606
+     "bytes": 6396,
+     "dong_named": 15
     },
     {
      "name": "남구",
      "slug": "sgg01",
      "count": 263,
-     "bytes": 90588
+     "bytes": 104470,
+     "dong_named": 229
     },
     {
      "name": "달서구",
      "slug": "sgg02",
      "count": 1743,
-     "bytes": 580917
+     "bytes": 672797,
+     "dong_named": 1389
     },
     {
      "name": "달성군",
      "slug": "sgg03",
      "count": 764,
-     "bytes": 246733
+     "bytes": 289061,
+     "dong_named": 764
     },
     {
      "name": "동구",
      "slug": "sgg04",
      "count": 874,
-     "bytes": 285401
+     "bytes": 327090,
+     "dong_named": 631
     },
     {
      "name": "북구",
      "slug": "sgg05",
      "count": 1169,
-     "bytes": 385908
+     "bytes": 444830,
+     "dong_named": 808
     },
     {
      "name": "서구",
      "slug": "sgg06",
      "count": 249,
-     "bytes": 81645
+     "bytes": 93237,
+     "dong_named": 153
     },
     {
      "name": "수성구",
      "slug": "sgg07",
      "count": 2501,
-     "bytes": 829434
+     "bytes": 954411,
+     "dong_named": 1861
     },
     {
      "name": "중구",
      "slug": "sgg08",
      "count": 451,
-     "bytes": 147069
+     "bytes": 168270,
+     "dong_named": 280
     }
    ]
   },
@@ -347,103 +398,119 @@
    "name": "인천광역시",
    "slug": "incheon",
    "count": 6914,
-   "search_bytes": 552202,
+   "search_bytes": 699583,
    "sigungu": [
-    {
-     "name": "(주소 불명)",
-     "slug": "sgg00",
-     "count": 14,
-     "bytes": 2747
-    },
     {
      "name": "강화군",
      "slug": "sgg01",
      "count": 72,
-     "bytes": 23307
+     "bytes": 27305,
+     "dong_named": 72
     },
     {
      "name": "검단구",
      "slug": "sgg02",
      "count": 22,
-     "bytes": 6978
+     "bytes": 7746,
+     "dong_named": 6
     },
     {
      "name": "계양구",
      "slug": "sgg03",
      "count": 485,
-     "bytes": 153658
+     "bytes": 176055,
+     "dong_named": 304
     },
     {
      "name": "남구",
      "slug": "sgg04",
      "count": 1,
-     "bytes": 487
+     "bytes": 550,
+     "dong_named": 1
     },
     {
      "name": "남동구",
      "slug": "sgg05",
      "count": 1110,
-     "bytes": 349492
+     "bytes": 401217,
+     "dong_named": 692
     },
     {
      "name": "동구",
      "slug": "sgg06",
      "count": 62,
-     "bytes": 19513
+     "bytes": 22562,
+     "dong_named": 44
     },
     {
      "name": "미추홀구",
      "slug": "sgg07",
      "count": 635,
-     "bytes": 205585
+     "bytes": 235390,
+     "dong_named": 364
     },
     {
      "name": "부평구",
      "slug": "sgg08",
      "count": 942,
-     "bytes": 307843
+     "bytes": 352159,
+     "dong_named": 556
     },
     {
      "name": "서구",
      "slug": "sgg09",
      "count": 1761,
-     "bytes": 563321
+     "bytes": 629827,
+     "dong_named": 502
     },
     {
      "name": "서해구",
      "slug": "sgg10",
      "count": 20,
-     "bytes": 6305
+     "bytes": 7014,
+     "dong_named": 4
     },
     {
      "name": "연수구",
      "slug": "sgg11",
      "count": 1423,
-     "bytes": 473560
+     "bytes": 531273,
+     "dong_named": 495
     },
     {
      "name": "영종구",
      "slug": "sgg12",
      "count": 9,
-     "bytes": 3343
+     "bytes": 3816,
+     "dong_named": 8
     },
     {
      "name": "옹진군",
      "slug": "sgg13",
      "count": 5,
-     "bytes": 1318
+     "bytes": 1599,
+     "dong_named": 5
     },
     {
      "name": "제물포구",
      "slug": "sgg14",
      "count": 2,
-     "bytes": 598
+     "bytes": 685,
+     "dong_named": 2
     },
     {
      "name": "중구",
      "slug": "sgg15",
      "count": 351,
-     "bytes": 111847
+     "bytes": 127668,
+     "dong_named": 234
+    },
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 14,
+     "bytes": 3385,
+     "dong_named": 0
     }
    ]
   },
@@ -451,37 +518,42 @@
    "name": "대전광역시",
    "slug": "daejeon",
    "count": 3822,
-   "search_bytes": 301743,
+   "search_bytes": 381775,
    "sigungu": [
     {
      "name": "대덕구",
      "slug": "sgg00",
      "count": 305,
-     "bytes": 101413
+     "bytes": 116153,
+     "dong_named": 220
     },
     {
      "name": "동구",
      "slug": "sgg01",
      "count": 358,
-     "bytes": 115841
+     "bytes": 132434,
+     "dong_named": 253
     },
     {
      "name": "서구",
      "slug": "sgg02",
      "count": 1494,
-     "bytes": 451320
+     "bytes": 520263,
+     "dong_named": 1080
     },
     {
      "name": "유성구",
      "slug": "sgg03",
      "count": 1179,
-     "bytes": 369755
+     "bytes": 423349,
+     "dong_named": 794
     },
     {
      "name": "중구",
      "slug": "sgg04",
      "count": 486,
-     "bytes": 154061
+     "bytes": 177285,
+     "dong_named": 328
     }
    ]
   },
@@ -489,37 +561,42 @@
    "name": "울산광역시",
    "slug": "ulsan",
    "count": 3703,
-   "search_bytes": 299369,
+   "search_bytes": 377866,
    "sigungu": [
     {
      "name": "남구",
      "slug": "sgg00",
      "count": 1379,
-     "bytes": 419454
+     "bytes": 492344,
+     "dong_named": 1124
     },
     {
      "name": "동구",
      "slug": "sgg01",
      "count": 389,
-     "bytes": 121941
+     "bytes": 142193,
+     "dong_named": 312
     },
     {
      "name": "북구",
      "slug": "sgg02",
      "count": 744,
-     "bytes": 239160
+     "bytes": 275701,
+     "dong_named": 515
     },
     {
      "name": "울주군",
      "slug": "sgg03",
      "count": 599,
-     "bytes": 190043
+     "bytes": 222231,
+     "dong_named": 599
     },
     {
      "name": "중구",
      "slug": "sgg04",
      "count": 592,
-     "bytes": 181138
+     "bytes": 212771,
+     "dong_named": 500
     }
    ]
   },
@@ -527,13 +604,14 @@
    "name": "세종특별자치시",
    "slug": "sejong",
    "count": 1751,
-   "search_bytes": 141175,
+   "search_bytes": 177450,
    "sigungu": [
     {
      "name": "세종특별자치시",
      "slug": "sgg00",
      "count": 1751,
-     "bytes": 598152
+     "bytes": 670378,
+     "dong_named": 626
     }
    ]
   },
@@ -541,307 +619,357 @@
    "name": "경기도",
    "slug": "gyeonggi",
    "count": 39171,
-   "search_bytes": 3165705,
+   "search_bytes": 3995440,
    "sigungu": [
-    {
-     "name": "(주소 불명)",
-     "slug": "sgg00",
-     "count": 6,
-     "bytes": 1239
-    },
     {
      "name": "가평군",
      "slug": "sgg01",
      "count": 85,
-     "bytes": 25098
+     "bytes": 29228,
+     "dong_named": 85
     },
     {
      "name": "고양시 덕양구",
      "slug": "sgg02",
      "count": 1389,
-     "bytes": 450973
+     "bytes": 510871,
+     "dong_named": 732
     },
     {
      "name": "고양시 일산동구",
      "slug": "sgg03",
      "count": 998,
-     "bytes": 335775
+     "bytes": 382159,
+     "dong_named": 526
     },
     {
      "name": "고양시 일산서구",
      "slug": "sgg04",
      "count": 1034,
-     "bytes": 353490
+     "bytes": 404519,
+     "dong_named": 597
     },
     {
      "name": "과천시",
      "slug": "sgg05",
      "count": 301,
-     "bytes": 90832
+     "bytes": 106638,
+     "dong_named": 297
     },
     {
      "name": "광명시",
      "slug": "sgg06",
      "count": 882,
-     "bytes": 286210
+     "bytes": 330197,
+     "dong_named": 542
     },
     {
      "name": "광주시",
      "slug": "sgg07",
      "count": 806,
-     "bytes": 244895
+     "bytes": 285382,
+     "dong_named": 710
     },
     {
      "name": "구리시",
      "slug": "sgg08",
      "count": 580,
-     "bytes": 181437
+     "bytes": 208808,
+     "dong_named": 349
     },
     {
      "name": "군포시",
      "slug": "sgg09",
      "count": 674,
-     "bytes": 228335
+     "bytes": 259319,
+     "dong_named": 330
     },
     {
      "name": "김포시",
      "slug": "sgg10",
      "count": 1782,
-     "bytes": 549230
+     "bytes": 625362,
+     "dong_named": 920
     },
     {
      "name": "남양주시",
      "slug": "sgg11",
      "count": 2044,
-     "bytes": 649799
+     "bytes": 744769,
+     "dong_named": 1586
     },
     {
      "name": "동두천시",
      "slug": "sgg12",
      "count": 117,
-     "bytes": 35772
+     "bytes": 40913,
+     "dong_named": 49
     },
     {
      "name": "부천시",
      "slug": "sgg13",
      "count": 1593,
-     "bytes": 511279
+     "bytes": 582587,
+     "dong_named": 793
     },
     {
      "name": "부천시 소사구",
      "slug": "sgg14",
      "count": 157,
-     "bytes": 50147
+     "bytes": 57362,
+     "dong_named": 143
     },
     {
      "name": "부천시 오정구",
      "slug": "sgg15",
      "count": 32,
-     "bytes": 9957
+     "bytes": 11243,
+     "dong_named": 23
     },
     {
      "name": "부천시 원미구",
      "slug": "sgg16",
      "count": 286,
-     "bytes": 92560
+     "bytes": 104411,
+     "dong_named": 203
     },
     {
      "name": "성남시 분당구",
      "slug": "sgg17",
      "count": 2270,
-     "bytes": 786451
+     "bytes": 882226,
+     "dong_named": 665
     },
     {
      "name": "성남시 수정구",
      "slug": "sgg18",
      "count": 655,
-     "bytes": 221492
+     "bytes": 248533,
+     "dong_named": 226
     },
     {
      "name": "성남시 중원구",
      "slug": "sgg19",
      "count": 377,
-     "bytes": 128389
+     "bytes": 146314,
+     "dong_named": 240
     },
     {
      "name": "수원시 권선구",
      "slug": "sgg20",
      "count": 874,
-     "bytes": 298958
+     "bytes": 337626,
+     "dong_named": 462
     },
     {
      "name": "수원시 영통구",
      "slug": "sgg21",
      "count": 1526,
-     "bytes": 505280
+     "bytes": 569920,
+     "dong_named": 676
     },
     {
      "name": "수원시 장안구",
      "slug": "sgg22",
      "count": 767,
-     "bytes": 260377
+     "bytes": 294866,
+     "dong_named": 395
     },
     {
      "name": "수원시 팔달구",
      "slug": "sgg23",
      "count": 528,
-     "bytes": 169852
+     "bytes": 194121,
+     "dong_named": 326
     },
     {
      "name": "시흥시",
      "slug": "sgg24",
      "count": 1461,
-     "bytes": 452072
+     "bytes": 514805,
+     "dong_named": 601
     },
     {
      "name": "안산시 단원구",
      "slug": "sgg25",
      "count": 712,
-     "bytes": 223031
+     "bytes": 258074,
+     "dong_named": 449
     },
     {
      "name": "안산시 상록구",
      "slug": "sgg26",
      "count": 513,
-     "bytes": 159608
+     "bytes": 185397,
+     "dong_named": 418
     },
     {
      "name": "안성시",
      "slug": "sgg27",
      "count": 349,
-     "bytes": 109108
+     "bytes": 126950,
+     "dong_named": 325
     },
     {
      "name": "안양시 동안구",
      "slug": "sgg28",
      "count": 1349,
-     "bytes": 471714
+     "bytes": 532185,
+     "dong_named": 585
     },
     {
      "name": "안양시 만안구",
      "slug": "sgg29",
      "count": 474,
-     "bytes": 157953
+     "bytes": 178355,
+     "dong_named": 211
     },
     {
      "name": "양주시",
      "slug": "sgg30",
      "count": 604,
-     "bytes": 182041
+     "bytes": 210265,
+     "dong_named": 454
     },
     {
      "name": "양평군",
      "slug": "sgg31",
      "count": 232,
-     "bytes": 68673
+     "bytes": 80424,
+     "dong_named": 231
     },
     {
      "name": "여주시",
      "slug": "sgg32",
      "count": 164,
-     "bytes": 47828
+     "bytes": 56288,
+     "dong_named": 145
     },
     {
      "name": "연천군",
      "slug": "sgg33",
      "count": 36,
-     "bytes": 10666
+     "bytes": 12705,
+     "dong_named": 36
     },
     {
      "name": "오산시",
      "slug": "sgg34",
      "count": 564,
-     "bytes": 172340
+     "bytes": 195565,
+     "dong_named": 241
     },
     {
      "name": "용인시 기흥구",
      "slug": "sgg35",
      "count": 1402,
-     "bytes": 471614
+     "bytes": 532404,
+     "dong_named": 712
     },
     {
      "name": "용인시 수지구",
      "slug": "sgg36",
      "count": 1439,
-     "bytes": 475125
+     "bytes": 540266,
+     "dong_named": 805
     },
     {
      "name": "용인시 처인구",
      "slug": "sgg37",
      "count": 571,
-     "bytes": 181295
+     "bytes": 207540,
+     "dong_named": 468
     },
     {
      "name": "의왕시",
      "slug": "sgg38",
      "count": 350,
-     "bytes": 125511
+     "bytes": 141408,
+     "dong_named": 164
     },
     {
      "name": "의정부시",
      "slug": "sgg39",
      "count": 1163,
-     "bytes": 357242
+     "bytes": 413827,
+     "dong_named": 839
     },
     {
      "name": "이천시",
      "slug": "sgg40",
      "count": 586,
-     "bytes": 170915
+     "bytes": 201331,
+     "dong_named": 509
     },
     {
      "name": "파주시",
      "slug": "sgg41",
      "count": 1348,
-     "bytes": 401502
+     "bytes": 468470,
+     "dong_named": 1085
     },
     {
      "name": "평택시",
      "slug": "sgg42",
      "count": 1368,
-     "bytes": 408987
+     "bytes": 473710,
+     "dong_named": 1049
     },
     {
      "name": "포천시",
      "slug": "sgg43",
      "count": 150,
-     "bytes": 43121
+     "bytes": 51237,
+     "dong_named": 144
     },
     {
      "name": "하남시",
      "slug": "sgg44",
      "count": 1061,
-     "bytes": 343130
+     "bytes": 393268,
+     "dong_named": 621
     },
     {
      "name": "화성시",
      "slug": "sgg45",
      "count": 3189,
-     "bytes": 1027940
+     "bytes": 1165152,
+     "dong_named": 1576
     },
     {
      "name": "화성시 동탄구",
      "slug": "sgg46",
      "count": 210,
-     "bytes": 72065
+     "bytes": 79472,
+     "dong_named": 51
     },
     {
      "name": "화성시 만세구",
      "slug": "sgg47",
      "count": 38,
-     "bytes": 11290
+     "bytes": 12902,
+     "dong_named": 34
     },
     {
      "name": "화성시 병점구",
      "slug": "sgg48",
      "count": 42,
-     "bytes": 14334
+     "bytes": 15940,
+     "dong_named": 17
     },
     {
      "name": "화성시 효행구",
      "slug": "sgg49",
      "count": 33,
-     "bytes": 10773
+     "bytes": 12395,
+     "dong_named": 33
+    },
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 6,
+     "bytes": 1451,
+     "dong_named": 0
     }
    ]
   },
@@ -849,115 +977,133 @@
    "name": "강원특별자치도",
    "slug": "gangwon",
    "count": 3208,
-   "search_bytes": 253908,
+   "search_bytes": 319915,
    "sigungu": [
     {
      "name": "강릉시",
      "slug": "sgg00",
      "count": 590,
-     "bytes": 185017
+     "bytes": 214895,
+     "dong_named": 504
     },
     {
      "name": "고성군",
      "slug": "sgg01",
      "count": 17,
-     "bytes": 5136
+     "bytes": 5997,
+     "dong_named": 17
     },
     {
      "name": "동해시",
      "slug": "sgg02",
      "count": 173,
-     "bytes": 51824
+     "bytes": 60472,
+     "dong_named": 95
     },
     {
      "name": "삼척시",
      "slug": "sgg03",
      "count": 85,
-     "bytes": 24516
+     "bytes": 28730,
+     "dong_named": 67
     },
     {
      "name": "속초시",
      "slug": "sgg04",
      "count": 161,
-     "bytes": 47356
+     "bytes": 55003,
+     "dong_named": 135
     },
     {
      "name": "양구군",
      "slug": "sgg05",
      "count": 27,
-     "bytes": 7767
+     "bytes": 9093,
+     "dong_named": 27
     },
     {
      "name": "양양군",
      "slug": "sgg06",
      "count": 32,
-     "bytes": 9344
+     "bytes": 10960,
+     "dong_named": 32
     },
     {
      "name": "영월군",
      "slug": "sgg07",
      "count": 47,
-     "bytes": 14425
+     "bytes": 16922,
+     "dong_named": 47
     },
     {
      "name": "원주시",
      "slug": "sgg08",
      "count": 1026,
-     "bytes": 318303
+     "bytes": 371619,
+     "dong_named": 963
     },
     {
      "name": "인제군",
      "slug": "sgg09",
      "count": 38,
-     "bytes": 12993
+     "bytes": 14905,
+     "dong_named": 38
     },
     {
      "name": "정선군",
      "slug": "sgg10",
      "count": 27,
-     "bytes": 9896
+     "bytes": 11402,
+     "dong_named": 27
     },
     {
      "name": "철원군",
      "slug": "sgg11",
      "count": 59,
-     "bytes": 17999
+     "bytes": 20989,
+     "dong_named": 59
     },
     {
      "name": "춘천시",
      "slug": "sgg12",
      "count": 703,
-     "bytes": 220463
+     "bytes": 255368,
+     "dong_named": 556
     },
     {
      "name": "태백시",
      "slug": "sgg13",
      "count": 42,
-     "bytes": 12044
+     "bytes": 14438,
+     "dong_named": 38
     },
     {
      "name": "평창군",
      "slug": "sgg14",
      "count": 32,
-     "bytes": 9310
+     "bytes": 11001,
+     "dong_named": 32
     },
     {
      "name": "홍천군",
      "slug": "sgg15",
      "count": 81,
-     "bytes": 24089
+     "bytes": 28774,
+     "dong_named": 81
     },
     {
      "name": "화천군",
      "slug": "sgg16",
      "count": 25,
-     "bytes": 7821
+     "bytes": 9210,
+     "dong_named": 25
     },
     {
      "name": "횡성군",
      "slug": "sgg17",
      "count": 43,
-     "bytes": 13144
+     "bytes": 15570,
+     "dong_named": 43
     }
    ]
   },
@@ -965,91 +1111,105 @@
    "name": "충청북도",
    "slug": "chungbuk",
    "count": 3470,
-   "search_bytes": 275115,
+   "search_bytes": 343332,
    "sigungu": [
     {
      "name": "괴산군",
      "slug": "sgg00",
      "count": 18,
-     "bytes": 5431
+     "bytes": 6412,
+     "dong_named": 18
     },
     {
      "name": "단양군",
      "slug": "sgg01",
      "count": 20,
-     "bytes": 6424
+     "bytes": 7496,
+     "dong_named": 20
     },
     {
      "name": "보은군",
      "slug": "sgg02",
      "count": 24,
-     "bytes": 7144
+     "bytes": 8431,
+     "dong_named": 24
     },
     {
      "name": "영동군",
      "slug": "sgg03",
      "count": 52,
-     "bytes": 15545
+     "bytes": 18403,
+     "dong_named": 52
     },
     {
      "name": "옥천군",
      "slug": "sgg04",
      "count": 43,
-     "bytes": 13493
+     "bytes": 15856,
+     "dong_named": 43
     },
     {
      "name": "음성군",
      "slug": "sgg05",
      "count": 109,
-     "bytes": 33004
+     "bytes": 38767,
+     "dong_named": 109
     },
     {
      "name": "제천시",
      "slug": "sgg06",
      "count": 246,
-     "bytes": 74350
+     "bytes": 86752,
+     "dong_named": 216
     },
     {
      "name": "증평군",
      "slug": "sgg07",
      "count": 69,
-     "bytes": 21660
+     "bytes": 25508,
+     "dong_named": 69
     },
     {
      "name": "진천군",
      "slug": "sgg08",
      "count": 146,
-     "bytes": 44187
+     "bytes": 51972,
+     "dong_named": 146
     },
     {
      "name": "청주시 상당구",
      "slug": "sgg09",
      "count": 548,
-     "bytes": 186339
+     "bytes": 212846,
+     "dong_named": 401
     },
     {
      "name": "청주시 서원구",
      "slug": "sgg10",
      "count": 481,
-     "bytes": 159855
+     "bytes": 184525,
+     "dong_named": 332
     },
     {
      "name": "청주시 청원구",
      "slug": "sgg11",
      "count": 418,
-     "bytes": 140903
+     "bytes": 162641,
+     "dong_named": 371
     },
     {
      "name": "청주시 흥덕구",
      "slug": "sgg12",
      "count": 808,
-     "bytes": 276360
+     "bytes": 316373,
+     "dong_named": 679
     },
     {
      "name": "충주시",
      "slug": "sgg13",
      "count": 488,
-     "bytes": 148629
+     "bytes": 173769,
+     "dong_named": 406
     }
    ]
   },
@@ -1057,115 +1217,133 @@
    "name": "충청남도",
    "slug": "chungnam",
    "count": 4482,
-   "search_bytes": 352551,
+   "search_bytes": 443701,
    "sigungu": [
-    {
-     "name": "(주소 불명)",
-     "slug": "sgg00",
-     "count": 11,
-     "bytes": 2273
-    },
     {
      "name": "계룡시",
      "slug": "sgg01",
      "count": 113,
-     "bytes": 36613
+     "bytes": 42583,
+     "dong_named": 103
     },
     {
      "name": "공주시",
      "slug": "sgg02",
      "count": 133,
-     "bytes": 38737
+     "bytes": 45900,
+     "dong_named": 125
     },
     {
      "name": "금산군",
      "slug": "sgg03",
      "count": 45,
-     "bytes": 13429
+     "bytes": 15846,
+     "dong_named": 45
     },
     {
      "name": "논산시",
      "slug": "sgg04",
      "count": 165,
-     "bytes": 46952
+     "bytes": 55310,
+     "dong_named": 147
     },
     {
      "name": "당진시",
      "slug": "sgg05",
      "count": 321,
-     "bytes": 96632
+     "bytes": 112737,
+     "dong_named": 253
     },
     {
      "name": "보령시",
      "slug": "sgg06",
      "count": 173,
-     "bytes": 51387
+     "bytes": 59828,
+     "dong_named": 116
     },
     {
      "name": "부여군",
      "slug": "sgg07",
      "count": 49,
-     "bytes": 14370
+     "bytes": 17129,
+     "dong_named": 49
     },
     {
      "name": "서산시",
      "slug": "sgg08",
      "count": 352,
-     "bytes": 104935
+     "bytes": 122509,
+     "dong_named": 276
     },
     {
      "name": "서천군",
      "slug": "sgg09",
      "count": 56,
-     "bytes": 16892
+     "bytes": 20110,
+     "dong_named": 56
     },
     {
      "name": "아산시",
      "slug": "sgg10",
      "count": 734,
-     "bytes": 228530
+     "bytes": 268557,
+     "dong_named": 674
     },
     {
      "name": "연기군",
      "slug": "sgg11",
      "count": 109,
-     "bytes": 28310
+     "bytes": 35130,
+     "dong_named": 109
     },
     {
      "name": "예산군",
      "slug": "sgg12",
      "count": 106,
-     "bytes": 29749
+     "bytes": 35479,
+     "dong_named": 106
     },
     {
      "name": "천안시 동남구",
      "slug": "sgg13",
      "count": 539,
-     "bytes": 181134
+     "bytes": 208457,
+     "dong_named": 368
     },
     {
      "name": "천안시 서북구",
      "slug": "sgg14",
      "count": 1303,
-     "bytes": 439207
+     "bytes": 503620,
+     "dong_named": 852
     },
     {
      "name": "청양군",
      "slug": "sgg15",
      "count": 15,
-     "bytes": 3984
+     "bytes": 4877,
+     "dong_named": 15
     },
     {
      "name": "태안군",
      "slug": "sgg16",
      "count": 53,
-     "bytes": 16453
+     "bytes": 19506,
+     "dong_named": 53
     },
     {
      "name": "홍성군",
      "slug": "sgg17",
      "count": 205,
-     "bytes": 63474
+     "bytes": 74696,
+     "dong_named": 205
+    },
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 11,
+     "bytes": 2762,
+     "dong_named": 0
     }
    ]
   },
@@ -1173,97 +1351,112 @@
    "name": "전북특별자치도",
    "slug": "jeonbuk",
    "count": 4731,
-   "search_bytes": 374895,
+   "search_bytes": 475065,
    "sigungu": [
     {
      "name": "고창군",
      "slug": "sgg00",
      "count": 76,
-     "bytes": 22552
+     "bytes": 26488,
+     "dong_named": 76
     },
     {
      "name": "군산시",
      "slug": "sgg01",
      "count": 658,
-     "bytes": 190144
+     "bytes": 223381,
+     "dong_named": 442
     },
     {
      "name": "김제시",
      "slug": "sgg02",
      "count": 106,
-     "bytes": 30732
+     "bytes": 36540,
+     "dong_named": 93
     },
     {
      "name": "남원시",
      "slug": "sgg03",
      "count": 132,
-     "bytes": 37395
+     "bytes": 44214,
+     "dong_named": 73
     },
     {
      "name": "무주군",
      "slug": "sgg04",
      "count": 26,
-     "bytes": 7517
+     "bytes": 8938,
+     "dong_named": 26
     },
     {
      "name": "부안군",
      "slug": "sgg05",
      "count": 55,
-     "bytes": 15578
+     "bytes": 18227,
+     "dong_named": 55
     },
     {
      "name": "순창군",
      "slug": "sgg06",
      "count": 25,
-     "bytes": 6881
+     "bytes": 8238,
+     "dong_named": 25
     },
     {
      "name": "완주군",
      "slug": "sgg07",
      "count": 205,
-     "bytes": 60494
+     "bytes": 71986,
+     "dong_named": 205
     },
     {
      "name": "익산시",
      "slug": "sgg08",
      "count": 623,
-     "bytes": 186204
+     "bytes": 220778,
+     "dong_named": 371
     },
     {
      "name": "임실군",
      "slug": "sgg09",
      "count": 21,
-     "bytes": 6631
+     "bytes": 7825,
+     "dong_named": 21
     },
     {
      "name": "장수군",
      "slug": "sgg10",
      "count": 22,
-     "bytes": 6347
+     "bytes": 7653,
+     "dong_named": 22
     },
     {
      "name": "전주시 덕진구",
      "slug": "sgg11",
      "count": 1306,
-     "bytes": 420576
+     "bytes": 491961,
+     "dong_named": 1056
     },
     {
      "name": "전주시 완산구",
      "slug": "sgg12",
      "count": 1232,
-     "bytes": 396814
+     "bytes": 465928,
+     "dong_named": 939
     },
     {
      "name": "정읍시",
      "slug": "sgg13",
      "count": 229,
-     "bytes": 64510
+     "bytes": 75600,
+     "dong_named": 143
     },
     {
      "name": "진안군",
      "slug": "sgg14",
      "count": 15,
-     "bytes": 4458
+     "bytes": 5395,
+     "dong_named": 15
     }
    ]
   },
@@ -1271,175 +1464,203 @@
    "name": "전남광주통합특별시",
    "slug": "jeonnam-gwangju",
    "count": 8300,
-   "search_bytes": 661481,
+   "search_bytes": 836149,
    "sigungu": [
-    {
-     "name": "(주소 불명)",
-     "slug": "sgg00",
-     "count": 1,
-     "bytes": 241
-    },
     {
      "name": "강진군",
      "slug": "sgg01",
      "count": 34,
-     "bytes": 9466
+     "bytes": 11233,
+     "dong_named": 34
     },
     {
      "name": "고흥군",
      "slug": "sgg02",
      "count": 48,
-     "bytes": 13918
+     "bytes": 16725,
+     "dong_named": 48
     },
     {
      "name": "곡성군",
      "slug": "sgg03",
      "count": 22,
-     "bytes": 6554
+     "bytes": 7925,
+     "dong_named": 22
     },
     {
      "name": "광산구",
      "slug": "sgg04",
      "count": 1281,
-     "bytes": 406062
+     "bytes": 474640,
+     "dong_named": 954
     },
     {
      "name": "광양시",
      "slug": "sgg05",
      "count": 322,
-     "bytes": 93245
+     "bytes": 109954,
+     "dong_named": 280
     },
     {
      "name": "구례군",
      "slug": "sgg06",
      "count": 25,
-     "bytes": 6947
+     "bytes": 8205,
+     "dong_named": 25
     },
     {
      "name": "나주시",
      "slug": "sgg07",
      "count": 288,
-     "bytes": 87524
+     "bytes": 103598,
+     "dong_named": 228
     },
     {
      "name": "남구",
      "slug": "sgg08",
      "count": 914,
-     "bytes": 279920
+     "bytes": 327801,
+     "dong_named": 626
     },
     {
      "name": "담양군",
      "slug": "sgg09",
      "count": 26,
-     "bytes": 7061
+     "bytes": 8496,
+     "dong_named": 26
     },
     {
      "name": "동구",
      "slug": "sgg10",
      "count": 401,
-     "bytes": 118641
+     "bytes": 137998,
+     "dong_named": 277
     },
     {
      "name": "목포시",
      "slug": "sgg11",
      "count": 509,
-     "bytes": 152112
+     "bytes": 177753,
+     "dong_named": 419
     },
     {
      "name": "무안군",
      "slug": "sgg12",
      "count": 341,
-     "bytes": 103169
+     "bytes": 120408,
+     "dong_named": 341
     },
     {
      "name": "보성군",
      "slug": "sgg13",
      "count": 34,
-     "bytes": 10046
+     "bytes": 11937,
+     "dong_named": 34
     },
     {
      "name": "북구",
      "slug": "sgg14",
      "count": 1325,
-     "bytes": 399032
+     "bytes": 464498,
+     "dong_named": 932
     },
     {
      "name": "서구",
      "slug": "sgg15",
      "count": 909,
-     "bytes": 276123
+     "bytes": 323841,
+     "dong_named": 615
     },
     {
      "name": "순천시",
      "slug": "sgg16",
      "count": 715,
-     "bytes": 215525
+     "bytes": 252847,
+     "dong_named": 520
     },
     {
      "name": "신안군",
      "slug": "sgg17",
      "count": 4,
-     "bytes": 1080
+     "bytes": 1277,
+     "dong_named": 4
     },
     {
      "name": "여수시",
      "slug": "sgg18",
      "count": 639,
-     "bytes": 191486
+     "bytes": 222990,
+     "dong_named": 507
     },
     {
      "name": "영광군",
      "slug": "sgg19",
      "count": 86,
-     "bytes": 23786
+     "bytes": 28271,
+     "dong_named": 86
     },
     {
      "name": "영암군",
      "slug": "sgg20",
      "count": 54,
-     "bytes": 16104
+     "bytes": 19118,
+     "dong_named": 54
     },
     {
      "name": "완도군",
      "slug": "sgg21",
      "count": 45,
-     "bytes": 13554
+     "bytes": 15954,
+     "dong_named": 45
     },
     {
      "name": "장성군",
      "slug": "sgg22",
      "count": 47,
-     "bytes": 14463
+     "bytes": 17064,
+     "dong_named": 47
     },
     {
      "name": "장흥군",
      "slug": "sgg23",
      "count": 30,
-     "bytes": 8236
+     "bytes": 9795,
+     "dong_named": 30
     },
     {
      "name": "진도군",
      "slug": "sgg24",
      "count": 31,
-     "bytes": 8674
+     "bytes": 10306,
+     "dong_named": 31
     },
     {
      "name": "함평군",
      "slug": "sgg25",
      "count": 16,
-     "bytes": 4333
+     "bytes": 5176,
+     "dong_named": 16
     },
     {
      "name": "해남군",
      "slug": "sgg26",
      "count": 76,
-     "bytes": 21719
+     "bytes": 25729,
+     "dong_named": 76
     },
     {
      "name": "화순군",
      "slug": "sgg27",
      "count": 77,
-     "bytes": 21670
+     "bytes": 26162,
+     "dong_named": 77
+    },
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 1,
+     "bytes": 272,
+     "dong_named": 0
     }
    ]
   },
@@ -1447,151 +1668,175 @@
    "name": "경상북도",
    "slug": "gyeongbuk",
    "count": 5737,
-   "search_bytes": 455588,
+   "search_bytes": 576041,
    "sigungu": [
     {
      "name": "경산시",
      "slug": "sgg00",
      "count": 678,
-     "bytes": 218164
+     "bytes": 254146,
+     "dong_named": 601
     },
     {
      "name": "경주시",
      "slug": "sgg01",
      "count": 547,
-     "bytes": 172463
+     "bytes": 200027,
+     "dong_named": 492
     },
     {
      "name": "고령군",
      "slug": "sgg02",
      "count": 30,
-     "bytes": 9187
+     "bytes": 10784,
+     "dong_named": 30
     },
     {
      "name": "구미시",
      "slug": "sgg03",
      "count": 1280,
-     "bytes": 396797
+     "bytes": 461198,
+     "dong_named": 1040
     },
     {
      "name": "군위군",
      "slug": "sgg04",
      "count": 17,
-     "bytes": 4687
+     "bytes": 5613,
+     "dong_named": 17
     },
     {
      "name": "김천시",
      "slug": "sgg05",
      "count": 259,
-     "bytes": 81731
+     "bytes": 95140,
+     "dong_named": 236
     },
     {
      "name": "문경시",
      "slug": "sgg06",
      "count": 93,
-     "bytes": 28187
+     "bytes": 33207,
+     "dong_named": 84
     },
     {
      "name": "봉화군",
      "slug": "sgg07",
      "count": 19,
-     "bytes": 5503
+     "bytes": 6529,
+     "dong_named": 19
     },
     {
      "name": "상주시",
      "slug": "sgg08",
      "count": 176,
-     "bytes": 52848
+     "bytes": 62770,
+     "dong_named": 168
     },
     {
      "name": "성주군",
      "slug": "sgg09",
      "count": 37,
-     "bytes": 11095
+     "bytes": 13058,
+     "dong_named": 37
     },
     {
      "name": "안동시",
      "slug": "sgg10",
      "count": 362,
-     "bytes": 108031
+     "bytes": 127088,
+     "dong_named": 316
     },
     {
      "name": "영덕군",
      "slug": "sgg11",
      "count": 28,
-     "bytes": 7608
+     "bytes": 9113,
+     "dong_named": 28
     },
     {
      "name": "영양군",
      "slug": "sgg12",
      "count": 13,
-     "bytes": 4047
+     "bytes": 4726,
+     "dong_named": 13
     },
     {
      "name": "영주시",
      "slug": "sgg13",
      "count": 229,
-     "bytes": 67710
+     "bytes": 79731,
+     "dong_named": 184
     },
     {
      "name": "영천시",
      "slug": "sgg14",
      "count": 143,
-     "bytes": 44541
+     "bytes": 51837,
+     "dong_named": 121
     },
     {
      "name": "예천군",
      "slug": "sgg15",
      "count": 114,
-     "bytes": 34495
+     "bytes": 40274,
+     "dong_named": 114
     },
     {
      "name": "울릉군",
      "slug": "sgg16",
      "count": 4,
-     "bytes": 1300
+     "bytes": 1542,
+     "dong_named": 4
     },
     {
      "name": "울진군",
      "slug": "sgg17",
      "count": 75,
-     "bytes": 23173
+     "bytes": 27153,
+     "dong_named": 75
     },
     {
      "name": "의성군",
      "slug": "sgg18",
      "count": 27,
-     "bytes": 8004
+     "bytes": 9615,
+     "dong_named": 27
     },
     {
      "name": "청도군",
      "slug": "sgg19",
      "count": 38,
-     "bytes": 11116
+     "bytes": 13234,
+     "dong_named": 38
     },
     {
      "name": "청송군",
      "slug": "sgg20",
      "count": 11,
-     "bytes": 2867
+     "bytes": 3442,
+     "dong_named": 11
     },
     {
      "name": "칠곡군",
      "slug": "sgg21",
      "count": 215,
-     "bytes": 64131
+     "bytes": 75583,
+     "dong_named": 215
     },
     {
      "name": "포항시 남구",
      "slug": "sgg22",
      "count": 555,
-     "bytes": 178752
+     "bytes": 207059,
+     "dong_named": 494
     },
     {
      "name": "포항시 북구",
      "slug": "sgg23",
      "count": 787,
-     "bytes": 268288
+     "bytes": 308635,
+     "dong_named": 681
     }
    ]
   },
@@ -1599,145 +1844,168 @@
    "name": "경상남도",
    "slug": "gyeongnam",
    "count": 8758,
-   "search_bytes": 693212,
+   "search_bytes": 879719,
    "sigungu": [
-    {
-     "name": "(주소 불명)",
-     "slug": "sgg00",
-     "count": 1,
-     "bytes": 176
-    },
     {
      "name": "거제시",
      "slug": "sgg01",
      "count": 563,
-     "bytes": 179216
+     "bytes": 206931,
+     "dong_named": 426
     },
     {
      "name": "거창군",
      "slug": "sgg02",
      "count": 131,
-     "bytes": 44940
+     "bytes": 51978,
+     "dong_named": 131
     },
     {
      "name": "고성군",
      "slug": "sgg03",
      "count": 78,
-     "bytes": 23022
+     "bytes": 27142,
+     "dong_named": 78
     },
     {
      "name": "김해시",
      "slug": "sgg04",
      "count": 1609,
-     "bytes": 507227
+     "bytes": 583059,
+     "dong_named": 1105
     },
     {
      "name": "남해군",
      "slug": "sgg05",
      "count": 45,
-     "bytes": 14091
+     "bytes": 16590,
+     "dong_named": 45
     },
     {
      "name": "밀양시",
      "slug": "sgg06",
      "count": 203,
-     "bytes": 61531
+     "bytes": 71995,
+     "dong_named": 182
     },
     {
      "name": "사천시",
      "slug": "sgg07",
      "count": 256,
-     "bytes": 75347
+     "bytes": 88104,
+     "dong_named": 213
     },
     {
      "name": "산청군",
      "slug": "sgg08",
      "count": 28,
-     "bytes": 8951
+     "bytes": 10535,
+     "dong_named": 28
     },
     {
      "name": "양산시",
      "slug": "sgg09",
      "count": 1011,
-     "bytes": 330453
+     "bytes": 381156,
+     "dong_named": 871
     },
     {
      "name": "의령군",
      "slug": "sgg10",
      "count": 23,
-     "bytes": 6857
+     "bytes": 8243,
+     "dong_named": 23
     },
     {
      "name": "진주시",
      "slug": "sgg11",
      "count": 1225,
-     "bytes": 392726
+     "bytes": 453966,
+     "dong_named": 970
     },
     {
      "name": "창녕군",
      "slug": "sgg12",
      "count": 82,
-     "bytes": 25138
+     "bytes": 29549,
+     "dong_named": 82
     },
     {
      "name": "창원시 마산합포구",
      "slug": "sgg13",
      "count": 462,
-     "bytes": 164507
+     "bytes": 188246,
+     "dong_named": 302
     },
     {
      "name": "창원시 마산회원구",
      "slug": "sgg14",
      "count": 499,
-     "bytes": 183290
+     "bytes": 208350,
+     "dong_named": 338
     },
     {
      "name": "창원시 성산구",
      "slug": "sgg15",
      "count": 852,
-     "bytes": 308932
+     "bytes": 346422,
+     "dong_named": 333
     },
     {
      "name": "창원시 의창구",
      "slug": "sgg16",
      "count": 672,
-     "bytes": 250587
+     "bytes": 281195,
+     "dong_named": 434
     },
     {
      "name": "창원시 진해구",
      "slug": "sgg17",
      "count": 513,
-     "bytes": 174740
+     "bytes": 196762,
+     "dong_named": 219
     },
     {
      "name": "통영시",
      "slug": "sgg18",
      "count": 265,
-     "bytes": 80904
+     "bytes": 94137,
+     "dong_named": 204
     },
     {
      "name": "하동군",
      "slug": "sgg19",
      "count": 42,
-     "bytes": 12654
+     "bytes": 15033,
+     "dong_named": 42
     },
     {
      "name": "함안군",
      "slug": "sgg20",
      "count": 104,
-     "bytes": 32452
+     "bytes": 37919,
+     "dong_named": 104
     },
     {
      "name": "함양군",
      "slug": "sgg21",
      "count": 57,
-     "bytes": 17498
+     "bytes": 20596,
+     "dong_named": 57
     },
     {
      "name": "합천군",
      "slug": "sgg22",
      "count": 37,
-     "bytes": 11717
+     "bytes": 13863,
+     "dong_named": 37
+    },
+    {
+     "name": "(주소 불명)",
+     "slug": "sgg00",
+     "count": 1,
+     "bytes": 219,
+     "dong_named": 0
     }
    ]
   },
@@ -1745,19 +2013,21 @@
    "name": "제주특별자치도",
    "slug": "jeju",
    "count": 1765,
-   "search_bytes": 140022,
+   "search_bytes": 174096,
    "sigungu": [
     {
      "name": "서귀포시",
      "slug": "sgg00",
      "count": 455,
-     "bytes": 147742
+     "bytes": 170613,
+     "dong_named": 422
     },
     {
      "name": "제주시",
      "slug": "sgg01",
      "count": 1310,
-     "bytes": 414102
+     "bytes": 479310,
+     "dong_named": 1140
     }
    ]
   }
@@ -1902,6 +2172,36 @@
  ],
  "fee_open": 27062,
  "on_break": 132,
+ "tel_shown": 64379,
+ "tel_dropped": {
+  "원본 공백": 63571,
+  "휴대폰": 5231,
+  "더미": 4388,
+  "형식오류": 872
+ },
+ "dong_named": 92722,
+ "age_counts": {
+  "school": 90960,
+  "infant": 10983,
+  "미표기": 41419,
+  "adult": 5608
+ },
+ "cat_counts": {
+  "study": 88878,
+  "essay": 8569,
+  "lang": 32650,
+  "music": 22659,
+  "job": 4722,
+  "etc": 1980,
+  "art": 13950,
+  "read": 2145,
+  "coding": 1645,
+  "(미분류)": 1169,
+  "cook": 793,
+  "beauty": 1064,
+  "dance": 3218,
+  "math2": 152
+ },
  "fields": {
   "i": "유일키(시도교육청코드_학원지정번호)",
   "n": "학원명",
@@ -1919,7 +2219,12 @@
   "z": "우편번호",
   "p": "인당수강료(공개 동의 학원만)",
   "h": "휴원중",
-  "b": "기숙사 운영"
+  "b": "기숙사 운영",
+  "v": "대표 전화번호(사업장 유선·대표번호만, 휴대폰 제외)",
+  "d": "읍면동(주소 표기에서 읽음)",
+  "g": "대상 연령 비트(1 유아·2 초중고·4 성인, 0=미표기)",
+  "s": "과목 대분류 id 목록(여러 개 가능)",
+  "w": "과목 세부 id 목록(대분류.세부)"
  },
  "dropped": {
   "교육청 시험용 레코드": 13,
@@ -1940,6 +2245,7 @@
  "suppressed": {
   "수강료 공개인데 값 없음": 106867,
   "구 우편번호·형식오류": 22065,
+  "읍면동 표기 없음": 45719,
   "정원 이상치": 34,
   "수강료 비공개인데 값 있음": 1191,
   "시군구 판별 불가": 34,
@@ -1947,9 +2253,10 @@
  },
  "notes": [
   "원본에 좌표(위경도)가 없어 지도를 제공하지 않는다. 좌표를 임의로 만들지 않았다.",
-  "전화번호 컬럼은 개인 휴대폰이 섞여 있어 통째로 제외했다.",
+  "전화번호는 사업장 유선·대표번호만 싣는다. 01x 휴대폰(5231건)과 000-0000 형태의 더미(4388건)는 제외했다.",
   "설립자·원장·강사 등 개인 실명 항목은 원본 API/CSV에 존재하지 않는다.",
   "수강료는 학원이 공개에 동의한 경우에만 원본에 채워져 있다.",
-  "평점·후기·인기순위는 원본에 없으며 만들지 않았다."
+  "평점·후기·인기순위는 원본에 없으며 만들지 않았다.",
+  "나이·과목은 교육청 분류값(분야명·교습계열명·교습과정명)을 옮긴 것이고, 근거가 없으면 '미표기'로 남긴다. 임의로 전 연령 통과시키지 않는다."
  ]
 }

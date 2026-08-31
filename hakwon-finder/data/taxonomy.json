@@ -1,0 +1,296 @@
+{
+ "ages": [
+  {
+   "id": "infant",
+   "bit": 1,
+   "name": "유아·어린이"
+  },
+  {
+   "id": "school",
+   "bit": 2,
+   "name": "초·중·고"
+  },
+  {
+   "id": "adult",
+   "bit": 4,
+   "name": "성인"
+  }
+ ],
+ "age_unknown_label": "연령 미표기",
+ "cats": [
+  {
+   "id": "music",
+   "name": "🎹 음악·악기",
+   "basis": "음악·실용음악·국악",
+   "subs": [
+    {
+     "id": "music.pia",
+     "name": "피아노"
+    },
+    {
+     "id": "music.vio",
+     "name": "바이올린"
+    },
+    {
+     "id": "music.cel",
+     "name": "첼로"
+    },
+    {
+     "id": "music.flu",
+     "name": "플루트"
+    },
+    {
+     "id": "music.dru",
+     "name": "드럼"
+    },
+    {
+     "id": "music.gui",
+     "name": "기타(악기)"
+    },
+    {
+     "id": "music.voc",
+     "name": "성악·보컬"
+    },
+    {
+     "id": "music.app",
+     "name": "실용음악"
+    },
+    {
+     "id": "music.gug",
+     "name": "국악"
+    }
+   ]
+  },
+  {
+   "id": "art",
+   "name": "🎨 미술",
+   "basis": "미술·디자인·만화·도예",
+   "subs": [
+    {
+     "id": "art.fin",
+     "name": "미술·회화"
+    },
+    {
+     "id": "art.des",
+     "name": "디자인"
+    },
+    {
+     "id": "art.com",
+     "name": "만화·웹툰"
+    },
+    {
+     "id": "art.cer",
+     "name": "도예"
+    }
+   ]
+  },
+  {
+   "id": "dance",
+   "name": "💃 무용·댄스",
+   "basis": "무용·댄스",
+   "subs": [
+    {
+     "id": "dance.bal",
+     "name": "발레"
+    },
+    {
+     "id": "dance.kpo",
+     "name": "방송댄스·힙합"
+    },
+    {
+     "id": "dance.kor",
+     "name": "한국무용"
+    },
+    {
+     "id": "dance.mod",
+     "name": "현대무용"
+    }
+   ]
+  },
+  {
+   "id": "study",
+   "name": "📚 보습·입시",
+   "basis": "보습·보통교과·입시·진학지도",
+   "subs": [
+    {
+     "id": "study.mat",
+     "name": "수학"
+    },
+    {
+     "id": "study.kor",
+     "name": "국어"
+    },
+    {
+     "id": "study.sci",
+     "name": "과학"
+    },
+    {
+     "id": "study.soc",
+     "name": "사회·역사"
+    },
+    {
+     "id": "study.all",
+     "name": "종합·전과목"
+    }
+   ]
+  },
+  {
+   "id": "lang",
+   "name": "🗣 외국어",
+   "basis": "국제화 분야 / 외국어·국제 계열 / 실용외국어·어학",
+   "subs": [
+    {
+     "id": "lang.en",
+     "name": "영어"
+    },
+    {
+     "id": "lang.cn",
+     "name": "중국어"
+    },
+    {
+     "id": "lang.jp",
+     "name": "일본어"
+    },
+    {
+     "id": "lang.ot",
+     "name": "기타 외국어"
+    }
+   ]
+  },
+  {
+   "id": "essay",
+   "name": "✍ 논술·독서",
+   "basis": "논술·독서지도",
+   "subs": []
+  },
+  {
+   "id": "coding",
+   "name": "💻 코딩·컴퓨터",
+   "basis": "컴퓨터·정보·소프트웨어·로봇",
+   "subs": [
+    {
+     "id": "coding.cod",
+     "name": "코딩·로봇"
+    },
+    {
+     "id": "coding.pc",
+     "name": "컴퓨터·정보처리"
+    }
+   ]
+  },
+  {
+   "id": "math2",
+   "name": "🧮 주산·속셈",
+   "basis": "주산·속셈·암산",
+   "subs": []
+  },
+  {
+   "id": "cook",
+   "name": "🍳 요리·제과",
+   "basis": "식음료품(바리스타·소믈리에)·조리",
+   "subs": [
+    {
+     "id": "cook.bak",
+     "name": "제과제빵"
+    },
+    {
+     "id": "cook.bar",
+     "name": "바리스타"
+    },
+    {
+     "id": "cook.coo",
+     "name": "조리·요리"
+    }
+   ]
+  },
+  {
+   "id": "beauty",
+   "name": "💇 미용",
+   "basis": "이·미용·애견미용",
+   "subs": [
+    {
+     "id": "beauty.hair",
+     "name": "헤어"
+    },
+    {
+     "id": "beauty.nail",
+     "name": "네일"
+    },
+    {
+     "id": "beauty.make",
+     "name": "메이크업"
+    },
+    {
+     "id": "beauty.pet",
+     "name": "애견미용"
+    }
+   ]
+  },
+  {
+   "id": "job",
+   "name": "🛠 직업·자격",
+   "basis": "직업기술 분야 / 자격·고시·편입",
+   "subs": [
+    {
+     "id": "job.nur",
+     "name": "간호조무"
+    },
+    {
+     "id": "job.gov",
+     "name": "공무원·고시"
+    },
+    {
+     "id": "job.est",
+     "name": "부동산·경매"
+    },
+    {
+     "id": "job.tec",
+     "name": "기술·기능"
+    }
+   ]
+  },
+  {
+   "id": "read",
+   "name": "📖 독서실",
+   "basis": "독서실",
+   "subs": []
+  },
+  {
+   "id": "etc",
+   "name": "🎭 취미·기타",
+   "basis": "바둑·서예·공예·연극·화술·속독",
+   "subs": [
+    {
+     "id": "etc.bad",
+     "name": "바둑"
+    },
+    {
+     "id": "etc.cal",
+     "name": "서예·펜글씨"
+    },
+    {
+     "id": "etc.cra",
+     "name": "공예"
+    },
+    {
+     "id": "etc.spe",
+     "name": "연극·스피치"
+    },
+    {
+     "id": "etc.fas",
+     "name": "속독"
+    }
+   ]
+  }
+ ],
+ "sub_unknown_label": "세부 미표기",
+ "basis": {
+  "age": "교습과정명·교습계열명·분야명의 교육청 분류값이 1순위, 학원명 표기가 2순위입니다. 근거가 없으면 '연령 미표기'로 둡니다.",
+  "cat": "분야명(예: 국제화)·교습계열명(예: 외국어)·교습과정명(예: 실용외국어(유아/초·중·고))을 앱 과목으로 옮긴 대응표입니다.",
+  "sub": "세부 과목은 원본에 코드가 없어 학원명·교습과정 표기에서 읽은 추정입니다. 표기가 없으면 '세부 미표기'로 둡니다.",
+  "brand_en": "등록명에 언어 표기가 없는 대형 영어 브랜드(청담어학원·아발론·리틀팍스 등 38개)는 브랜드 사전으로 영어에 넣었습니다.",
+  "tel": "원본 전화번호 중 사업장 유선·대표번호만 싣습니다. 01x 휴대폰과 000-0000 형태의 더미는 제외합니다.",
+  "dong": "읍면동은 원본에 컬럼이 없어 주소의 '(○○동)' 표기와 읍·면 토큰에서 읽습니다. 표기가 없으면 '동 미표기'입니다."
+ },
+ "brand_en_count": 38
+}

@@ -1,9 +1,10 @@
-/* 학원파인더 전국판 — 서비스워커 v2 (2026-08-23)
+/* 학원파인더 전국판 — 서비스워커 v3 (2026-08-31)
+   v3: 전화번호 수록·나이/과목 분류 교체·읍면동 필터·URL 라우팅 배포에 맞춰 캐시 이름 올림.
    v1은 껍데기(HTML)를 캐시 우선으로 줘서 새 화면(나이·과목 필터)이 배포돼도
    폰에 영원히 옛 화면이 남았다. → HTML·셸은 네트워크 우선(끊겼을 때만 캐시),
    지역 데이터는 종전대로 네트워크 우선 + 캐시 폴백. */
-var SHELL = "hakwon-shell-v2";
-var DATA  = "hakwon-data-v2";
+var SHELL = "hakwon-shell-v3";
+var DATA  = "hakwon-data-v3";
 var SHELL_FILES = [
   "./", "./index.html", "./privacy.html", "./manifest.json",
   "./icon-192.png", "./icon-512.png"
