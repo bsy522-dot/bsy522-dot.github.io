@@ -1184,6 +1184,37 @@ function renderMore(){
   }
 }
 
+/* ★ 토글 뒤처리 — 카드와 상세시트가 반드시 같은 규칙을 쓰도록 한 곳에 모은다.
+   (시트 쪽에만 목록 재렌더가 빠져 있어, '저장한 곳'을 보는 중 시트에서 해제하면
+    칩은 줄었는데 요약바·목록은 그대로 남고 같은 카드를 다시 누르면 재저장됐다.) */
+function afterFavToggle(r, now){
+  toast(now ? "저장했습니다. ‘저장한 곳’에서 다시 볼 수 있습니다." : "저장을 해제했습니다");
+  if(S.favOnly && !now){
+    loadFavRows();   // 즐겨찾기 화면에서 뺐으면 목록·요약바를 다시 그린다
+    return;
+  }
+  syncFavButtons(r, now);
+}
+
+/* 같은 시설을 가리키는 별표(목록 카드 + 열려 있는 상세시트)를 한꺼번에 맞춘다. */
+function syncFavButtons(r, now){
+  Array.prototype.forEach.call(document.querySelectorAll(".cardmain"), function(c){
+    var rec = view[+c.dataset.idx];
+    if(!rec || rec.i !== r.i) return;
+    var b = c.parentNode.querySelector(".favbtn");
+    if(!b) return;
+    b.setAttribute("aria-pressed", String(now));
+    b.innerHTML = starSvg(now) + "<span>" + (now ? "저장됨" : "저장") + "</span>";
+    b.setAttribute("aria-label", dispName(r.n) + (now ? " 즐겨찾기 해제" : " 즐겨찾기 저장"));
+  });
+  var fb = $("sheetFav");
+  if(fb && $("sheet").classList.contains("on") && activeId === r.i){
+    fb.setAttribute("aria-pressed", String(now));
+    fb.innerHTML = starSvg(now);
+    fb.setAttribute("aria-label", now ? "즐겨찾기 해제" : "즐겨찾기 저장");
+  }
+}
+
 function makeFavBtn(r){
   var on = isFav(r);
   var b = document.createElement("button");
@@ -1198,8 +1229,7 @@ function makeFavBtn(r){
     e.stopPropagation();
     var now = toggleFav(r);
     paint(now);
-    toast(now ? "저장했습니다. ‘저장한 곳’에서 다시 볼 수 있습니다." : "저장을 해제했습니다");
-    if(S.favOnly && !now) loadFavRows();   // 즐겨찾기 화면에서 뺐으면 목록에서도 즉시 제거
+    afterFavToggle(r, now);
   });
   return b;
 }
@@ -1283,18 +1313,7 @@ function openSheet(r){
     fb.addEventListener("click", function(){
       var now = toggleFav(r);
       paint(now);
-      toast(now ? "저장했습니다. ‘저장한 곳’에서 다시 볼 수 있습니다." : "저장을 해제했습니다");
-      // 목록 카드의 별도 즉시 맞춰준다
-      Array.prototype.forEach.call(document.querySelectorAll(".cardmain"), function(c){
-        var rec = view[+c.dataset.idx];
-        if(rec && rec.i === r.i){
-          var b = c.parentNode.querySelector(".favbtn");
-          if(b){
-            b.setAttribute("aria-pressed", String(now));
-            b.innerHTML = starSvg(now) + "<span>" + (now ? "저장됨" : "저장") + "</span>";
-          }
-        }
-      });
+      afterFavToggle(r, now);
     });
   })();
   $("sheet").classList.add("on");
