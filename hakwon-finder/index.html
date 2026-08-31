@@ -163,6 +163,48 @@
   .tag.rest{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent)}
   .tag.dorm{color:var(--info);border-color:color-mix(in srgb,var(--info) 45%,transparent)}
   .tag.tel{color:var(--call);border-color:color-mix(in srgb,var(--call) 45%,transparent)}
+  .tag.stale{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent)}
+
+  /* ── 저장(★) ──────────────────────────────────── */
+  .star{
+    flex:none;background:none;border:0;border-left:1px solid var(--line);
+    color:var(--fg-mute);cursor:pointer;padding:0 11px;font-size:1.15em;line-height:1;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .star[aria-pressed="true"]{color:var(--warn)}
+  .star:hover{color:var(--warn)}
+  .savedbtn{position:relative}
+  .savedbtn .n{
+    position:absolute;top:-5px;right:-5px;background:var(--warn);color:#241452;
+    border-radius:999px;font-size:10.5px;font-weight:800;padding:0 5px;min-width:16px;
+  }
+  .savedhead{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:12px 0 4px}
+  .savedhead h2{margin:0;font-size:1.05em}
+  .cmpbar{
+    position:sticky;bottom:0;z-index:30;display:flex;gap:8px;align-items:center;
+    flex-wrap:wrap;background:var(--surface-2);border:1px solid var(--accent);
+    border-radius:12px;padding:10px 12px;margin:10px 0 20px;
+  }
+  .cmpcheck{
+    display:flex;align-items:center;gap:6px;font-size:.8em;color:var(--fg-dim);
+    padding:8px 11px;border-top:1px solid var(--line);cursor:pointer;
+  }
+  .cmpcheck input{width:16px;height:16px;accent-color:var(--accent)}
+  .savedcard{flex-direction:column;align-items:stretch}
+  .savedrow{display:flex;align-items:stretch}
+  .cmpwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:10px}
+  table.cmp{border-collapse:collapse;font-size:.85em;min-width:100%}
+  table.cmp th,table.cmp td{
+    border:1px solid var(--line);padding:7px 8px;vertical-align:top;
+    text-align:left;min-width:8.2em;overflow-wrap:anywhere;word-break:keep-all;
+  }
+  table.cmp thead th{background:var(--surface-2);font-size:.95em}
+  table.cmp tbody th{
+    background:var(--surface-2);color:var(--fg-mute);font-weight:600;
+    min-width:4.2em;position:sticky;left:0;
+  }
+  table.cmp .amt{color:var(--ok);font-weight:600}
+  table.cmp a{text-decoration:none;font-weight:700;color:var(--call)}
 
   .more{margin:0 auto 26px;display:block}
   .btn{
@@ -278,6 +320,8 @@
         <div class="sub" id="hdsub">전국 학원·교습소</div>
       </div>
       <div class="spacer"></div>
+      <button class="iconbtn savedbtn" id="savedBtn" title="저장한 곳"
+              aria-label="저장한 곳" hidden>★</button>
       <button class="iconbtn" id="homeBtn" title="지역 다시 고르기" aria-label="지역 다시 고르기" hidden>⌂</button>
       <button class="iconbtn" id="themeBtn" title="밝게/어둡게" aria-label="밝게/어둡게 전환">◐</button>
     </div>
@@ -460,6 +504,109 @@ function passCat(s, x){
   return list.indexOf(filt.sub) >= 0;
 }
 
+/* ── 저장(★) ─────────────────────────────────────────────────────────
+   기기 안(localStorage)에만 남는다. 서버로 보내지 않고, 계정도 없다.
+   저장할 때 그 시점 정보를 스냅샷으로 같이 남긴다 —
+   나중에 원본이 갱신돼 그 학원이 목록에서 빠져도 무엇을 저장했는지는 보이게. */
+var SAVED_KEY = "hf.saved";
+var saved = (function(){
+  try { return JSON.parse(localStorage.getItem(SAVED_KEY) || "{}") || {}; }
+  catch(e){ return {}; }
+})();
+var cmpSel = [];                 // 비교로 고른 유일키(최대 3)
+var CMP_MAX = 3;
+
+function savedIds(){
+  return Object.keys(saved).sort(function(a,b){
+    return (saved[b].t||0) - (saved[a].t||0);   // 최근 저장 순
+  });
+}
+function savedCount(){ return Object.keys(saved).length; }
+function isSaved(id){ return !!(id && saved[id]); }
+function persistSaved(){
+  try { localStorage.setItem(SAVED_KEY, JSON.stringify(saved)); }
+  catch(e){ toast("기기 저장공간이 가득 차 저장하지 못했습니다"); }
+}
+/* 스냅샷은 화면에 쓰는 값만 담는다(원본 레코드를 통째로 넣으면 저장공간이 빨리 찬다) */
+function snapOf(r){
+  var o = {};
+  ["n","a","u","d","k","f","o","c","v","p","t","m","e","r","z","g","s","w","h","b"]
+    .forEach(function(k){ if (r[k] != null && r[k] !== "") o[k] = r[k]; });
+  return o;
+}
+function saveRec(r, sidoSlug, sggSlug){
+  if (!r || !r.i) return;
+  saved[r.i] = {t: Date.now(), s: sidoSlug || "", g: sggSlug || "", snap: snapOf(r)};
+  persistSaved();
+}
+function unsaveRec(id){
+  if (!id) return;
+  delete saved[id];
+  cmpSel = cmpSel.filter(function(x){ return x !== id; });
+  persistSaved();
+}
+function updateSavedBadge(){
+  var b = $("#savedBtn");
+  if (!b) return;
+  var n = savedCount();
+  b.hidden = (n === 0 && view === "pick");
+  b.innerHTML = "★" + (n ? '<span class="n">' + n + "</span>" : "");
+  b.setAttribute("aria-label", "저장한 곳 " + n + "곳");
+  b.title = "저장한 곳 " + n + "곳";
+}
+/* 어떤 화면에서 눌렀든 ★ 하나가 바뀌면 화면 전체를 즉시 맞춘다.
+   ⚠ 저장 목록 화면에서 해제했는데 목록·개수가 그대로면 안 된다(자매앱 회귀 사례). */
+function afterStarChange(){
+  updateSavedBadge();
+  // 열려 있는 상세의 ★ 는 어느 화면에서 눌렀든 같이 바뀌어야 한다
+  var sb = $("#shStar");
+  if (sb){
+    var on2 = isSaved(openId);
+    sb.setAttribute("aria-pressed", on2 ? "true" : "false");
+    sb.textContent = on2 ? "★ 저장됨" : "☆ 저장";
+  }
+  if (view === "saved"){ renderSaved(); return; }
+  document.querySelectorAll(".card .star").forEach(function(b){
+    var on = isSaved(b.getAttribute("data-id"));
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    b.textContent = on ? "★" : "☆";
+  });
+}
+/* 목록 카드의 ★ — 시도 전체(검색색인) 모드에서는 레코드가 없으므로 그때만 받아온다 */
+function starBtn(row){
+  var id = row.light ? null : row.rec.i;
+  var b = el("button","star"); b.type = "button";
+  function paint(){
+    var on = isSaved(b.getAttribute("data-id"));
+    b.setAttribute("aria-pressed", on ? "true" : "false");
+    b.textContent = on ? "★" : "☆";
+    b.setAttribute("aria-label",
+      (row.light ? row.n : row.rec.n) + (on ? " 저장 해제" : " 저장"));
+  }
+  b.setAttribute("data-id", id || "");
+  paint();
+  b.addEventListener("click", function(e){
+    e.stopPropagation();
+    withRecord(row, function(rec, s, g){
+      b.setAttribute("data-id", rec.i);
+      if (isSaved(rec.i)) unsaveRec(rec.i); else saveRec(rec, s, g);
+      afterStarChange();
+      paint();
+    });
+  });
+  return b;
+}
+/* row → 레코드. 검색색인 모드면 시군구 파일을 받아 온다(대개 이미 캐시돼 있다) */
+function withRecord(row, cb){
+  if (!row.light){ cb(row.rec, sido.slug, sggSel || row.rec.__g || sggSel); return; }
+  var g = sido.sigungu[row.gi];
+  var key = sido.slug + "/" + g.slug;
+  if (cacheSgg[key]){ cb(cacheSgg[key][row.di], sido.slug, g.slug); return; }
+  getJSON("data/regions/" + sido.slug + "/" + g.slug + ".json").then(function(rs){
+    cacheSgg[key] = rs; cb(rs[row.di], sido.slug, g.slug);
+  }).catch(function(){ toast("정보를 받지 못해 저장하지 못했습니다"); });
+}
+
 /* ── 테마 ────────────────────────────────────────────────────────────── */
 (function initTheme(){
   var t = localStorage.getItem("hf.theme");
@@ -479,6 +626,10 @@ function syncHeaderMode(){
   var open = $("#adv") && !$("#adv").hidden;
   document.querySelector("header").classList.toggle("open", !!open);
 }
+$("#savedBtn").addEventListener("click", function(){
+  if (view === "saved"){ history.back(); return; }
+  go("saved", true);
+});
 $("#advBtn").addEventListener("click", function(){
   var a = $("#adv");
   a.hidden = !a.hidden;
@@ -499,6 +650,7 @@ $("#homeBtn").addEventListener("click", function(){
 function stateToHash(){
   var p = [];
   function add(k,v){ if(v) p.push(k+"="+encodeURIComponent(v)); }
+  if (view === "saved") return "#v=saved";
   if (view === "pick") return "";
   add("s", sido ? sido.slug : "");
   if (view === "sgg") { add("v","sgg"); return p.length? "#"+p.join("&") : ""; }
@@ -548,6 +700,7 @@ window.addEventListener("popstate", function(){
 function applyHash(initial){
   var o = parseHash();
   if (openId && !o.id) closeSheet(true);
+  if (o.v === "saved"){ view = "saved"; render(); return; }
   if (!o.s){
     sido = null; sggSel = ""; view = "pick";
     if (initial) { render(); maybeAutoLocate(); } else render();
@@ -785,6 +938,14 @@ function renderSidoPicker(){
     var ge = el("p","geoerr"); ge.textContent = geoErr; w.appendChild(ge);
   }
 
+  if (savedCount()){
+    var sv = el("button","recent"); sv.type="button";
+    sv.style.borderColor = "var(--warn)";
+    sv.innerHTML = '<span aria-hidden="true">★</span><span>저장한 곳 <b>'+
+                   won(savedCount())+'곳</b> 보기 · 2~3곳 나란히 비교</span>';
+    sv.addEventListener("click", function(){ go("saved", true); });
+    w.appendChild(sv);
+  }
   var last = localStorage.getItem("hf.sido");
   var lastReg = last && IDX.regions.filter(function(r){return r.slug===last;})[0];
   if (lastReg){
@@ -840,6 +1001,291 @@ function fillSidoGrid(g, q){
       "<b>전남광주통합특별시</b> 하나로 합쳐졌습니다.</small></p>";
     g.appendChild(e);
   }
+}
+
+/* ── 저장한 곳 화면 ──────────────────────────────────────────────────
+   저장 목록은 **최신 데이터를 우선**으로 보여준다.
+   시군구 파일을 다시 받아 유일키로 최신 레코드를 찾고,
+   찾지 못하면(원본에서 빠졌거나 못 받으면) 저장 시점 스냅샷을 쓰고 그렇다고 밝힌다. */
+var savedFresh = {};              // id → {rec, stale, changed}
+var savedToken = 0;               // 늦게 도착한 로드가 다른 화면을 덮어쓰지 못하게
+function loadSavedRecords(done){
+  var ids = savedIds();
+  if (!ids.length){ savedFresh = {}; done(); return; }
+  var need = {};
+  ids.forEach(function(id){
+    var m = saved[id];
+    if (m.s && m.g) need[m.s + "/" + m.g] = true;
+  });
+  var keys = Object.keys(need);
+  var left = keys.length;
+  function finish(){
+    savedFresh = {};
+    ids.forEach(function(id){
+      var m = saved[id], rec = null;
+      var arr = (m.s && m.g) ? cacheSgg[m.s + "/" + m.g] : null;
+      if (arr){
+        for (var i = 0; i < arr.length; i++)
+          if (arr[i].i === id){ rec = arr[i]; break; }
+      }
+      if (rec){
+        var sn = m.snap || {};
+        var changed = ["n","a","v","p"].some(function(k){
+          return (rec[k] || "") !== (sn[k] || "");
+        });
+        savedFresh[id] = {rec: rec, stale: false, changed: changed};
+      } else {
+        savedFresh[id] = {rec: m.snap || {}, stale: true, changed: false};
+      }
+      savedFresh[id].rec = savedFresh[id].rec || {};
+      savedFresh[id].rec.i = id;
+      savedFresh[id].loc = {s: m.s, g: m.g};
+      savedFresh[id].at = m.t;
+    });
+    done();
+  }
+  if (!left){ finish(); return; }
+  keys.forEach(function(k){
+    if (cacheSgg[k]){ if (--left === 0) finish(); return; }
+    var p = k.split("/");
+    getJSON("data/regions/" + p[0] + "/" + p[1] + ".json").then(function(rs){
+      cacheSgg[k] = rs;
+    }).catch(function(){}).then(function(){
+      if (--left === 0) finish();
+    });
+  });
+}
+
+function renderSaved(){
+  curRows = []; shown = 0;          // 목록의 남은 페이지가 여기 붙지 않게
+  $("#filters").hidden = true;
+  $("#homeBtn").hidden = false;
+  updateSavedBadge();
+  var m = $("#main");
+  var ids = savedIds();
+  cmpSel = cmpSel.filter(function(x){ return isSaved(x); });
+  if (!ids.length){
+    m.innerHTML = "";
+    var w0 = el("div","pickwrap");
+    var b0 = el("button","backlink"); b0.type = "button";
+    b0.textContent = "← 지역 고르기로";
+    b0.addEventListener("click", function(){ go("pick", true); });
+    w0.appendChild(b0);
+    var e0 = el("div","empty");
+    e0.innerHTML = "<p>아직 저장한 학원이 없습니다.</p>" +
+      "<p><small>목록이나 상세 화면의 <b>☆</b>를 누르면 여기에 모입니다. " +
+      "저장은 이 기기 안에만 남고 어디로도 전송되지 않습니다.</small></p>";
+    w0.appendChild(e0);
+    m.appendChild(w0);
+    return;
+  }
+  m.innerHTML = '<div class="loading">저장한 곳을 불러오는 중…</div>';
+  var myToken = ++savedToken;
+  loadSavedRecords(function(){
+    if (myToken !== savedToken || view !== "saved") return;   // 그새 화면이 바뀌었다
+    paintSaved();
+  });
+}
+
+function paintSaved(){
+  if (view !== "saved") return;
+  var m = $("#main");
+  m.innerHTML = "";
+  var ids = savedIds();
+
+  var hd = el("div","savedhead");
+  var back = el("button","backlink"); back.type = "button";
+  back.textContent = "← 지역 고르기로";
+  back.addEventListener("click", function(){ go("pick", true); });
+  hd.appendChild(back);
+  m.appendChild(hd);
+
+  var st = el("div","status");
+  st.innerHTML = "★ 저장한 곳 <b>" + won(ids.length) + "</b>곳" +
+    ' <span style="color:var(--fg-mute)">— 이 기기에만 저장됩니다. ' +
+    '2~3곳을 골라 나란히 비교할 수 있습니다.</span>';
+  m.appendChild(st);
+
+  var g = el("div","grid"); g.id = "savedgrid";
+  ids.forEach(function(id){
+    var e = savedFresh[id];
+    if (!e) return;
+    var r = e.rec;
+    var c = el("div","card savedcard");
+    var rowbox = el("div","savedrow");
+
+    var main = el("button","cardmain"); main.type = "button";
+    var h = el("h3"); h.textContent = r.n || "(이름 없음)"; main.appendChild(h);
+    var a = el("div","addr");
+    a.textContent = r.a || ((r.u || "") + (r.d ? " " + r.d : "")) || "(주소 없음)";
+    main.appendChild(a);
+    var t = el("div","tags");
+    if (r.k) t.appendChild(tagOf(r.k, "k"));
+    if (r.f) t.appendChild(tagOf(r.f));
+    if (r.p) t.appendChild(tagOf("수강료 공개", "fee"));
+    if (e.stale) t.appendChild(tagOf("저장 시점 정보", "stale"));
+    else if (e.changed) t.appendChild(tagOf("정보 바뀜", "stale"));
+    main.appendChild(t);
+    if (e.stale){
+      var note = el("div","addr");
+      note.style.color = "var(--warn)";
+      note.textContent = "지금 목록에서는 찾지 못해 저장할 때의 정보를 보여줍니다 " +
+                         "(" + ymdOf(e.at) + " 저장). 폐원·이전·번호 변경일 수 있습니다.";
+      main.appendChild(note);
+    }
+    main.addEventListener("click", function(){
+      openSgg = e.loc.g || openSgg;
+      showSheet(r, true);          // 저장 화면 위에 겹쳐 여는 것이라 히스토리를 쌓지 않는다
+    });
+    rowbox.appendChild(main);
+
+    if (r.v){
+      var call = el("a","call");
+      call.href = telHref(r.v);
+      call.setAttribute("aria-label", (r.n || "") + " 전화 걸기 " + r.v);
+      call.innerHTML = '<span class="ic" aria-hidden="true">☎</span><span>전화</span>';
+      rowbox.appendChild(call);
+    }
+    var sbtn = el("button","star"); sbtn.type = "button";
+    sbtn.setAttribute("data-id", id);
+    sbtn.setAttribute("aria-pressed", "true");
+    sbtn.setAttribute("aria-label", (r.n || "") + " 저장 해제");
+    sbtn.textContent = "★";
+    sbtn.addEventListener("click", function(ev){
+      ev.stopPropagation();
+      unsaveRec(id);
+      afterStarChange();          // 저장 목록이면 즉시 다시 그린다
+    });
+    rowbox.appendChild(sbtn);
+    c.appendChild(rowbox);
+
+    var lab = el("label","cmpcheck");
+    var cb = el("input"); cb.type = "checkbox";
+    cb.checked = cmpSel.indexOf(id) >= 0;
+    cb.addEventListener("change", function(){
+      if (cb.checked){
+        if (cmpSel.length >= CMP_MAX){
+          cb.checked = false;
+          toast("비교는 최대 " + CMP_MAX + "곳까지 됩니다");
+          return;
+        }
+        cmpSel.push(id);
+      } else {
+        cmpSel = cmpSel.filter(function(x){ return x !== id; });
+      }
+      paintSaved();
+    });
+    lab.appendChild(cb);
+    lab.appendChild(document.createTextNode("비교에 담기"));
+    c.appendChild(lab);
+    g.appendChild(c);
+  });
+  m.appendChild(g);
+
+  var bar = el("div","cmpbar");
+  if (cmpSel.length < 2){
+    bar.innerHTML = '<span>비교할 학원을 <b>2~' + CMP_MAX +
+                    '곳</b> 고르세요 (지금 ' + cmpSel.length + '곳)</span>';
+  } else {
+    var sp = el("span");
+    sp.innerHTML = "<b>" + cmpSel.length + "곳</b> 선택됨";
+    bar.appendChild(sp);
+    var go2 = el("button","btn primary"); go2.type = "button"; go2.id = "cmpBtn";
+    go2.textContent = "나란히 비교하기";
+    go2.addEventListener("click", showCompare);
+    bar.appendChild(go2);
+    var clr = el("button","btn"); clr.type = "button";
+    clr.textContent = "선택 해제";
+    clr.addEventListener("click", function(){ cmpSel = []; paintSaved(); });
+    bar.appendChild(clr);
+  }
+  m.appendChild(bar);
+}
+function ymdOf(ms){
+  if (!ms) return "";
+  var d = new Date(ms);
+  return d.getFullYear() + "." + ("0"+(d.getMonth()+1)).slice(-2) +
+         "." + ("0"+d.getDate()).slice(-2);
+}
+
+/* ── 비교 ────────────────────────────────────────────────────────────── */
+function ageText(gbits){
+  if (!gbits) return TAX.age_unknown_label || "연령 미표기";
+  var out = [];
+  (TAX.ages || []).forEach(function(a){ if (gbits & a.bit) out.push(a.name); });
+  return out.join(" · ") || (TAX.age_unknown_label || "연령 미표기");
+}
+function catText(scodes, subcodes){
+  var cs = (scodes || "") ? String(scodes).split(",") : [];
+  if (!cs.length) return "미분류";
+  var subs = (subcodes || "") ? String(subcodes).split(",") : [];
+  return cs.map(function(cid){
+    var cd = catDef(cid);
+    var nm = cd ? cd.name : cid;
+    var mine = subs.filter(function(s){ return s.indexOf(cid + ".") === 0; });
+    if (cd && cd.subs && mine.length){
+      var names = mine.map(function(s){
+        var f = cd.subs.filter(function(x){ return x.id === s; })[0];
+        return f ? f.name : "";
+      }).filter(Boolean);
+      if (names.length) nm += " (" + names.join(", ") + ")";
+    }
+    return nm;
+  }).join(" / ");
+}
+function feeText(p){
+  if (!p) return "공개 안 함";
+  return parseFees(p).map(function(f){
+    return f.name + " " + f.amt;
+  }).join("\n");
+}
+function showCompare(){
+  var picks = cmpSel.map(function(id){ return savedFresh[id]; }).filter(Boolean);
+  if (picks.length < 2) return;
+  var rows = [
+    ["구분",   function(e){ return e.rec.k || "—"; }],
+    ["과목",   function(e){ return catText(e.rec.s, e.rec.w); }],
+    ["대상 연령", function(e){ return ageText(e.rec.g || 0); }],
+    ["전화",   function(e){ return e.rec.v || "원본에 없음"; }],
+    ["주소",   function(e){ return e.rec.a || "—"; }],
+    ["읍면동", function(e){ return e.rec.d || "동 미표기"; }],
+    ["수강료", function(e){ return feeText(e.rec.p); }],
+    ["정원",   function(e){ return e.rec.t ? won(e.rec.t) + "명" : "—"; }],
+    ["개설일", function(e){ return e.rec.e ? ymd(e.rec.e) : "—"; }],
+    ["기준",   function(e){ return e.stale ? "저장 시점(" + ymdOf(e.at) + ")"
+                                           : "최신 데이터"; }]
+  ];
+  var html = '<div class="sheethd"><h2 id="shTitle">나란히 비교 — ' +
+             picks.length + '곳</h2><div class="spacer"></div>' +
+             '<button class="iconbtn" id="closeBtn" aria-label="닫기">✕</button></div>' +
+             '<div style="font-size:12px;color:var(--fg-mute);margin-top:2px">' +
+             '교육청 등록정보만 비교합니다. 평점·후기·수업 시간은 원본에 없습니다.</div>' +
+             '<div class="cmpwrap"><table class="cmp"><thead><tr><th></th>';
+  picks.forEach(function(e){ html += "<th>" + esc(e.rec.n || "") + "</th>"; });
+  html += "</tr></thead><tbody>";
+  rows.forEach(function(kv){
+    html += "<tr><th>" + esc(kv[0]) + "</th>";
+    picks.forEach(function(e){
+      var v = kv[1](e);
+      if (kv[0] === "전화" && e.rec.v)
+        html += '<td><a href="' + esc(telHref(e.rec.v)) + '">☎ ' + esc(e.rec.v) + "</a></td>";
+      else if (kv[0] === "수강료" && e.rec.p)
+        html += '<td class="amt">' + esc(v).replace(/\n/g, "<br>") + "</td>";
+      else
+        html += "<td>" + esc(v).replace(/\n/g, "<br>") + "</td>";
+    });
+    html += "</tr>";
+  });
+  html += "</tbody></table></div>";
+  html += '<div class="notice"><b>비교에 쓴 값의 출처</b><br>' +
+          '전부 교육청 신고 등록정보입니다. 수강료는 학원이 공개에 동의한 경우만 있고, ' +
+          '수업 시간·횟수가 원본에 없어 월 기준인지 회당인지는 알 수 없습니다.</div>';
+  var s = $("#sheet");
+  s.innerHTML = html;
+  $("#backdrop").classList.add("on");
+  document.body.style.overflow = "hidden";
+  $("#closeBtn").addEventListener("click", function(){ closeSheet(true); });
+  s.scrollTop = 0;
 }
 
 /* ── 두 번째 화면: 시군구 고르기 ─────────────────────────────────────── */
@@ -967,6 +1413,7 @@ function loadCurrent(done){
   if (!sido) return;
   $("#filters").hidden = false;
   $("#homeBtn").hidden = false;
+  updateSavedBadge();
   if (sggSel){
     mode = "sgg";
     var key = sido.slug+"/"+sggSel;
@@ -996,7 +1443,12 @@ function fail(e){
 
 function render(){
   syncHeaderMode();
-  if (view === "pick"){
+  updateSavedBadge();
+  if (view === "saved"){
+    $("#filters").hidden = true;
+    $("#homeBtn").hidden = false;
+    renderSaved();
+  } else if (view === "pick"){
     $("#filters").hidden = true;
     $("#homeBtn").hidden = true;
     renderSidoPicker();
@@ -1226,6 +1678,7 @@ function emptyBox(){
 }
 
 function page(){
+  if (view !== "list") return;
   var g = $("#grid");
   if (!g) return;
   var end = Math.min(shown+PAGE, curRows.length);
@@ -1273,6 +1726,7 @@ function cardOf(row){
     call.innerHTML = '<span class="ic" aria-hidden="true">☎</span><span>전화</span>';
     c.appendChild(call);
   }
+  c.appendChild(starBtn(row));
   return c;
 }
 function tagOf(txt, cls){
@@ -1395,6 +1849,9 @@ function showSheet(r, noPush){
   if (r.v)
     html += '<a class="btn call" href="'+esc(telHref(r.v))+'">'+
             '<span aria-hidden="true">☎</span> 전화 걸기 '+esc(r.v)+'</a>';
+  html += '<button class="btn" id="shStar" type="button" aria-pressed="' +
+          (isSaved(r.i) ? "true" : "false") + '">' +
+          (isSaved(r.i) ? "★ 저장됨" : "☆ 저장") + '</button>';
   html += '<button class="btn" id="shareBtn" type="button">🔗 공유</button>';
   html += '</div>';
   if (!r.v)
@@ -1447,6 +1904,12 @@ function showSheet(r, noPush){
   $("#closeBtn").addEventListener("click", function(){ closeSheet(); });
   var sb = $("#shareBtn");
   if (sb) sb.addEventListener("click", function(){ shareCurrent(r); });
+  var stb = $("#shStar");
+  if (stb) stb.addEventListener("click", function(){
+    if (isSaved(r.i)) unsaveRec(r.i);
+    else saveRec(r, (sido && sido.slug) || "", openSgg || sggSel || "");
+    afterStarChange();
+  });
   s.scrollTop = 0;
   if (!noPush) pushState(false);
 }
@@ -1465,20 +1928,25 @@ function shareCurrent(r){
 }
 function closeSheet(silent){
   var was = openId;
+  if (silent && !was){ $("#backdrop").classList.remove("on");
+    document.body.style.overflow = ""; return; }
   openId = "";
   $("#backdrop").classList.remove("on");
   document.body.style.overflow = "";
-  if (was && !silent && !navLock) history.back();
+  if (was && !silent && !navLock && view !== "saved") history.back();
 }
 $("#backdrop").addEventListener("click", function(e){
   if (e.target === $("#backdrop")) closeSheet();
 });
 document.addEventListener("keydown", function(e){
-  if (e.key === "Escape" && openId) closeSheet();
+  if (e.key === "Escape" && $("#backdrop").classList.contains("on")) closeSheet();
 });
 
-/* 무한 스크롤 */
+/* 무한 스크롤 — 목록 화면에서만 돈다.
+   ⚠ 화면 구분을 안 하면 저장·비교 화면의 #grid 에 목록 카드가 계속 붙는다
+      (저장 4곳 화면에 64장이 생겼던 실제 사고). */
 window.addEventListener("scroll", function(){
+  if (view !== "list") return;
   if (!curRows.length || shown >= curRows.length) return;
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 700) page();
 });
