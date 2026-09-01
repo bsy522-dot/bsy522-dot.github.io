@@ -81,7 +81,7 @@
       "mapId": "ep2_battle_1",
       "camera": "tactical",
       "allies": ["dangun", "ungnyeo", "sinha_general"],
-      "enemies": ["hojok_chief", "hojok_warrior", "hojok_archer", "hojok_rider", "hojok_shaman"],
+      "enemies": ["hojok_chief", "hojok_warrior", "hojok_archer", "hojok_shaman"],
       "allySource": "ep2_allies",
       "enemySource": "ep2_enemies",
       "victoryCondition": "defeat_boss",
