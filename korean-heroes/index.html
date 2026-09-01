@@ -2352,8 +2352,10 @@ function bindCanvasClick() {
     const dist = Math.hypot(t.clientX - st.x, t.clientY - st.y);
     const dt = _evTime(e) - st.t;
     // 이 게임에는 롱프레스 제스처가 없다. 탭과 구분해야 할 것은 '드래그(카메라 팬)'뿐이므로
-    // 판정의 주인공은 이동 거리이고, 시간은 넉넉한 안전장치로만 둔다.
-    if (dist > 16 || dt > 1200) return;
+    // 판정은 이동 거리로만 한다. 시간은 어떤 기준으로 재도 렌더가 밀리면 늘어나
+    // 멀쩡한 탭을 버리게 되므로(실측: 같은 600ms 탭이 1006ms→통과, 1134ms→탈락),
+    // 손을 짚어둔 채 잊은 수준(3초)만 걸러내는 안전장치로 남긴다.
+    if (dist > 16 || dt > 3000) return;
     _lastTouchTapAt = performance.now();
     handlePointAt(t.clientX, t.clientY);
   };
