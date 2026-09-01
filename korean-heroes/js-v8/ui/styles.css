@@ -456,7 +456,9 @@
 /* ─────────── 반응형 (모바일 ≤ 480px) ─────────── */
 
 @media (max-width: 480px) {
-  #v8-hud-top { height: 38px; font-size: 12px; padding: 0 8px; }
+  /* ★ 재감사 R7: 좁은 화면 오버라이드가 높이를 38px로 고정하고 있어,
+     글자확대 130~150%에서 목표·위치 라벨이 바 밖으로 흘러나왔다. 최소높이로 바꾼다. */
+  #v8-hud-top { height: auto; min-height: 38px; font-size: 12px; padding: 3px 8px; }
   #v8-hud-top .v8-slot { gap: 6px; }
   #v8-btn-settings, #v8-cam-toggle { padding: 3px 8px; font-size: 11px; }
   #v8-minimap { width: 60px; height: 60px; top: 100px; right: 8px; }
