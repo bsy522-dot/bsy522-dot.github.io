@@ -194,6 +194,7 @@ export function initHUD(container) {
   //   바 높이를 고정하지 않고 실제 높이를 CSS 변수(--v8-topbar-h)로 내보내
   //   행동순서 띠·미니맵이 그 아래로 자동으로 밀리게 한다.
   _watchTopbarHeight();
+  _watchPanelHeight();
 
   return root;
 }
@@ -219,6 +220,19 @@ function _applyHudConfig() {
   }
 }
 
+// 하단 유닛 패널 실제 높이 → --v8-panel-h
+// ★ 2026-09-01 3차: A/B 버튼을 bottom 고정값으로 올려 두었더니, 액션 버튼이 있는
+//   패널(154px)에서는 28px이 겹쳤다(재감사2 실측 ab_x_panel=3696px²).
+//   패널 높이는 단계마다 달라지므로(버튼 없음 117px / 있음 154px) 실측해서 내보낸다.
+function _syncPanelHeight() {
+  if (!_root) return;
+  const p = _root.querySelector('#v8-unit-panel');
+  if (!p) return;
+  const open = p.classList.contains('v8-visible');
+  const h = open ? Math.ceil(p.getBoundingClientRect().height) || 0 : 0;
+  document.documentElement.style.setProperty('--v8-panel-h', h + 'px');
+}
+
 // 상단 바 실제 높이 → --v8-topbar-h
 function _syncTopbarHeight() {
   if (!_root) return;
@@ -226,6 +240,17 @@ function _syncTopbarHeight() {
   if (!t) return;
   const h = Math.max(36, Math.ceil(t.getBoundingClientRect().height) || 44);
   document.documentElement.style.setProperty('--v8-topbar-h', h + 'px');
+}
+
+function _watchPanelHeight() {
+  _syncPanelHeight();
+  try {
+    const p = _root.querySelector('#v8-unit-panel');
+    if (p && typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(() => _syncPanelHeight()).observe(p);
+    }
+  } catch (e) { /* 미지원 브라우저는 show/hide 시점 갱신으로 충분 */ }
+  window.addEventListener('resize', _syncPanelHeight);
 }
 
 function _watchTopbarHeight() {
@@ -314,6 +339,7 @@ export function showUnitPanel(unit, opts = {}) {
   panel.classList.add('v8-visible');
   // 하단 조작 버튼이 패널을 피해 올라가도록 (styles.css .v8-panel-open)
   document.body.classList.add('v8-panel-open');
+  requestAnimationFrame(_syncPanelHeight);
 
   const portrait = portraitsData[unit.portraitId || unit.id] || { emoji: '🧍', color: '#888' };
   const pEl = _root.querySelector('#v8-up-portrait');
@@ -365,12 +391,14 @@ export function showUnitPanel(unit, opts = {}) {
     btn.disabled = !active || off.includes(act) || (unit.acted === true);
     btn.style.display = active ? '' : 'none';
   });
+  requestAnimationFrame(_syncPanelHeight);
 }
 
 export function hideUnitPanel() {
   if (!_root) return;
   _root.querySelector('#v8-unit-panel').classList.remove('v8-visible');
   document.body.classList.remove('v8-panel-open');
+  _syncPanelHeight();
   _currentUnit = null;
   _selectedAction = null;
 }

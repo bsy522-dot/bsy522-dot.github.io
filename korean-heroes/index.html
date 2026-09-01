@@ -525,9 +525,13 @@
   body.v8-mode-battle #v8-joystick .v8-joy-stick {
     width: 50px; height: 50px; margin: -25px 0 0 -25px;
   }
-  /* 유닛 패널이 열리면 조이스틱을 패널 위로 (겹침 방지) */
-  body.v8-mode-battle.v8-panel-open #v8-joystick { bottom: 158px; }
-  body.v8-mode-battle #v8-dpad-ab { bottom: 152px; }
+  /* 유닛 패널이 열리면 조이스틱도 패널 실측 높이 위로 (겹침 0) */
+  body.v8-mode-battle.v8-panel-open #v8-joystick {
+    bottom: calc(var(--v8-panel-h, 154px) + 10px);
+  }
+  body.v8-mode-battle #v8-dpad-ab {
+    bottom: calc(var(--v8-panel-h, 154px) + 12px);
+  }
   body.v8-mode-battle #v8-dpad-menu { bottom: 158px; }
   /* ★ 재감사 R4: 줌 버튼이 하단 유닛 패널 글자 위에 겹쳤고, 되살린 조이스틱과도
      자리가 겹친다. 전투에서는 좌측 상단(행동순서 띠 아래)에 가로로 둔다. */
@@ -2324,9 +2328,16 @@ function bindCanvasClick() {
 
   // 터치 탭 감지: 한 손가락 · 이동 12px 미만 · 500ms 이내 → 탭
   let _tapStart = null;
+  // ★ 2026-09-01 3차(R2 진짜 원인): 탭 시간을 performance.now()로, 즉 '핸들러가
+  //   실행된 시각'으로 쟀다. 3D 씬이 무거워 한 프레임이 길어지면 손가락은 40ms만
+  //   닿았는데도 앱은 500ms 넘게 눌렀다고 계산해 롱프레스로 버렸다.
+  //   실측(라이브 SwiftShader): hold 40ms 요청 → 앱이 잰 dt 521ms → 탭 무시.
+  //   → 이벤트에 찍힌 시각(e.timeStamp)으로 재고, 한계도 넉넉히 둔다.
+  const _evTime = (e) => (e && typeof e.timeStamp === 'number' && e.timeStamp > 0)
+    ? e.timeStamp : performance.now();
   const onTouchStart = (e) => {
     if (e.touches.length === 1) {
-      _tapStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: performance.now(), multi: false };
+      _tapStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: _evTime(e), multi: false };
     } else if (_tapStart) {
       _tapStart.multi = true; // 핀치/두손가락 → 탭 아님
     }
@@ -2339,8 +2350,10 @@ function bindCanvasClick() {
     const t = e.changedTouches && e.changedTouches[0];
     if (!t) return;
     const dist = Math.hypot(t.clientX - st.x, t.clientY - st.y);
-    const dt = performance.now() - st.t;
-    if (dist > 12 || dt > 500) return;     // 드래그(카메라 팬)/롱프레스는 무시
+    const dt = _evTime(e) - st.t;
+    // 이 게임에는 롱프레스 제스처가 없다. 탭과 구분해야 할 것은 '드래그(카메라 팬)'뿐이므로
+    // 판정의 주인공은 이동 거리이고, 시간은 넉넉한 안전장치로만 둔다.
+    if (dist > 16 || dt > 1200) return;
     _lastTouchTapAt = performance.now();
     handlePointAt(t.clientX, t.clientY);
   };

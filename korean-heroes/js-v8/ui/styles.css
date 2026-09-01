@@ -603,8 +603,17 @@ body.v8-mode-town #v8-dpad-menu { display: none !important; }
   #v8-unit-panel .v8-action-btn { min-width: 0; padding: 8px 6px; font-size: 13px; }
 
   /* 조작 버튼을 격자 밖(화면 최하단)으로 */
-  body.v8-mode-battle #v8-dpad-ab   { bottom: 126px; width: 132px; height: 108px; }
-  body.v8-mode-battle #v8-dpad-menu { bottom: 132px; padding: 6px 16px; }
+  /* ★ 3차: 고정값(126px)이라 액션 버튼이 있는 패널(154px)과 28px 겹쳤다.
+     패널 실제 높이(--v8-panel-h, hud.js가 실측해 내보냄) 위로 붙인다.
+     패널이 닫혀 있으면 --v8-panel-h는 0이라 아래 :not(.v8-panel-open) 규칙이 맡는다. */
+  body.v8-mode-battle #v8-dpad-ab {
+    bottom: calc(var(--v8-panel-h, 154px) + 12px);
+    width: 132px; height: 108px;
+  }
+  body.v8-mode-battle #v8-dpad-menu {
+    bottom: calc(var(--v8-panel-h, 154px) + 18px);
+    padding: 6px 16px;
+  }
   #v8-dpad-ab .v8-dpad-ab-btn { width: 56px; height: 56px; font-size: 20px; }
   #v8-dpad-zoom .v8-dpad-zb { width: 40px; height: 40px; font-size: 20px; }
 }
