@@ -46,11 +46,16 @@
 #v8-hud-top {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 44px;
+  /* ★ 재감사 R7: 글자확대 150%에서 내용이 44px 밖으로 흘러나왔다.
+     높이를 고정하지 않고 최소 높이만 두어 두 줄까지 자연스럽게 늘어나게 한다. */
+  height: auto;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
+  flex-wrap: wrap;
+  row-gap: 2px;
+  padding: 3px 12px;
   background: linear-gradient(to bottom, rgba(10,10,20,0.85), rgba(10,10,20,0.2));
   color: var(--v8-gold);
   font-size: 14px;
@@ -60,6 +65,16 @@
 
 #v8-hud-top .v8-slot {
   display: flex; align-items: center; gap: 10px;
+}
+/* 왼쪽(턴·병력·목표·위치)만 줄바꿈하고, 오른쪽(날씨·설정)은 항상 우측 상단에 붙인다.
+   ★ 재감사 R7 후속: 글자확대나 긴 목표 문구에서 설정 버튼이 2번째 줄 왼쪽으로
+   밀려 내려가던 문제. */
+#v8-hud-top { position: absolute; }
+#v8-hud-top .v8-slot:first-child { flex: 1 1 auto; min-width: 0; padding-right: 78px; }
+/* 날씨·설정은 줄바꿈에 휩쓸리지 않게 바 우측 상단에 고정 */
+#v8-hud-top .v8-slot:last-child {
+  position: absolute; right: 10px; top: 4px;
+  flex: 0 0 auto;
 }
 
 #v8-hud-top .v8-turn {
@@ -116,7 +131,7 @@
 /* 미니맵 */
 #v8-minimap {
   position: absolute;
-  top: 116px;
+  top: calc(var(--v8-topbar-h, 44px) + 60px);
   right: 14px;
   width: 80px; height: 80px;
   background: rgba(10,10,20,0.75);
@@ -522,20 +537,17 @@ body:not(.v8-mode-battle) #v8-dpad-shoulder { display: none !important; }
 
 /* 상단 바는 한 줄 고정 — 넘치면 말줄임 */
 #v8-hud-top .v8-slot { min-width: 0; }
+/* 글자확대에서도 잘리지 않게 — 폭은 제한하되 높이는 내용에 맡긴다 (재감사 R7) */
 #v8-location {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 34vw;
+  max-width: 36vw;
+  line-height: 1.15;
 }
-/* 목표는 잘리면 뜻이 사라지므로 두 줄까지 허용 (어절 단위 줄바꿈) */
 #v8-objective {
   max-width: 58vw;
-  line-height: 1.16;
-  max-height: 2.4em;
-  overflow: hidden;
+  line-height: 1.15;
   font-size: 12.5px;
 }
+#v8-hud-top .v8-slot { flex-wrap: wrap; row-gap: 1px; }
 #v8-turn-badge, #v8-ally-count { white-space: nowrap; }
 
 /* ── (2) 마을(탐험) 씬: 전투용 '대기'(턴 종료) 버튼 숨김 ────────
@@ -591,7 +603,6 @@ body.v8-mode-town #v8-dpad-menu { display: none !important; }
   /* 조작 버튼을 격자 밖(화면 최하단)으로 */
   body.v8-mode-battle #v8-dpad-ab   { bottom: 126px; width: 132px; height: 108px; }
   body.v8-mode-battle #v8-dpad-menu { bottom: 132px; padding: 6px 16px; }
-  body.v8-mode-battle #v8-dpad-zoom { bottom: 126px; }
   #v8-dpad-ab .v8-dpad-ab-btn { width: 56px; height: 56px; font-size: 20px; }
   #v8-dpad-zoom .v8-dpad-zb { width: 40px; height: 40px; font-size: 20px; }
 }
@@ -600,7 +611,8 @@ body.v8-mode-town #v8-dpad-menu { display: none !important; }
    (v8-panel-open 클래스는 hud.js showUnitPanel/hideUnitPanel이 토글) */
 body.v8-mode-battle:not(.v8-panel-open) #v8-dpad-ab   { bottom: 22px; }
 body.v8-mode-battle:not(.v8-panel-open) #v8-dpad-menu { bottom: 30px; }
-body.v8-mode-battle:not(.v8-panel-open) #v8-dpad-zoom { bottom: 22px; }
+/* 줌 버튼은 전투 내내 좌측 상단 고정(index.html 규칙). 여기서 bottom을 주면
+   top과 함께 걸려 세로로 늘어난다 — 건드리지 않는다. */
 
 /* 전투 안내 보조 문구 */
 #v8-first-turn-hint .v8-hint-key {
@@ -610,3 +622,76 @@ body.v8-mode-battle:not(.v8-panel-open) #v8-dpad-zoom { bottom: 22px; }
 /* 날씨 아이콘 SVG */
 #v8-weather { display: inline-flex; align-items: center; }
 #v8-weather svg.v8-wx { width: 20px; height: 20px; display: block; fill: none; }
+
+
+/* ═══════════ 2026-08-31 재감사(R1·R3·R4·R5) 반영 ═══════════ */
+
+/* ── R1: 대사 표시 중에는 조작 UI를 화면에서 내린다 ─────────────
+   전투 대사창의 68.9%를 조이스틱·A/B·[대기]가 덮었고, 크롬의 터치 보정이
+   대사창 빈틈 탭을 [대기] 버튼으로 가져가 유닛 턴이 날아갔다.
+   display:none으로 터치 대상 자체를 없애 흡수 가능성을 0으로 만든다. */
+body.v8-dlg-open #v8-dpad-root,
+body.v8-dlg-open #v8-unit-panel,
+body.v8-dlg-open #v8-action-queue { display: none !important; }
+#v8-dialogue { z-index: 260; }
+
+/* ── R3: 대상 선택 바 — 페이즈와 화면을 일치시키고 항상 취소할 수 있게 ── */
+#v8-target-bar {
+  position: fixed;
+  left: 50%; transform: translateX(-50%) translateY(10px);
+  /* A/B 버튼 묶음(패널 열림 시 화면 하단 610px 지점)보다 위에 둔다 — 겹침 0 */
+  bottom: 252px;
+  z-index: 245;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px 7px 14px;
+  background: linear-gradient(180deg, rgba(60,40,18,.95), rgba(20,12,4,.95));
+  border: 2px solid #ffd700;
+  border-radius: 20px;
+  color: #ffe2a6;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 13px;
+  white-space: nowrap;
+  word-break: keep-all;
+  box-shadow: 0 4px 14px rgba(0,0,0,.55), 0 0 16px rgba(255,180,60,.25);
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity .18s ease-out, transform .18s ease-out;
+}
+#v8-target-bar.v8-show {
+  display: flex;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+#v8-target-bar button {
+  padding: 5px 14px;
+  background: #5a3a1a;
+  color: #ffd700;
+  border: 1px solid #ffd700;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+#v8-target-bar button:active { background: #ffd700; color: #20100a; }
+body.v8-dlg-open #v8-target-bar { display: none !important; }
+
+/* ── R5: [대기]가 두 개 보이던 문제 — 유닛 패널에 대기 버튼이 있을 땐
+       D-pad 알약을 감춘다 ───────────────────────────────────── */
+body.v8-panel-open #v8-dpad-menu { display: none !important; }
+
+/* R4(줌 버튼 겹침)은 index.html의 body.v8-mode-battle #v8-dpad-zoom 규칙에서
+   전투 내내 좌측 상단으로 고정해 해결한다. */
+
+/* 행동 순서 띠도 상단 바 실제 높이를 따라간다 (R7) */
+@media (max-width: 720px) {
+  #v8-action-queue { top: calc(var(--v8-topbar-h, 44px) + 2px); }
+}
+
+/* 아이템 아이콘 SVG */
+.v8-item-icon svg { width: 32px; height: 32px; display: block; margin: 0 auto; }
+.v8-modal h2 .v8-h2-icon {
+  width: 22px; height: 22px;
+  display: inline-block; vertical-align: -3px; margin-right: 4px;
+}

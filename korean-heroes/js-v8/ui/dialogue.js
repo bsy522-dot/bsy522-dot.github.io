@@ -180,6 +180,8 @@ export class DialogueRunner {
     this._onClick = this._onClick.bind(this);
     this._onKey = this._onKey.bind(this);
     this._onDocTap = this._onDocTap.bind(this);
+    this._onDocTouch = this._onDocTouch.bind(this);
+    this._lastTouchAt = 0;
     this.disposed = false;
   }
 
@@ -190,6 +192,10 @@ export class DialogueRunner {
     }
     _current = this;
     this.el.classList.add('v8-visible');
+    // ★ 2026-08-31 재감사 R1: 전투 중 대사창의 68.9%를 조이스틱·A/B·[대기]가 덮고,
+    //   크롬 터치 보정 때문에 대사창 빈틈을 눌러도 [대기]로 흡수돼 턴이 날아갔다.
+    //   대사가 떠 있는 동안에는 조작 UI를 아예 화면에서 내린다(터치 대상 자체 제거).
+    document.body.classList.add('v8-dlg-open');
     if (this.opts.compactPortrait) {
       const bp = document.getElementById('v8-dlg-bigportrait');
       if (bp) bp.classList.add('v8-compact');
@@ -199,6 +205,11 @@ export class DialogueRunner {
     // bubble 단계에 document에서 잡으므로, canvas 등 하위 핸들러가 먼저 실행되어
     // isDialogueActive()로 양보한 뒤에야 대화가 진행된다.
     document.addEventListener('click', this._onDocTap);
+    // ★ 2026-08-31 재감사: 폰에서는 화면 대부분이 3D 캔버스인데, tactical_cam이
+    //   touchstart에서 preventDefault()를 걸어 합성 click이 생기지 않는다.
+    //   그래서 "화면 아무 데나 탭하면 진행"이 실제로는 대사창 위에서만 됐다.
+    //   touchend를 직접 받아 어디를 탭해도 넘어가게 한다.
+    document.addEventListener('touchend', this._onDocTouch, { passive: true });
     window.addEventListener('keydown', this._onKey);
     this._advance();
   }
@@ -227,8 +238,24 @@ export class DialogueRunner {
   _onDocTap(e) {
     if (this.disposed) return;
     if (!this.el.classList.contains('v8-visible')) return;
+    // 터치 직후 도착하는 합성 click 무시 (이중 진행 방지)
+    if (performance.now() - this._lastTouchAt < 700) return;
     const t = e && e.target;
     if (t && t.closest && t.closest(INTERACTIVE_GUARD_SELECTOR)) return;
+    this._onClick();
+  }
+
+  // 터치 전용 진행 — 캔버스가 click을 막아도 동작한다
+  _onDocTouch(e) {
+    if (this.disposed) return;
+    if (!this.el.classList.contains('v8-visible')) return;
+    const ct = (e && e.changedTouches && e.changedTouches[0]) || null;
+    let el = e && e.target;
+    if (ct && document.elementFromPoint) {
+      el = document.elementFromPoint(ct.clientX, ct.clientY) || el;
+    }
+    if (el && el.closest && el.closest(INTERACTIVE_GUARD_SELECTOR)) return;
+    this._lastTouchAt = performance.now();
     this._onClick();
   }
 
@@ -330,9 +357,11 @@ export class DialogueRunner {
     this.disposed = true;
     if (this.typingTimer) { clearTimeout(this.typingTimer); this.typingTimer = null; }
     this.el.classList.remove('v8-visible');
+    document.body.classList.remove('v8-dlg-open');
     const bp = document.getElementById('v8-dlg-bigportrait');
     if (bp) { bp.classList.remove('v8-show'); bp.classList.remove('v8-compact'); }
     document.removeEventListener('click', this._onDocTap);
+    document.removeEventListener('touchend', this._onDocTouch);
     window.removeEventListener('keydown', this._onKey);
     if (_current === this) _current = null;
     if (this.onComplete) {

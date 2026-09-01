@@ -42,6 +42,8 @@
       "player": "hwanwoong",
       "bgm": "peace",
       "objective": "풍백과 회의 후 출진문으로",
+      "objectiveFlag": "council_done",
+      "objectiveDone": "출진문(성문)으로 가서 출진",
       "exitTrigger": "gate",
       "triggers": {
         "ep1_council": {

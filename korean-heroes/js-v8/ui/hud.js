@@ -190,6 +190,11 @@ export function initHUD(container) {
   // 노이즈 요소 초기 표시 상태 반영 (실패해도 HUD 자체는 정상 동작)
   _applyHudConfig();
 
+  // ★ 2026-08-31 재감사 R7: 글자확대 150%에서 상단 바 내용이 44px 밖으로 흘러나왔다.
+  //   바 높이를 고정하지 않고 실제 높이를 CSS 변수(--v8-topbar-h)로 내보내
+  //   행동순서 띠·미니맵이 그 아래로 자동으로 밀리게 한다.
+  _watchTopbarHeight();
+
   return root;
 }
 
@@ -212,6 +217,26 @@ function _applyHudConfig() {
   } catch (e) {
     console.warn('[hud] applyHudConfig failed', e);
   }
+}
+
+// 상단 바 실제 높이 → --v8-topbar-h
+function _syncTopbarHeight() {
+  if (!_root) return;
+  const t = _root.querySelector('#v8-hud-top');
+  if (!t) return;
+  const h = Math.max(36, Math.ceil(t.getBoundingClientRect().height) || 44);
+  document.documentElement.style.setProperty('--v8-topbar-h', h + 'px');
+}
+
+function _watchTopbarHeight() {
+  _syncTopbarHeight();
+  try {
+    const t = _root.querySelector('#v8-hud-top');
+    if (t && typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(() => _syncTopbarHeight()).observe(t);
+    }
+  } catch (e) { /* 미지원 브라우저는 resize 이벤트로 폴백 */ }
+  window.addEventListener('resize', _syncTopbarHeight);
 }
 
 function _ensureStyles() {
@@ -277,6 +302,7 @@ export function updateHUD(state) {
     }
   }
   _drawMinimap();
+  _syncTopbarHeight();
 }
 
 // ─────────────────────────────────────────────
@@ -327,11 +353,16 @@ export function showUnitPanel(unit, opts = {}) {
   _root.querySelector('#v8-up-xp-val').textContent = `${xp}/${xpMax}`;
 
   // 액션 버튼 활성/비활성
+  //   opts.actions  : 보여줄 액션 목록
+  //   opts.disabled : 보이되 누를 수 없는 액션 (예: 사거리 안에 적이 없으면 '공격')
+  //   ★ 2026-08-31 재감사 후속: 눌러도 아무 일이 없는 버튼이 살아 있으면
+  //     초보가 같은 버튼만 반복해 누르다 턴이 멈춘 것처럼 느낀다.
   const actions = opts.actions || ['attack', 'skill', 'item', 'wait'];
+  const off = opts.disabled || [];
   _root.querySelectorAll('.v8-action-btn').forEach(btn => {
     const act = btn.dataset.act;
     const active = actions.includes(act);
-    btn.disabled = !active || (unit.acted === true);
+    btn.disabled = !active || off.includes(act) || (unit.acted === true);
     btn.style.display = active ? '' : 'none';
   });
 }
