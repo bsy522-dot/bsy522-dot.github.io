@@ -177,8 +177,8 @@
       "unitType": "보병",
       "team": "enemy",
       "portrait": "hojok_chief",
-      "hp": 65, "mhp": 65, "mp": 10, "mmp": 10,
-      "atk": 24, "def": 13, "spd": 8,
+      "hp": 58, "mhp": 58, "mp": 10, "mmp": 10,
+      "atk": 22, "def": 13, "spd": 8,
       "mov": 3, "rng": 1,
       "colors": { "armor": "#5a2a2a", "cape": "#8a3a3a", "flag": "#aa4a4a" },
       "skills": ["heavy_strike", "war_cry"]

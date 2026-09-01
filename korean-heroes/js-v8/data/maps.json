@@ -531,7 +531,7 @@
         "y": 8,
         "type": "village",
         "effect": {
-          "heal": 3,
+          "heal": 6,
           "team": "ally"
         },
         "desc": "신시 외곽 마을 — 턴당 HP+3"
